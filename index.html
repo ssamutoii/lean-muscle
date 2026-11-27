@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
+<script src="sync.js"></script>
 <script src="./support.js"></script>
 <title>Lean Muscle</title>
 <link rel="manifest" href="lmt.webmanifest">
@@ -333,6 +334,8 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
     <div style="display:flex;gap:10px"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#1d2a14;color:#c6f432;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">4</span><span>It opens full-screen like an app. Your phone keeps its own copy of your data, so move history across with Download backup → Restore.</span></div>
   </div>
   <div style="font-size:18px;font-weight:600;margin-top:6px">Data</div>
+  <button onClick="{{ cloudOpen }}" style="min-height:52px;border-radius:26px;border:none;background:#c6f432;color:#0c110a;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph ph-cloud-arrow-up" style="font-size:18px"></i>Cloud backup</button>
+  <div style="font-size:13px;color:#9aa296">{{ cloudStatus }}</div>
   <div style="border-radius:26px;background:#141813;padding:16px 18px;display:flex;flex-direction:column;gap:12px">
     <div style="font-size:14px;color:#cfd6c8;line-height:1.45;display:flex;gap:8px"><i class="ph ph-cloud-check" style="color:#c6f432;font-size:18px;flex:none"></i><span>{{ storageText }}</span></div>
     <div style="display:flex;gap:8px">
@@ -744,7 +747,8 @@ class Component extends DCLogic {
       goalOpts: [3, 4].map(n => ({ label: `${n} sessions / week`, style: Object.assign(pill((D.goal || 4) === n), { flex: 1, justifyContent: 'center' }), tap: () => this.setData(d => { d.goal = n; }) })),
       safeguards: [{ text: 'Double progression: when you hit the top of the rep range at Easy or Target, the load goes up 2.5–5%.' }, { text: 'Rated Hard twice in a row, or under the rep range twice in a row, cuts the load by 5%.' }, { text: D.reduceNext ? 'Recovery safeguard ACTIVE: next session runs 1 fewer set per exercise.' : 'Recovery Amber/Red two sessions in a row removes 1 set per exercise for the next session.' }, { text: 'Joint pain flagged twice swaps in a joint-friendly alternative. Never prescribed: behind-the-neck presses/pulldowns, narrow upright rows, bench dips, kipping, or heavy deadlifts/back squats to failure.' }, { text: 'Baseline: your 24 Nov Upper A. Every other lift starts from an estimate scaled to that strength, so correct it the first time you do it.' }],
       locks: lockList,
-      storageText: `${H.length} sessions saved on this device${window.storage ? ' and in app storage' : ''}. Every change auto-saves${savedT ? ` (last at ${savedT})` : ''}. Download a backup now and then, and use it to move your history between devices.`,
+      storageText: `${H.length} sessions saved on this device${window.storage ? ' and in app storage' : ''}. Every change auto-saves${savedT ? ` (last at ${savedT})` : ''}. Turn on Cloud backup to keep a private copy off this phone.`,
+      cloudOpen: () => window.LMTSync.open(), cloudStatus: window.LMTSync ? window.LMTSync.status() : '',
       backup: () => this.backup(), restore: ev => this.restore(ev),
       navHome: nav(view === 'home' || view === 'summary'), navWorkout: nav(false), navHistory: nav(view === 'history'), navProgram: nav(view === 'program'),
       navCenter: { width: 72, height: 72, borderRadius: '50%', border: 'none', background: view === 'progress' ? '#dcff6a' : this.LIME, color: '#0c110a', marginTop: -36, boxShadow: '0 8px 30px -4px rgba(198,244,50,0.55)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }
