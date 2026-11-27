@@ -1,4 +1,4 @@
-const C='lmt-161d67e1';
+const C='lmt-f3bd7736';
 const F=["./", "index.html", "lmt-icon.png", "lmt-library.js", "lmt.webmanifest", "support.js", "vendor/fill/Phosphor-Fill.woff2", "vendor/fill/style.css", "vendor/react-dom.production.min.js", "vendor/react.production.min.js", "vendor/regular/Phosphor.woff2", "vendor/regular/style.css", "vendor/urbanist-latin-400-normal.woff2", "vendor/urbanist-latin-500-normal.woff2", "vendor/urbanist-latin-600-normal.woff2", "vendor/urbanist-latin-700-normal.woff2", "vendor/urbanist.css", "sync.js"];
 self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(F.map(u=>new Request(u,{cache:'reload'})))).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith('lmt-')&&x!==C).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));

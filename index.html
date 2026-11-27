@@ -326,16 +326,9 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
   </sc-for>
   <div style="font-size:18px;font-weight:600;margin-top:6px">Weekly goal</div>
   <div style="display:flex;gap:8px"><sc-for list="{{ goalOpts }}" as="g" hint-placeholder-count="2"><button onClick="{{ g.tap }}" style="{{ g.style }}">{{ g.label }}</button></sc-for></div>
-  <div style="font-size:18px;font-weight:600;margin-top:6px">Put it on your phone</div>
-  <div style="border-radius:26px;background:#141813;padding:16px 18px;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.45;color:#cfd6c8">
-    <div style="display:flex;gap:10px"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#1d2a14;color:#c6f432;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">1</span><span>Get the single-file version of this app (ask for “the standalone file”).</span></div>
-    <div style="display:flex;gap:10px"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#1d2a14;color:#c6f432;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">2</span><span>Host it for free: drag the file onto app.netlify.com/drop and copy the link it gives you.</span></div>
-    <div style="display:flex;gap:10px"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#1d2a14;color:#c6f432;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">3</span><span>iPhone: open the link in Safari, then Share → Add to Home Screen. Android: open it in Chrome, then ⋮ → Install app.</span></div>
-    <div style="display:flex;gap:10px"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#1d2a14;color:#c6f432;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">4</span><span>It opens full-screen like an app. Your phone keeps its own copy of your data, so move history across with Download backup → Restore.</span></div>
-  </div>
   <div style="font-size:18px;font-weight:600;margin-top:6px">Data</div>
   <button onClick="{{ cloudOpen }}" style="min-height:52px;border-radius:26px;border:none;background:#c6f432;color:#0c110a;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph ph-cloud-arrow-up" style="font-size:18px"></i>Cloud backup</button>
-  <div style="font-size:13px;color:#9aa296">{{ cloudStatus }}</div>
+  <div data-lmt-status style="font-size:13px;color:#9aa296">{{ cloudStatus }}</div>
   <div style="border-radius:26px;background:#141813;padding:16px 18px;display:flex;flex-direction:column;gap:12px">
     <div style="font-size:14px;color:#cfd6c8;line-height:1.45;display:flex;gap:8px"><i class="ph ph-cloud-check" style="color:#c6f432;font-size:18px;flex:none"></i><span>{{ storageText }}</span></div>
     <div style="display:flex;gap:8px">

@@ -106,6 +106,7 @@
 
   function refresh() {
     const s = st();
+    document.querySelectorAll('[data-lmt-status]').forEach(n => { if (n.textContent !== status()) n.textContent = status(); });
     if (s.token && s.err) {
       if (!pill) { pill = el('button', 'position:fixed;top:calc(6px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:90;border:none;border-radius:18px;padding:8px 14px;background:#ffb020;color:#141813;font:700 13px Urbanist,system-ui,sans-serif;white-space:nowrap', 'Backup needs attention'); pill.onclick = () => open(); document.body.append(pill); }
     } else if (pill) { pill.remove(); pill = null; }
