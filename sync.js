@@ -74,25 +74,25 @@
 
   const el = (tag, css, text) => { const n = document.createElement(tag); n.style.cssText = css || ''; if (text) n.textContent = text; return n; };
   const BTN = 'height:48px;border-radius:24px;font:700 14px Urbanist,system-ui,sans-serif;cursor:pointer;flex:none;';
-  const button = (label, primary, fn) => { const b = el('button', BTN + (primary ? 'border:none;background:#c6f432;color:#0c110a' : 'border:1.5px solid #3a4236;background:none;color:#f1f4ec'), label); b.onclick = fn; return b; };
+  const button = (label, primary, fn) => { const b = el('button', BTN + (primary ? 'border:none;background:#c6f432;color:#0c110a' : 'border:1.5px solid #35486c;background:none;color:#f2f6fd'), label); b.onclick = fn; return b; };
   const status = () => { const s = st(); if (!s.token) return 'Off. Your log is only on this device.'; if (s.err) return s.err; return s.at ? 'On. Last backed up ' + new Intl.DateTimeFormat('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false }).format(s.at) + '.' : 'On.'; };
 
   function close() { if (ui) ui.remove(); ui = null; }
   function open(cloud) {
     close();
     ui = el('div', 'position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.7);display:flex;align-items:flex-end;justify-content:center');
-    const box = el('div', 'width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:#141813;color:#f1f4ec;border-radius:32px 32px 0 0;padding:26px 20px calc(26px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px;font-family:Urbanist,system-ui,sans-serif');
-    const msg = el('div', 'font-size:14px;color:#cfd6c8;line-height:1.45', status());
+    const box = el('div', 'width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:#121a29;color:#f2f6fd;border-radius:32px 32px 0 0;padding:26px 20px calc(26px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px;font-family:Urbanist,system-ui,sans-serif');
+    const msg = el('div', 'font-size:14px;color:#cdd8eb;line-height:1.45', status());
     box.append(el('div', 'font-size:22px;font-weight:600;flex:none', 'Cloud backup'), msg);
     const run = async fn => { msg.textContent = 'Working…'; try { await fn(); msg.textContent = status(); } catch (e) { msg.textContent = e.status === undefined && !(e instanceof TypeError) ? e.message : explain(e); } refresh(); };
     const s = st();
     if (!s.token) {
-      box.append(el('div', 'font-size:13px;color:#9aa296;line-height:1.45', 'Paste your GitHub token once. After that, backups happen on their own to the private repository ' + REPO + '.'));
-      const input = el('input', 'height:48px;border-radius:16px;border:1.5px solid #3a4236;background:#0e110d;color:#f1f4ec;padding:0 14px;font-size:16px;flex:none');
+      box.append(el('div', 'font-size:13px;color:#9ba9c0;line-height:1.45', 'Paste your GitHub token once. After that, backups happen on their own to the private repository ' + REPO + '.'));
+      const input = el('input', 'height:48px;border-radius:16px;border:1.5px solid #35486c;background:#0b111d;color:#f2f6fd;padding:0 14px;font-size:16px;flex:none');
       input.type = 'password'; input.placeholder = 'github_pat_…'; input.autocomplete = 'off'; input.setAttribute('aria-label', 'GitHub token');
       box.append(input, button('Turn on backup', true, () => run(async () => { const t = input.value.trim(); if (!t) throw new Error('Paste the token first.'); await reconcile(t); if (!st().conflict) open(); })));
     } else if (s.conflict) {
-      box.append(el('div', 'font-size:13px;color:#9aa296;line-height:1.45', 'Choose which log to keep. Earlier cloud versions stay in the repository history.'));
+      box.append(el('div', 'font-size:13px;color:#9ba9c0;line-height:1.45', 'Choose which log to keep. Earlier cloud versions stay in the repository history.'));
       box.append(button('Use the cloud copy on this phone', true, () => run(async () => { const r = cloud || await remote(s.token); if (!r) throw new Error('No cloud copy found.'); useCloud(r); })));
       box.append(button('Keep this phone and overwrite cloud', false, () => run(async () => { const r = await remote(s.token); await upload(s.token, load(KEY), r && r.sha); open(); })));
     } else {
@@ -108,7 +108,7 @@
     const s = st();
     document.querySelectorAll('[data-lmt-status]').forEach(n => { if (n.textContent !== status()) n.textContent = status(); });
     if (s.token && s.err) {
-      if (!pill) { pill = el('button', 'position:fixed;top:calc(6px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:90;border:none;border-radius:18px;padding:8px 14px;background:#ffb020;color:#141813;font:700 13px Urbanist,system-ui,sans-serif;white-space:nowrap', 'Backup needs attention'); pill.onclick = () => open(); document.body.append(pill); }
+      if (!pill) { pill = el('button', 'position:fixed;top:calc(6px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:90;border:none;border-radius:18px;padding:8px 14px;background:#ffb020;color:#121a29;font:700 13px Urbanist,system-ui,sans-serif;white-space:nowrap', 'Backup needs attention'); pill.onclick = () => open(); document.body.append(pill); }
     } else if (pill) { pill.remove(); pill = null; }
   }
 

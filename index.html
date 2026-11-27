@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="lmt-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Lean Muscle">
-<meta name="theme-color" content="#0a0c0a">
+<meta name="theme-color" content="#090d14">
 <script>if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');</script>
 </head>
 <body>
@@ -24,18 +24,20 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Lean Muscle">
-<meta name="theme-color" content="#0a0c0a">
+<meta name="theme-color" content="#090d14">
 <link rel="apple-touch-icon" href="lmt-icon.png">
 <link rel="icon" href="lmt-icon.png">
 <link rel="manifest" href="lmt.webmanifest">
 <script src="lmt-library.js"></script>
+<script src="lmt-figures.js"></script>
+<script src="lmt-info.js"></script>
 <link href="vendor/urbanist.css" rel="stylesheet">
 <link rel="stylesheet" href="vendor/regular/style.css">
 <link rel="stylesheet" href="vendor/fill/style.css">
 <style>
 *{box-sizing:border-box}
 html,body{overscroll-behavior-y:none}
-body{margin:0;background:#0a0c0a;color:#f1f4ec;font-family:Urbanist,system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#090d14;color:#f2f6fd;font-family:Urbanist,system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
 a{color:#c6f432}a:hover{color:#dcff6a}
 button,input,select{font-family:inherit;color:inherit}
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
@@ -44,23 +46,23 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
 ::-webkit-scrollbar{display:none}
 </style>
 </helmet>
-<div style="max-width:440px;margin:0 auto;min-height:100vh;position:relative;background:radial-gradient(130% 45% at 50% 0%,#24421f 0%,#101610 55%,#0a0c0a 100%);overflow-x:hidden">
+<div style="max-width:440px;margin:0 auto;min-height:100vh;position:relative;background:radial-gradient(130% 45% at 50% 0%,#1f4468 0%,#0e1726 55%,#090d14 100%);overflow-x:hidden">
 
 <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
 <div style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:24px">
   <div style="display:flex;align-items:center;gap:14px">
-    <div style="width:54px;height:54px;flex:none;border-radius:50%;background:linear-gradient(140deg,#c6f432,#3dd68c);display:flex;align-items:center;justify-content:center;color:#0c110a;font-size:26px"><i class="ph-fill ph-barbell"></i></div>
-    <div style="flex:1;min-width:0"><div style="font-size:22px;font-weight:600">{{ greet }}</div><div style="font-size:14px;color:#9aa296;margin-top:2px">{{ blockLabel }}</div></div>
-    <div style="height:52px;padding:0 16px;border-radius:26px;background:#141813;display:flex;align-items:center;gap:6px;font-size:16px;font-weight:600"><i class="ph-fill ph-fire" style="color:#c6f432;font-size:20px"></i>{{ weekGoal }}</div>
+    <div style="width:54px;height:54px;flex:none;border-radius:50%;background:linear-gradient(140deg,#c6f432,#4db8ff);display:flex;align-items:center;justify-content:center;color:#0c110a;font-size:26px"><i class="ph-fill ph-barbell"></i></div>
+    <div style="flex:1;min-width:0"><div style="font-size:22px;font-weight:600">{{ greet }}</div><div style="font-size:14px;color:#9ba9c0;margin-top:2px">{{ blockLabel }}</div></div>
+    <div style="height:52px;padding:0 16px;border-radius:26px;background:#121a29;display:flex;align-items:center;gap:6px;font-size:16px;font-weight:600"><i class="ph-fill ph-fire" style="color:#c6f432;font-size:20px"></i>{{ weekGoal }}</div>
   </div>
-  <div style="border-radius:44px;padding:6px;background:linear-gradient(90deg,#c6f432 0%,#7fe14f 55%,#3dd68c 100%);display:flex;align-items:center;gap:14px;box-shadow:0 12px 40px -12px rgba(150,230,70,0.5)">
-    <div style="width:68px;height:68px;border-radius:50%;background:#10130f;display:flex;align-items:center;justify-content:center;font-size:30px;color:#c6f432;flex:none"><i class="ph ph-trophy"></i></div>
+  <div style="border-radius:44px;padding:6px;background:linear-gradient(90deg,#c6f432 0%,#5fe0c0 55%,#4db8ff 100%);display:flex;align-items:center;gap:14px;box-shadow:0 12px 40px -12px rgba(150,230,70,0.5)">
+    <div style="width:68px;height:68px;border-radius:50%;background:#0f1827;display:flex;align-items:center;justify-content:center;font-size:30px;color:#c6f432;flex:none"><i class="ph ph-trophy"></i></div>
     <div style="flex:1;min-width:0;color:#0c110a"><div style="font-size:20px;font-weight:700">{{ heroTitle }}</div><div style="font-size:14px;font-weight:600;opacity:0.75;margin-top:2px">{{ heroSub }}</div></div>
     <button onClick="{{ heroTap }}" style="height:50px;padding:0 20px;margin-right:8px;flex:none;border-radius:25px;border:none;background:#f4f7ef;color:#0c110a;font-size:15px;font-weight:700;letter-spacing:0.05em;cursor:pointer" style-active="transform:scale(0.96)">{{ heroBtn }}</button>
   </div>
   <sc-if value="{{ heroStarted }}">
     <div style="display:flex;gap:8px;margin-top:-12px">
-      <button onClick="{{ restartSession }}" style="flex:1;height:44px;border-radius:22px;border:1.5px solid #3a4236;background:none;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px"><i class="ph ph-arrow-counter-clockwise"></i>Restart</button>
+      <button onClick="{{ restartSession }}" style="flex:1;height:44px;border-radius:22px;border:1.5px solid #35486c;background:none;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px"><i class="ph ph-arrow-counter-clockwise"></i>Restart</button>
       <button onClick="{{ discardSession }}" style="flex:1;height:44px;border-radius:22px;border:1.5px solid #4a2a22;background:none;color:#ff5a3c;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px"><i class="ph ph-x"></i>Discard</button>
     </div>
   </sc-if>
@@ -79,11 +81,11 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
   </sc-if>
   <div style="display:flex;gap:12px;overflow-x:auto;margin:-8px -20px 0;padding:0 20px">
     <sc-for list="{{ previewCards }}" as="p" hint-placeholder-count="3">
-      <button onClick="{{ p.tap }}" style="flex:none;width:168px;border-radius:26px;border:none;padding:0;background:linear-gradient(170deg,#203020,#111410);cursor:pointer;text-align:left;overflow:hidden;display:flex;flex-direction:column">
+      <button onClick="{{ p.tap }}" style="flex:none;width:168px;border-radius:26px;border:none;padding:0;background:linear-gradient(170deg,#1c365d,#0f1829);cursor:pointer;text-align:left;overflow:hidden;display:flex;flex-direction:column">
         <div style="padding:12px 10px 0">{{ p.diagram }}</div>
         <div style="padding:6px 14px 14px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-size:15px;font-weight:600;line-height:1.2;color:#f1f4ec">{{ p.name }}</div>
-          <div style="font-size:12px;color:#9aa296;display:flex;align-items:center;gap:4px"><i class="ph ph-repeat"></i>{{ p.meta }}</div>
+          <div style="font-size:15px;font-weight:600;line-height:1.2;color:#f2f6fd">{{ p.name }}</div>
+          <div style="font-size:12px;color:#9ba9c0;display:flex;align-items:center;gap:4px"><i class="ph ph-repeat"></i>{{ p.meta }}</div>
         </div>
       </button>
     </sc-for>
@@ -91,10 +93,10 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
   <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:20px;font-weight:600">Recent activity</div><button onClick="{{ goHistory }}" style="background:none;border:none;color:#c6f432;font-size:14px;font-weight:600;cursor:pointer;padding:8px 0">See all</button></div>
   <div style="display:flex;flex-direction:column;gap:10px;margin-top:-10px">
     <sc-for list="{{ recentHome }}" as="r" hint-placeholder-count="2">
-      <div style="display:flex;align-items:center;gap:14px;padding:12px 18px 12px 12px;border-radius:32px;background:#141813">
-        <div style="width:54px;height:54px;flex:none;border-radius:50%;background:radial-gradient(circle,#1d2a1a 55%,transparent 56%),conic-gradient(#c6f432,#3dd68c,#c6f432);display:flex;align-items:center;justify-content:center;color:#c6f432;font-size:22px"><i class="ph-fill ph-barbell"></i></div>
-        <div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:600">{{ r.name }}</div><div style="font-size:13px;color:#9aa296;margin-top:2px">{{ r.when }}</div></div>
-        <div style="text-align:right"><div style="font-size:26px;font-weight:500;line-height:1">{{ r.big }}</div><div style="font-size:12px;color:#9aa296;margin-top:2px">{{ r.unit }}</div></div>
+      <div style="display:flex;align-items:center;gap:14px;padding:12px 18px 12px 12px;border-radius:32px;background:#121a29">
+        <div style="width:54px;height:54px;flex:none;border-radius:50%;background:radial-gradient(circle,#142a40 55%,transparent 56%),conic-gradient(#c6f432,#4db8ff,#c6f432);display:flex;align-items:center;justify-content:center;color:#c6f432;font-size:22px"><i class="ph-fill ph-barbell"></i></div>
+        <div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:600">{{ r.name }}</div><div style="font-size:13px;color:#9ba9c0;margin-top:2px">{{ r.when }}</div></div>
+        <div style="text-align:right"><div style="font-size:26px;font-weight:500;line-height:1">{{ r.big }}</div><div style="font-size:12px;color:#9ba9c0;margin-top:2px">{{ r.unit }}</div></div>
       </div>
     </sc-for>
   </div>
@@ -104,60 +106,61 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
 <sc-if value="{{ isWorkout }}">
 <div style="padding:20px 16px 120px;display:flex;flex-direction:column;gap:16px">
   <div style="display:flex;align-items:center;gap:12px">
-    <button onClick="{{ goHome }}" style="width:52px;height:52px;flex:none;border-radius:50%;border:none;background:#141813;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="ph ph-caret-left"></i></button>
+    <button onClick="{{ goHome }}" style="width:52px;height:52px;flex:none;border-radius:50%;border:none;background:#121a29;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="ph ph-caret-left"></i></button>
     <div style="flex:1;min-width:0">
       <div style="font-size:19px;font-weight:600">{{ wTitle }}</div>
-      <div style="font-size:13px;color:#9aa296;display:flex;align-items:center;gap:6px;margin-top:2px;min-width:0;white-space:nowrap"><span style="width:8px;height:8px;border-radius:50%;background:#ff5a3c;flex:none"></span><span style="font-variant-numeric:tabular-nums;color:#f1f4ec;font-weight:600;flex:none">{{ elapsed }}</span><span style="flex:none">·</span><i class="ph ph-cloud-check" style="color:#c6f432;flex:none"></i><span style="min-width:0;overflow:hidden;text-overflow:ellipsis">{{ savedText }}</span></div>
+      <div style="font-size:13px;color:#9ba9c0;display:flex;align-items:center;gap:6px;margin-top:2px;min-width:0;white-space:nowrap"><span style="width:8px;height:8px;border-radius:50%;background:#ff5a3c;flex:none"></span><span style="font-variant-numeric:tabular-nums;color:#f2f6fd;font-weight:600;flex:none">{{ elapsed }}</span><span style="flex:none">·</span><i class="ph ph-cloud-check" style="color:#c6f432;flex:none"></i><span style="min-width:0;overflow:hidden;text-overflow:ellipsis">{{ savedText }}</span></div>
     </div>
-    <button onClick="{{ askFinish }}" style="height:44px;padding:0 18px;border-radius:22px;border:1.5px solid #c6f432;background:transparent;color:#c6f432;font-size:15px;font-weight:700;cursor:pointer" style-hover="background:#1d2a14">Finish</button>
-    <button onClick="{{ openMenu }}" style="width:44px;height:44px;flex:none;border-radius:50%;border:none;background:#141813;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="ph ph-dots-three-vertical"></i></button>
+    <button onClick="{{ askFinish }}" style="height:44px;padding:0 18px;border-radius:22px;border:1.5px solid #c6f432;background:transparent;color:#c6f432;font-size:15px;font-weight:700;cursor:pointer" style-hover="background:#18334d">Finish</button>
+    <button onClick="{{ openMenu }}" style="width:44px;height:44px;flex:none;border-radius:50%;border:none;background:#121a29;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="ph ph-dots-three-vertical"></i></button>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
-    <div style="font-size:13px;color:#9aa296;flex:none;width:62px">Recovery</div>
+    <div style="font-size:13px;color:#9ba9c0;flex:none;width:62px">Recovery</div>
     <sc-for list="{{ recoveryOpts }}" as="r" hint-placeholder-count="3">
       <button onClick="{{ r.tap }}" style="{{ r.style }}"><span style="{{ r.dot }}"></span>{{ r.label }}</button>
     </sc-for>
   </div>
-  <div style="font-size:12px;color:#9aa296;margin-top:-10px;padding-left:70px">{{ recoveryNote }}</div>
+  <div style="font-size:12px;color:#9ba9c0;margin-top:-10px;padding-left:70px">{{ recoveryNote }}</div>
   <div style="display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:0 16px">
     <sc-for list="{{ pager }}" as="p" hint-placeholder-count="6">
       <button onClick="{{ p.tap }}" style="{{ p.style }}">{{ p.n }}</button>
     </sc-for>
   </div>
   <sc-if value="{{ timerOn }}">
-    <button onClick="{{ stopTimer }}" style="height:52px;border-radius:26px;border:none;background:#1a2414;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;padding:0 20px;cursor:pointer">
+    <button onClick="{{ stopTimer }}" style="height:52px;border-radius:26px;border:none;background:#142a40;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;padding:0 20px;cursor:pointer">
       <span style="{{ timerBar }}"></span>
       <span style="position:relative;font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;color:#c6f432;display:flex;align-items:center;gap:8px"><i class="ph ph-timer"></i>{{ timerText }}</span>
-      <span style="position:relative;font-size:13px;color:#cfd6c8">Rest · tap to skip</span>
+      <span style="position:relative;font-size:13px;color:#cdd8eb">Rest · tap to skip</span>
     </button>
   </sc-if>
   <sc-if value="{{ timerOff }}">
     <div style="display:flex;gap:8px;align-items:center">
-      <div style="font-size:13px;color:#9aa296;flex:none;width:62px">Rest</div>
+      <div style="font-size:13px;color:#9ba9c0;flex:none;width:62px">Rest</div>
       <sc-for list="{{ timerOpts }}" as="t" hint-placeholder-count="4">
-        <button onClick="{{ t.tap }}" style="flex:1;height:44px;border-radius:22px;border:none;background:#141813;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#1d2a14">{{ t.label }}</button>
+        <button onClick="{{ t.tap }}" style="flex:1;height:44px;border-radius:22px;border:none;background:#121a29;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#18334d">{{ t.label }}</button>
       </sc-for>
     </div>
   </sc-if>
 
-  <div style="border-radius:32px;overflow:hidden;background:radial-gradient(90% 80% at 50% 35%,#2d4d22 0%,#152113 60%,#0e130d 100%)">
+  <div style="border-radius:32px;overflow:hidden;background:radial-gradient(90% 80% at 50% 35%,#1d3a63 0%,#111f35 60%,#0b111b 100%)">
     <div style="padding:16px 12px 6px">{{ cur.hero }}</div>
     <div style="display:flex;align-items:center;gap:12px;padding:0 16px 16px">
-      <button onClick="{{ togglePlay }}" style="width:46px;height:46px;flex:none;border-radius:50%;border:none;background:rgba(10,12,10,0.55);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="{{ playIcon }}"></i></button>
-      <div style="font-size:14px;color:#cfd6c8">Tempo: 1 s up · 0.5 s squeeze · 2–3 s down</div>
+      <button onClick="{{ togglePlay }}" style="width:46px;height:46px;flex:none;border-radius:50%;border:none;background:rgba(9,13,20,0.55);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="{{ playIcon }}"></i></button>
+      <div style="font-size:14px;color:#cdd8eb">Tempo: 1 s up · 0.5 s squeeze · 2–3 s down</div>
     </div>
   </div>
 
   <div style="display:flex;gap:12px;align-items:flex-start">
     <div style="flex:1;min-width:0">
       <div style="font-size:24px;font-weight:600;line-height:1.15;text-wrap:pretty">{{ cur.name }}</div>
-      <div style="font-size:15px;color:#cfd6c8;margin-top:6px;display:flex;align-items:center;gap:8px"><i class="ph-fill ph-barbell" style="color:#c6f432"></i>{{ cur.eq }}</div>
+      <div style="font-size:15px;color:#cdd8eb;margin-top:6px;display:flex;align-items:center;gap:8px"><i class="ph-fill ph-barbell" style="color:#c6f432"></i>{{ cur.eq }}</div>
     </div>
-    <button onClick="{{ cur.restTap }}" style="flex:none;white-space:nowrap;height:46px;padding:0 16px;border-radius:23px;border:none;background:#141813;font-size:15px;font-weight:600;display:flex;align-items:center;gap:6px;cursor:pointer"><i class="ph ph-timer" style="font-size:18px"></i>{{ cur.rest }}</button>
+    <button onClick="{{ cur.infoTap }}" aria-label="About this exercise" style="width:46px;height:46px;flex:none;border-radius:50%;border:none;background:linear-gradient(140deg,#2a66ac,#1a3b68);color:#e6f2ff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="ph ph-info"></i></button>
+    <button onClick="{{ cur.restTap }}" style="flex:none;white-space:nowrap;height:46px;padding:0 16px;border-radius:23px;border:none;background:#121a29;font-size:15px;font-weight:600;display:flex;align-items:center;gap:6px;cursor:pointer"><i class="ph ph-timer" style="font-size:18px"></i>{{ cur.rest }}</button>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
-    <span style="padding:6px 12px;border-radius:14px;background:#1a2414;color:#c6f432;font-size:13px;font-weight:600">{{ cur.scheme }}</span>
-    <span style="padding:6px 12px;border-radius:14px;background:#141813;color:#cfd6c8;font-size:13px">{{ cur.muscles }}</span>
+    <span style="padding:6px 12px;border-radius:14px;background:#142a40;color:#c6f432;font-size:13px;font-weight:600">{{ cur.scheme }}</span>
+    <span style="padding:6px 12px;border-radius:14px;background:linear-gradient(90deg,#1e4d86,#17305a);color:#cfe6ff;font-size:13px;font-weight:600">{{ cur.muscles }}</span>
     <button onClick="{{ cur.swapTap }}" style="padding:6px 12px;border-radius:14px;border:1.5px solid #c6f432;background:none;color:#c6f432;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ph ph-swap"></i>Swap exercise</button>
   </div>
 
@@ -165,27 +168,27 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
     <button onClick="{{ toggleHow }}" style="display:flex;justify-content:space-between;align-items:center;background:none;border:none;padding:0;cursor:pointer;font-size:18px;font-weight:600">How to do it<i class="{{ howIcon }}"></i></button>
     <sc-if value="{{ howOpen }}">
       <div style="display:flex;flex-direction:column;gap:12px">
-        <div style="font-size:15px;line-height:1.5;color:#b9c0b3;text-wrap:pretty"><span style="color:#f1f4ec;font-weight:600">Setup. </span>{{ cur.setup }}</div>
+        <div style="font-size:15px;line-height:1.5;color:#b9c5db;text-wrap:pretty"><span style="color:#f2f6fd;font-weight:600">Setup. </span>{{ cur.setup }}</div>
         <sc-for list="{{ cur.steps }}" as="s" hint-placeholder-count="3">
-          <div style="display:flex;gap:10px;font-size:15px;line-height:1.45;color:#e2e7dc"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#1d2a14;color:#c6f432;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ s.n }}</span><span style="text-wrap:pretty">{{ s.text }}</span></div>
+          <div style="display:flex;gap:10px;font-size:15px;line-height:1.45;color:#e2e9f6"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#18334d;color:#c6f432;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ s.n }}</span><span style="text-wrap:pretty">{{ s.text }}</span></div>
         </sc-for>
         <div style="display:flex;gap:10px;font-size:14px;line-height:1.45;color:#ffb648"><i class="ph ph-warning-circle" style="font-size:20px;flex:none"></i><span style="text-wrap:pretty">Avoid: {{ cur.avoid }}</span></div>
       </div>
     </sc-if>
   </div>
 
-  <div style="border-radius:30px;background:#141813;padding:16px;display:flex;flex-direction:column;gap:14px">
+  <div style="border-radius:30px;background:#121a29;padding:16px;display:flex;flex-direction:column;gap:14px">
     <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px">
-      <div style="border-radius:18px;background:#0e110d;padding:12px"><div style="font-size:11px;color:#7c8579;text-transform:uppercase;letter-spacing:0.08em;font-weight:600">Last time</div><div style="font-size:14px;margin-top:4px;color:#cfd6c8;line-height:1.35">{{ cur.prev }}</div></div>
-      <div style="border-radius:18px;background:#1a2414;padding:12px"><div style="font-size:11px;color:#c6f432;text-transform:uppercase;letter-spacing:0.08em;font-weight:600">Target today</div><div style="font-size:18px;margin-top:4px;font-weight:600">{{ cur.target }}</div></div>
+      <div style="border-radius:18px;background:#0b111d;padding:12px"><div style="font-size:11px;color:#7888a3;text-transform:uppercase;letter-spacing:0.08em;font-weight:600">Last time</div><div style="font-size:14px;margin-top:4px;color:#cdd8eb;line-height:1.35">{{ cur.prev }}</div></div>
+      <div style="border-radius:18px;background:#142a40;padding:12px"><div style="font-size:11px;color:#c6f432;text-transform:uppercase;letter-spacing:0.08em;font-weight:600">Target today</div><div style="font-size:18px;margin-top:4px;font-weight:600">{{ cur.target }}</div></div>
     </div>
-    <sc-if value="{{ cur.hasWarm }}"><div style="display:flex;gap:8px;font-size:13px;line-height:1.4;color:#cfd6c8;padding:10px 12px;border-radius:16px;background:#0e110d"><i class="ph ph-fire-simple" style="color:#ffb648;font-size:16px;flex:none;margin-top:1px"></i><span>{{ cur.warm }}</span></div></sc-if>
-    <div style="display:grid;grid-template-columns:24px minmax(0,1fr) minmax(0,1fr) 52px;gap:8px;font-size:11px;color:#7c8579;text-transform:uppercase;letter-spacing:0.08em;font-weight:600;margin-bottom:-6px"><span>Set</span><span style="text-align:center">kg</span><span style="text-align:center">Reps</span><span style="text-align:center">Done</span></div>
+    <sc-if value="{{ cur.hasWarm }}"><div style="display:flex;gap:8px;font-size:13px;line-height:1.4;color:#cdd8eb;padding:10px 12px;border-radius:16px;background:#0b111d"><i class="ph ph-fire-simple" style="color:#ffb648;font-size:16px;flex:none;margin-top:1px"></i><span>{{ cur.warm }}</span></div></sc-if>
+    <div style="display:grid;grid-template-columns:24px minmax(0,1fr) minmax(0,1fr) 52px;gap:8px;font-size:11px;color:#7888a3;text-transform:uppercase;letter-spacing:0.08em;font-weight:600;margin-bottom:-6px"><span>Set</span><span style="text-align:center">kg</span><span style="text-align:center">Reps</span><span style="text-align:center">Done</span></div>
     <sc-for list="{{ cur.sets }}" as="s" hint-placeholder-count="3">
       <div style="display:grid;grid-template-columns:24px minmax(0,1fr) minmax(0,1fr) 52px;gap:8px;align-items:center">
-        <div style="font-size:15px;color:#9aa296;font-weight:600">{{ s.n }}</div>
-        <input type="number" inputmode="decimal" step="0.25" value="{{ s.w }}" onChange="{{ s.onW }}" onFocus="{{ s.sel }}" style="width:100%;height:52px;font-size:20px;font-weight:600;text-align:center;background:#0e110d;border:1px solid #252b23;border-radius:16px;color:#f1f4ec">
-        <input type="number" inputmode="numeric" value="{{ s.r }}" onChange="{{ s.onR }}" onFocus="{{ s.sel }}" style="width:100%;height:52px;font-size:20px;font-weight:600;text-align:center;background:#0e110d;border:1px solid #252b23;border-radius:16px;color:#f1f4ec">
+        <div style="font-size:15px;color:#9ba9c0;font-weight:600">{{ s.n }}</div>
+        <input type="number" inputmode="decimal" step="0.25" value="{{ s.w }}" onChange="{{ s.onW }}" onFocus="{{ s.sel }}" style="width:100%;height:52px;font-size:20px;font-weight:600;text-align:center;background:#0b111d;border:1px solid #26354e;border-radius:16px;color:#f2f6fd">
+        <input type="number" inputmode="numeric" value="{{ s.r }}" onChange="{{ s.onR }}" onFocus="{{ s.sel }}" style="width:100%;height:52px;font-size:20px;font-weight:600;text-align:center;background:#0b111d;border:1px solid #26354e;border-radius:16px;color:#f2f6fd">
         <button onClick="{{ s.toggle }}" style="{{ s.doneStyle }}"><i class="ph ph-check" style="font-size:22px"></i></button>
       </div>
     </sc-for>
@@ -196,7 +199,7 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
     </div>
     <div style="display:flex;gap:8px;align-items:center">
       <button onClick="{{ cur.painTap }}" style="{{ cur.painStyle }}"><i class="ph ph-first-aid"></i>Joint pain</button>
-      <input type="text" placeholder="Note (optional)" value="{{ cur.note }}" onChange="{{ cur.onNote }}" style="flex:1;min-width:0;height:46px;font-size:15px;padding:0 14px;background:#0e110d;border:1px solid #252b23;border-radius:23px;color:#f1f4ec">
+      <input type="text" placeholder="Note (optional)" value="{{ cur.note }}" onChange="{{ cur.onNote }}" style="flex:1;min-width:0;height:46px;font-size:15px;padding:0 14px;background:#0b111d;border:1px solid #26354e;border-radius:23px;color:#f2f6fd">
     </div>
     <sc-if value="{{ cur.flag }}"><div style="font-size:13px;color:#ffb648">{{ cur.flagText }}</div></sc-if>
   </div>
@@ -204,68 +207,75 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
   <div style="display:flex;flex-direction:column;gap:4px">
     <div style="font-size:18px;font-weight:600">My progress</div>
     <div style="font-size:42px;font-weight:500;color:#c6f432;letter-spacing:-0.02em;line-height:1.1">{{ cur.big }}<span style="font-size:20px"> kg</span></div>
-    <div style="font-size:13px;color:#9aa296">{{ cur.bigSub }}</div>
+    <div style="font-size:13px;color:#9ba9c0">{{ cur.bigSub }}</div>
     <div style="margin-top:8px">{{ cur.chart }}</div>
   </div>
 </div>
-<div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;z-index:30;padding:16px 16px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(to top,#0a0c0a 65%,rgba(10,12,10,0));display:flex;gap:10px">
-  <sc-if value="{{ notStarted }}"><button onClick="{{ startSession }}" style="flex:1;height:58px;border-radius:29px;border:none;background:linear-gradient(90deg,#c6f432,#7fe14f);color:#0c110a;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph-fill ph-play"></i>Start session</button></sc-if>
+<div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;z-index:30;padding:16px 16px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(to top,#090d14 65%,rgba(9,13,20,0));display:flex;gap:10px">
+  <sc-if value="{{ notStarted }}"><button onClick="{{ startSession }}" style="flex:1;height:58px;border-radius:29px;border:none;background:linear-gradient(90deg,#c6f432,#5fe0c0);color:#0c110a;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph-fill ph-play"></i>Start session</button></sc-if>
   <sc-if value="{{ started }}"><button onClick="{{ prevEx }}" style="{{ prevStyle }}"><i class="ph ph-caret-left"></i></button>
-  <button onClick="{{ nextEx }}" style="flex:1;height:58px;border-radius:29px;border:none;background:linear-gradient(90deg,#c6f432,#7fe14f);color:#0c110a;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-active="transform:scale(0.98)">{{ nextLabel }}<i class="ph ph-arrow-right"></i></button></sc-if>
+  <button onClick="{{ nextEx }}" style="flex:1;height:58px;border-radius:29px;border:none;background:linear-gradient(90deg,#c6f432,#5fe0c0);color:#0c110a;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-active="transform:scale(0.98)">{{ nextLabel }}<i class="ph ph-arrow-right"></i></button></sc-if>
 </div>
 </sc-if>
 
 <sc-if value="{{ isSummary }}">
 <div style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:20px">
-  <div><div style="font-size:13px;color:#c6f432;font-weight:700;letter-spacing:0.08em;text-transform:uppercase">Saved · workout complete</div><div style="font-size:30px;font-weight:600;margin-top:6px">{{ sumTitle }}</div><div style="font-size:14px;color:#9aa296;margin-top:4px">{{ sumWhen }}</div></div>
+  <div><div style="font-size:13px;color:#c6f432;font-weight:700;letter-spacing:0.08em;text-transform:uppercase">Saved · workout complete</div><div style="font-size:30px;font-weight:600;margin-top:6px">{{ sumTitle }}</div><div style="font-size:14px;color:#9ba9c0;margin-top:4px">{{ sumWhen }}</div></div>
   <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">
     <sc-for list="{{ sumStats }}" as="s" hint-placeholder-count="3">
-      <div style="border-radius:24px;background:#141813;padding:14px"><div style="font-size:12px;color:#9aa296">{{ s.label }}</div><div style="font-size:24px;font-weight:600;margin-top:4px">{{ s.val }}</div></div>
+      <div style="border-radius:24px;background:#121a29;padding:14px"><div style="font-size:12px;color:#9ba9c0">{{ s.label }}</div><div style="font-size:24px;font-weight:600;margin-top:4px">{{ s.val }}</div></div>
     </sc-for>
   </div>
-  <sc-if value="{{ hasPrs }}"><div style="border-radius:28px;background:linear-gradient(90deg,#c6f432,#7fe14f);color:#0c110a;padding:18px;display:flex;flex-direction:column;gap:8px"><div style="font-size:17px;font-weight:700;display:flex;gap:8px;align-items:center"><i class="ph-fill ph-trophy"></i>New personal bests</div><sc-for list="{{ prList }}" as="p" hint-placeholder-count="0"><div style="font-size:15px;font-weight:600">{{ p.text }}</div></sc-for></div></sc-if>
-  <div style="border-radius:28px;background:#141813;padding:18px;display:flex;flex-direction:column;gap:12px">
+  <sc-if value="{{ hasPrs }}"><div style="border-radius:28px;background:linear-gradient(90deg,#c6f432,#5fe0c0);color:#0c110a;padding:18px;display:flex;flex-direction:column;gap:8px"><div style="font-size:17px;font-weight:700;display:flex;gap:8px;align-items:center"><i class="ph-fill ph-trophy"></i>New personal bests</div><sc-for list="{{ prList }}" as="p" hint-placeholder-count="0"><div style="font-size:15px;font-weight:600">{{ p.text }}</div></sc-for></div></sc-if>
+  <div style="border-radius:28px;background:#121a29;padding:18px;display:flex;flex-direction:column;gap:12px">
     <div style="font-size:17px;font-weight:600">Changes for next time</div>
     <sc-for list="{{ sumAdj }}" as="a" hint-placeholder-count="3">
       <div style="display:flex;gap:10px;font-size:15px;line-height:1.45"><i class="ph ph-arrow-bend-down-right" style="color:#c6f432;flex:none;margin-top:3px"></i><span style="text-wrap:pretty">{{ a.text }}</span></div>
     </sc-for>
   </div>
-  <div style="border-radius:28px;border:1.5px solid #2c3a22;padding:18px;display:flex;flex-direction:column;gap:12px">
+  <div style="border-radius:28px;border:1.5px solid #24466e;padding:18px;display:flex;flex-direction:column;gap:12px">
     <div style="font-size:17px;font-weight:600;display:flex;align-items:center;gap:8px"><i class="ph ph-sparkle" style="color:#c6f432"></i>Coach analysis</div>
-    <sc-if value="{{ aiLoading }}"><div style="font-size:15px;color:#9aa296">Analysing your session…</div></sc-if>
-    <sc-if value="{{ aiErr }}"><div style="font-size:15px;color:#9aa296">Coach analysis isn't available here. The rule-based changes above are already saved.</div></sc-if>
+    <sc-if value="{{ aiLoading }}"><div style="font-size:15px;color:#9ba9c0">Analysing your session…</div></sc-if>
+    <sc-if value="{{ aiErr }}"><div style="font-size:15px;color:#9ba9c0">Coach analysis isn't available here. The rule-based changes above are already saved.</div></sc-if>
     <sc-for list="{{ aiLines }}" as="l" hint-placeholder-count="0">
       <div style="display:flex;gap:10px;font-size:15px;line-height:1.45"><span style="color:#c6f432;flex:none">•</span><span style="text-wrap:pretty">{{ l.text }}</span></div>
     </sc-for>
   </div>
-  <button onClick="{{ goHome }}" style="height:58px;border-radius:29px;border:none;background:linear-gradient(90deg,#c6f432,#7fe14f);color:#0c110a;font-size:17px;font-weight:700;cursor:pointer">Done · next up {{ nextName }}</button>
+  <button onClick="{{ goHome }}" style="height:58px;border-radius:29px;border:none;background:linear-gradient(90deg,#c6f432,#5fe0c0);color:#0c110a;font-size:17px;font-weight:700;cursor:pointer">Done · next up {{ nextName }}</button>
 </div>
 </sc-if>
 
 <sc-if value="{{ isProgress }}">
 <div style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:20px">
   <div style="font-size:26px;font-weight:600">Progress</div>
-  <div style="border-radius:26px;background:#141813;padding:16px 18px;display:flex;flex-direction:column;gap:10px">
-    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><div style="font-size:17px;font-weight:600">Body weight</div><div style="font-size:13px;color:#9aa296;text-align:right">{{ bodySub }}</div></div>
-    <div style="display:flex;gap:8px"><input type="number" inputmode="decimal" step="0.1" placeholder="Today’s weight (kg)" value="{{ bodyInput }}" onChange="{{ onBody }}" style="flex:1;min-width:0;height:48px;font-size:16px;padding:0 16px;background:#0e110d;border:1px solid #252b23;border-radius:24px;color:#f1f4ec"><button onClick="{{ logBody }}" style="height:48px;padding:0 22px;border-radius:24px;border:none;background:#c6f432;color:#0c110a;font-size:15px;font-weight:700;cursor:pointer">Log</button></div>
+  <div style="border-radius:26px;background:#121a29;padding:16px 18px;display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><div style="font-size:17px;font-weight:600">Muscle map</div><div style="font-size:13px;color:#9ba9c0">Sets in the last 7 days</div></div>
+    {{ muscleMap }}
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;font-size:12px;color:#9ba9c0"><sc-for list="{{ mapKey }}" as="k" hint-placeholder-count="4"><span style="display:flex;align-items:center;gap:5px"><span style="{{ k.dot }}"></span>{{ k.label }}</span></sc-for></div>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 16px"><sc-for list="{{ muscleRows }}" as="m" hint-placeholder-count="4"><div style="display:flex;justify-content:space-between;font-size:13px;color:#cdd8eb;border-bottom:1px solid #212e45;padding:3px 0"><span>{{ m.name }}</span><span style="{{ m.num }}">{{ m.n }}</span></div></sc-for></div>
+    <div style="font-size:12px;color:#7888a3">A set counts for every muscle listed on the exercise.</div>
+  </div>
+  <div style="border-radius:26px;background:#121a29;padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><div style="font-size:17px;font-weight:600">Body weight</div><div style="font-size:13px;color:#9ba9c0;text-align:right">{{ bodySub }}</div></div>
+    <div style="display:flex;gap:8px"><input type="number" inputmode="decimal" step="0.1" placeholder="Today’s weight (kg)" value="{{ bodyInput }}" onChange="{{ onBody }}" style="flex:1;min-width:0;height:48px;font-size:16px;padding:0 16px;background:#0b111d;border:1px solid #26354e;border-radius:24px;color:#f2f6fd"><button onClick="{{ logBody }}" style="height:48px;padding:0 22px;border-radius:24px;border:none;background:#c6f432;color:#0c110a;font-size:15px;font-weight:700;cursor:pointer">Log</button></div>
     {{ bodyChart }}
   </div>
-  <sc-if value="{{ noHistory }}"><div style="color:#9aa296;font-size:15px">Log a session to see progress.</div></sc-if>
+  <sc-if value="{{ noHistory }}"><div style="color:#9ba9c0;font-size:15px">Log a session to see progress.</div></sc-if>
   <sc-if value="{{ hasHistory }}">
     <div style="display:flex;gap:8px;overflow-x:auto;margin:0 -20px;padding:0 20px">
       <sc-for list="{{ liftChips }}" as="c" hint-placeholder-count="4"><button onClick="{{ c.tap }}" style="{{ c.style }}">{{ c.label }}</button></sc-for>
     </div>
     <div style="display:flex;flex-direction:column;gap:4px">
-      <div style="font-size:16px;color:#cfd6c8">{{ liftName }}</div>
+      <div style="font-size:16px;color:#cdd8eb">{{ liftName }}</div>
       <div style="font-size:44px;font-weight:500;color:#c6f432;line-height:1.1">{{ liftBig }}<span style="font-size:20px"> kg</span></div>
-      <div style="font-size:13px;color:#9aa296">{{ liftDelta }}</div>
+      <div style="font-size:13px;color:#9ba9c0">{{ liftDelta }}</div>
       <div style="margin-top:8px">{{ liftChart }}</div>
     </div>
     <div style="display:flex;flex-direction:column;gap:12px">
       <div style="font-size:18px;font-weight:600">Volume per session</div>
-      <div style="display:flex;align-items:flex-end;gap:8px;height:150px;padding:12px;border-radius:26px;background:#141813">
+      <div style="display:flex;align-items:flex-end;gap:8px;height:150px;padding:12px;border-radius:26px;background:#121a29">
         <sc-for list="{{ volBars }}" as="b" hint-placeholder-count="4">
-          <div style="flex:1;min-width:0;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px"><div style="font-size:10px;color:#9aa296">{{ b.val }}</div><div style="{{ b.bar }}"></div><div style="font-size:10px;color:#7c8579">{{ b.label }}</div></div>
+          <div style="flex:1;min-width:0;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px"><div style="font-size:10px;color:#9ba9c0">{{ b.val }}</div><div style="{{ b.bar }}"></div><div style="font-size:10px;color:#7888a3">{{ b.label }}</div></div>
         </sc-for>
       </div>
     </div>
@@ -276,20 +286,20 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
 <sc-if value="{{ isHistory }}">
 <div style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:14px">
   <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:26px;font-weight:600">History</div><button onClick="{{ exportCsv }}" style="height:44px;padding:0 16px;border-radius:22px;border:1.5px solid #c6f432;background:transparent;color:#c6f432;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ph ph-download-simple"></i>Export CSV</button></div>
-  <div style="font-size:13px;color:#9aa296">{{ toast }}</div>
-  <sc-if value="{{ noHistory }}"><div style="color:#9aa296;font-size:15px">No sessions yet.</div></sc-if>
+  <div style="font-size:13px;color:#9ba9c0">{{ toast }}</div>
+  <sc-if value="{{ noHistory }}"><div style="color:#9ba9c0;font-size:15px">No sessions yet.</div></sc-if>
   <sc-for list="{{ histList }}" as="h" hint-placeholder-count="2">
-    <div style="border-radius:28px;background:#141813;overflow:hidden">
+    <div style="border-radius:28px;background:#121a29;overflow:hidden">
       <button onClick="{{ h.tap }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:14px 18px;background:none;border:none;cursor:pointer;text-align:left">
         <span style="{{ h.dot }}"></span>
-        <div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:600">{{ h.name }}</div><div style="font-size:13px;color:#9aa296;margin-top:2px">{{ h.when }}</div></div>
-        <div style="text-align:right;font-size:13px;color:#cfd6c8">{{ h.vol }}<br>{{ h.dur }}</div>
+        <div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:600">{{ h.name }}</div><div style="font-size:13px;color:#9ba9c0;margin-top:2px">{{ h.when }}</div></div>
+        <div style="text-align:right;font-size:13px;color:#cdd8eb">{{ h.vol }}<br>{{ h.dur }}</div>
       </button>
       <sc-if value="{{ h.open }}">
         <div style="padding:0 18px 16px;display:flex;flex-direction:column;gap:10px">
           <button onClick="{{ h.delTap }}" style="align-self:flex-start;height:38px;padding:0 14px;border-radius:19px;border:1.5px solid #4a2a22;background:none;color:#ff5a3c;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ph ph-trash"></i>Delete session</button>
           <sc-for list="{{ h.details }}" as="x" hint-placeholder-count="0">
-            <div style="display:flex;flex-direction:column;gap:2px;padding-top:10px;border-top:1px solid #20251e"><div style="font-size:14px;font-weight:600">{{ x.name }}</div><div style="font-size:13px;color:#9aa296">{{ x.sets }}</div></div>
+            <div style="display:flex;flex-direction:column;gap:2px;padding-top:10px;border-top:1px solid #212e45"><div style="font-size:14px;font-weight:600">{{ x.name }}</div><div style="font-size:13px;color:#9ba9c0">{{ x.sets }}</div></div>
           </sc-for>
         </div>
       </sc-if>
@@ -300,64 +310,67 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
 
 <sc-if value="{{ isProgram }}">
 <div style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:18px">
-  <div><div style="font-size:26px;font-weight:600">Program</div><div style="font-size:14px;color:#9aa296;margin-top:4px;line-height:1.45;text-wrap:pretty">Upper / Lower rotation. Every 16 sessions (about 4–5 weeks) the block changes: exercises rotate and rep ranges shift, so you're not repeating the same workout for months. Starting weights for the new lifts are worked out from your current strength.</div></div>
+  <div><div style="font-size:26px;font-weight:600">Program</div><div style="font-size:14px;color:#9ba9c0;margin-top:4px;line-height:1.45;text-wrap:pretty">Upper / Lower rotation. Every 16 sessions (about 4–5 weeks) the block changes: exercises rotate and rep ranges shift, so you're not repeating the same workout for months. Starting weights for the new lifts are worked out from your current strength.</div></div>
   <div style="display:flex;flex-direction:column;gap:10px">
     <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="4">
       <div style="{{ b.style }}">
-        <div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><div style="font-size:17px;font-weight:600">{{ b.title }}</div><div style="font-size:12px;color:#9aa296">{{ b.status }}</div></div>
-        <div style="font-size:14px;color:#b9c0b3;line-height:1.4">{{ b.desc }}</div>
-        <div style="height:4px;border-radius:2px;background:#20251e;overflow:hidden"><div style="{{ b.bar }}"></div></div>
+        <div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><div style="font-size:17px;font-weight:600">{{ b.title }}</div><div style="font-size:12px;color:#9ba9c0">{{ b.status }}</div></div>
+        <div style="font-size:14px;color:#b9c5db;line-height:1.4">{{ b.desc }}</div>
+        <div style="height:4px;border-radius:2px;background:#212e45;overflow:hidden"><div style="{{ b.bar }}"></div></div>
       </div>
     </sc-for>
   </div>
   <div style="font-size:18px;font-weight:600;margin-top:6px">This block</div>
   <sc-for list="{{ progSessions }}" as="s" hint-placeholder-count="4">
-    <div style="border-radius:26px;background:#141813;padding:16px 18px;display:flex;flex-direction:column;gap:8px">
+    <div style="border-radius:26px;background:#121a29;padding:16px 18px;display:flex;flex-direction:column;gap:8px">
       <div style="font-size:16px;font-weight:700;color:#c6f432">{{ s.name }}</div>
       <sc-for list="{{ s.items }}" as="i" hint-placeholder-count="5">
-        <div style="display:flex;justify-content:space-between;gap:10px;font-size:14px"><span style="color:#e2e7dc">{{ i.name }}</span><span style="color:#9aa296;flex:none">{{ i.scheme }}</span></div>
+        <button onClick="{{ i.info }}" style="display:flex;align-items:center;gap:10px;font-size:14px;background:none;border:none;padding:4px 0;text-align:left;cursor:pointer"><span style="color:#e2e9f6;flex:1;min-width:0">{{ i.name }}</span><span style="color:#9ba9c0;flex:none">{{ i.scheme }}</span><i class="ph ph-info" style="color:#7cc8ff;font-size:18px;flex:none"></i></button>
       </sc-for>
     </div>
   </sc-for>
   <div style="font-size:18px;font-weight:600;margin-top:6px">Safeguards</div>
   <sc-for list="{{ safeguards }}" as="g" hint-placeholder-count="2">
-    <div style="display:flex;gap:10px;align-items:center;font-size:14px;line-height:1.4;color:#cfd6c8"><i class="ph ph-shield-check" style="color:#c6f432;font-size:18px;flex:none"></i><span style="flex:1">{{ g.text }}</span></div>
+    <div style="display:flex;gap:10px;align-items:center;font-size:14px;line-height:1.4;color:#cdd8eb"><i class="ph ph-shield-check" style="color:#c6f432;font-size:18px;flex:none"></i><span style="flex:1">{{ g.text }}</span></div>
   </sc-for>
   <sc-for list="{{ locks }}" as="l" hint-placeholder-count="0">
-    <div style="display:flex;gap:10px;align-items:center;font-size:14px;color:#ffb648"><i class="ph ph-lock" style="font-size:18px"></i><span style="flex:1">{{ l.text }}</span><button onClick="{{ l.tap }}" style="height:36px;padding:0 14px;border-radius:18px;border:1px solid #3a4236;background:none;font-size:13px;cursor:pointer;color:#f1f4ec">Unlock</button></div>
+    <div style="display:flex;gap:10px;align-items:center;font-size:14px;color:#ffb648"><i class="ph ph-lock" style="font-size:18px"></i><span style="flex:1">{{ l.text }}</span><button onClick="{{ l.tap }}" style="height:36px;padding:0 14px;border-radius:18px;border:1px solid #35486c;background:none;font-size:13px;cursor:pointer;color:#f2f6fd">Unlock</button></div>
   </sc-for>
+  <div style="font-size:18px;font-weight:600;margin-top:6px">Your avatar</div>
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px"><sc-for list="{{ avatars }}" as="a" hint-placeholder-count="2"><button onClick="{{ a.tap }}" style="{{ a.style }}">{{ a.diagram }}<span style="{{ a.lbl }}">{{ a.label }}</span></button></sc-for></div>
+  <div style="font-size:13px;color:#9ba9c0;line-height:1.45">{{ avatarNote }} <a href="{{ sexUrl }}" target="_blank" rel="noopener">{{ sexLink }}</a></div>
   <div style="font-size:18px;font-weight:600;margin-top:6px">Weekly goal</div>
   <div style="display:flex;gap:8px"><sc-for list="{{ goalOpts }}" as="g" hint-placeholder-count="2"><button onClick="{{ g.tap }}" style="{{ g.style }}">{{ g.label }}</button></sc-for></div>
   <div style="font-size:18px;font-weight:600;margin-top:6px">Data</div>
   <button onClick="{{ cloudOpen }}" style="min-height:52px;border-radius:26px;border:none;background:#c6f432;color:#0c110a;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph ph-cloud-arrow-up" style="font-size:18px"></i>Cloud backup</button>
-  <div data-lmt-status style="font-size:13px;color:#9aa296">{{ cloudStatus }}</div>
-  <div style="border-radius:26px;background:#141813;padding:16px 18px;display:flex;flex-direction:column;gap:12px">
-    <div style="font-size:14px;color:#cfd6c8;line-height:1.45;display:flex;gap:8px"><i class="ph ph-cloud-check" style="color:#c6f432;font-size:18px;flex:none"></i><span>{{ storageText }}</span></div>
+  <div data-lmt-status style="font-size:13px;color:#9ba9c0">{{ cloudStatus }}</div>
+  <div style="border-radius:26px;background:#121a29;padding:16px 18px;display:flex;flex-direction:column;gap:12px">
+    <div style="font-size:14px;color:#cdd8eb;line-height:1.45;display:flex;gap:8px"><i class="ph ph-cloud-check" style="color:#c6f432;font-size:18px;flex:none"></i><span>{{ storageText }}</span></div>
     <div style="display:flex;gap:8px">
       <button onClick="{{ backup }}" style="flex:1;height:48px;border-radius:24px;border:1.5px solid #c6f432;background:none;color:#c6f432;font-size:14px;font-weight:700;cursor:pointer">Download backup</button>
-      <label style="flex:1;height:48px;border-radius:24px;border:1.5px solid #3a4236;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;cursor:pointer">Restore<input type="file" accept="application/json,.json" onChange="{{ restore }}" style="display:none"></label>
+      <label style="flex:1;height:48px;border-radius:24px;border:1.5px solid #35486c;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;cursor:pointer">Restore<input type="file" accept="application/json,.json" onChange="{{ restore }}" style="display:none"></label>
     </div>
-    <div style="font-size:12px;color:#7c8579">{{ toast }}</div>
+    <div style="font-size:12px;color:#7888a3">{{ toast }}</div>
   </div>
 </div>
 </sc-if>
 
 <sc-if value="{{ confirmOpen }}">
 <div onClick="{{ closeConfirm }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:60;display:flex;align-items:flex-end;justify-content:center">
-  <div onClick="{{ stopProp }}" style="width:100%;max-width:440px;background:#141813;border-radius:32px 32px 0 0;padding:26px 20px 30px;display:flex;flex-direction:column;gap:14px">
+  <div onClick="{{ stopProp }}" style="width:100%;max-width:440px;background:#121a29;border-radius:32px 32px 0 0;padding:26px 20px 30px;display:flex;flex-direction:column;gap:14px">
     <div style="font-size:22px;font-weight:600">Finish {{ wTitle }}?</div>
-    <div style="font-size:15px;color:#b9c0b3;line-height:1.45">{{ confirmText }}</div>
-    <button onClick="{{ submit }}" style="height:58px;border-radius:29px;border:none;background:linear-gradient(90deg,#c6f432,#7fe14f);color:#0c110a;font-size:17px;font-weight:700;cursor:pointer">Submit workout</button>
-    <button onClick="{{ closeConfirm }}" style="height:52px;border-radius:26px;border:1.5px solid #3a4236;background:none;font-size:16px;font-weight:600;cursor:pointer">Keep training</button>
+    <div style="font-size:15px;color:#b9c5db;line-height:1.45">{{ confirmText }}</div>
+    <button onClick="{{ submit }}" style="height:58px;border-radius:29px;border:none;background:linear-gradient(90deg,#c6f432,#5fe0c0);color:#0c110a;font-size:17px;font-weight:700;cursor:pointer">Submit workout</button>
+    <button onClick="{{ closeConfirm }}" style="height:52px;border-radius:26px;border:1.5px solid #35486c;background:none;font-size:16px;font-weight:600;cursor:pointer">Keep training</button>
   </div>
 </div>
 </sc-if>
 
 <sc-if value="{{ sheetSession }}">
 <div onClick="{{ closeSheet }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:60;display:flex;align-items:flex-end;justify-content:center">
-  <div onClick="{{ stopProp }}" style="width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:#141813;border-radius:32px 32px 0 0;padding:26px 20px calc(26px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px">
+  <div onClick="{{ stopProp }}" style="width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:#121a29;border-radius:32px 32px 0 0;padding:26px 20px calc(26px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px">
     <div style="font-size:22px;font-weight:600">Session</div>
-    <div style="font-size:14px;color:#9aa296">{{ sessStatus }}</div>
+    <div style="font-size:14px;color:#9ba9c0">{{ sessStatus }}</div>
     <button onClick="{{ resumeTap }}" style="{{ btnLime }}">{{ resumeLabel }}</button>
     <button onClick="{{ restartSession }}" style="{{ btnPlain }}">Restart: reset the timer and today’s entries</button>
     <button onClick="{{ discardSession }}" style="{{ btnRed }}">Discard session</button>
@@ -368,16 +381,16 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
 </sc-if>
 <sc-if value="{{ sheetSwap }}">
 <div onClick="{{ closeSheet }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:60;display:flex;align-items:flex-end;justify-content:center">
-  <div onClick="{{ stopProp }}" style="width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:#141813;border-radius:32px 32px 0 0;padding:26px 20px calc(26px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px">
+  <div onClick="{{ stopProp }}" style="width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:#121a29;border-radius:32px 32px 0 0;padding:26px 20px calc(26px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px">
     <div style="font-size:22px;font-weight:600">Swap exercise</div>
-    <div style="font-size:14px;color:#9aa296;line-height:1.45">{{ swapSub }}</div>
+    <div style="font-size:14px;color:#9ba9c0;line-height:1.45">{{ swapSub }}</div>
     <sc-for list="{{ swapOpts }}" as="o" hint-placeholder-count="3">
-      <div style="display:flex;gap:12px;align-items:center;padding:10px;border-radius:24px;background:#0e110d;flex-shrink:0">
-        <div style="width:104px;flex:none;border-radius:16px;background:linear-gradient(170deg,#203020,#111410);padding:4px">{{ o.diagram }}</div>
+      <div style="display:flex;gap:12px;align-items:center;padding:10px;border-radius:24px;background:#0b111d;flex-shrink:0">
+        <div style="width:104px;flex:none;border-radius:16px;background:linear-gradient(170deg,#1c365d,#0f1829);padding:4px">{{ o.diagram }}</div>
         <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
           <div style="font-size:15px;font-weight:600;line-height:1.2">{{ o.name }}</div>
-          <div style="font-size:12px;color:#9aa296">{{ o.eq }}</div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap"><button onClick="{{ o.today }}" style="height:36px;padding:0 14px;border-radius:18px;border:none;background:#c6f432;color:#0c110a;font-size:13px;font-weight:700;cursor:pointer">Today only</button><button onClick="{{ o.always }}" style="height:36px;padding:0 14px;border-radius:18px;border:1.5px solid #3a4236;background:none;font-size:13px;font-weight:600;cursor:pointer">{{ o.alwaysLabel }}</button></div>
+          <div style="font-size:12px;color:#9ba9c0">{{ o.eq }}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap"><button onClick="{{ o.info }}" aria-label="About this exercise" style="width:36px;height:36px;border-radius:50%;border:none;background:#1e4d86;color:#e6f2ff;font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="ph ph-info"></i></button><button onClick="{{ o.today }}" style="height:36px;padding:0 14px;border-radius:18px;border:none;background:#c6f432;color:#0c110a;font-size:13px;font-weight:700;cursor:pointer">Today only</button><button onClick="{{ o.always }}" style="height:36px;padding:0 14px;border-radius:18px;border:1.5px solid #35486c;background:none;font-size:13px;font-weight:600;cursor:pointer">{{ o.alwaysLabel }}</button></div>
         </div>
       </div>
     </sc-for>
@@ -387,18 +400,51 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
 </sc-if>
 <sc-if value="{{ sheetDel }}">
 <div onClick="{{ closeSheet }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:60;display:flex;align-items:flex-end;justify-content:center">
-  <div onClick="{{ stopProp }}" style="width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:#141813;border-radius:32px 32px 0 0;padding:26px 20px calc(26px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px">
+  <div onClick="{{ stopProp }}" style="width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:#121a29;border-radius:32px 32px 0 0;padding:26px 20px calc(26px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px">
     <div style="font-size:22px;font-weight:600">Delete this session?</div>
-    <div style="font-size:15px;color:#b9c0b3;line-height:1.45">{{ delText }}</div>
+    <div style="font-size:15px;color:#b9c5db;line-height:1.45">{{ delText }}</div>
     <button onClick="{{ confirmDel }}" style="{{ btnRed }}">Delete session</button>
     <button onClick="{{ closeSheet }}" style="{{ btnPlain }}">Cancel</button>
   </div>
 </div>
 </sc-if>
 
+<sc-if value="{{ sheetInfo }}">
+<div onClick="{{ closeSheet }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:65;display:flex;align-items:flex-end;justify-content:center">
+  <div onClick="{{ stopProp }}" style="width:100%;max-width:440px;max-height:88vh;overflow-y:auto;overscroll-behavior:contain;background:#121a29;border-radius:32px 32px 0 0;padding:24px 20px calc(24px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;gap:12px;align-items:flex-start;flex-shrink:0"><div style="flex:1;min-width:0"><div style="font-size:21px;font-weight:700;line-height:1.2">{{ info.name }}</div><div style="font-size:13px;color:#c6f432;margin-top:4px;font-weight:600">{{ info.muscles }}</div></div><button onClick="{{ closeSheet }}" aria-label="Close" style="width:40px;height:40px;flex:none;border-radius:50%;border:none;background:#0b111d;font-size:18px;cursor:pointer"><i class="ph ph-x"></i></button></div>
+    <div style="flex-shrink:0"><div style="font-size:12px;color:#7cc8ff;font-weight:700;letter-spacing:0.08em;text-transform:uppercase">What it’s for</div><div style="font-size:17px;line-height:1.45;margin-top:6px">{{ info.use }}</div></div>
+    <div style="font-size:12px;color:#7cc8ff;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;flex-shrink:0">What research shows</div>
+    <sc-for list="{{ info.points }}" as="p" hint-placeholder-count="2">
+      <div style="border-radius:20px;background:#0b111d;padding:14px;display:flex;flex-direction:column;gap:8px;flex-shrink:0">
+        <span style="{{ p.tag }}">{{ p.kind }}</span>
+        <div style="font-size:15px;line-height:1.5;color:#e2e9f6">{{ p.text }}</div>
+        <sc-if value="{{ p.url }}"><a href="{{ p.url }}" target="_blank" rel="noopener" style="font-size:12px;color:#7cc8ff">Source: {{ p.src }}</a></sc-if>
+      </div>
+    </sc-for>
+    <div style="border-radius:20px;background:linear-gradient(140deg,#173a63,#122238);padding:14px;display:flex;flex-direction:column;gap:8px;flex-shrink:0">
+      <div style="font-size:14px;font-weight:700">Why strength training at all</div>
+      <div style="font-size:14px;line-height:1.5;color:#e2e9f6">{{ info.health }}</div>
+      <a href="{{ info.healthUrl }}" target="_blank" rel="noopener" style="font-size:12px;color:#7cc8ff">Source: {{ info.healthSrc }}</a>
+    </div>
+    <div style="font-size:12px;color:#7888a3;line-height:1.5;flex-shrink:0">A growth study measures muscle size after weeks of training. A muscle-activity study records how hard a muscle works in one session and doesn’t prove growth. General information, not medical advice.</div>
+  </div>
+</div>
+</sc-if>
+<sc-if value="{{ chooseAvatar }}">
+<div style="position:fixed;inset:0;background:rgba(5,8,13,0.94);z-index:70;display:flex;align-items:center;justify-content:center;padding:20px">
+  <div style="width:100%;max-width:400px;display:flex;flex-direction:column;gap:16px;text-align:center">
+    <div style="font-size:26px;font-weight:700">Choose your avatar</div>
+    <div style="font-size:14px;color:#9ba9c0;line-height:1.5">It sets the figure in your animations and your starting weights. You can change it later in Program.</div>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px"><sc-for list="{{ avatars }}" as="a" hint-placeholder-count="2"><button onClick="{{ a.tap }}" style="{{ a.style }}">{{ a.diagram }}<span style="{{ a.lbl }}">{{ a.label }}</span></button></sc-for></div>
+    <button onClick="{{ restoreInstead }}" style="height:48px;border:none;background:none;color:#7cc8ff;font-size:14px;font-weight:700;cursor:pointer">I already have a backup</button>
+  </div>
+</div>
+</sc-if>
+
 <sc-if value="{{ showNav }}" hint-placeholder-val="{{ true }}">
 <div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;z-index:40;padding:0 12px calc(12px + env(safe-area-inset-bottom))">
-  <div style="height:78px;border-radius:32px;background:#121511;display:grid;grid-template-columns:1fr 1fr 84px 1fr 1fr;align-items:center;box-shadow:0 -10px 30px rgba(0,0,0,0.5)">
+  <div style="height:78px;border-radius:32px;background:#101827;display:grid;grid-template-columns:1fr 1fr 84px 1fr 1fr;align-items:center;box-shadow:0 -10px 30px rgba(0,0,0,0.5)">
     <button onClick="{{ goHome }}" style="{{ navHome }}"><i class="ph ph-house" style="font-size:24px"></i>Home</button>
     <button onClick="{{ startWorkout }}" style="{{ navWorkout }}"><i class="ph ph-barbell" style="font-size:24px"></i>Workout</button>
     <div style="display:flex;justify-content:center"><button onClick="{{ goProgress }}" style="{{ navCenter }}"><i class="ph ph-chart-bar" style="font-size:30px"></i></button></div>
@@ -411,7 +457,7 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { view: 'home', data: null, draft: null, now: Date.now(), timer: null, summary: null, ai: null, liftId: null, toast: '', paused: false, howOpen: true, confirm: false, previewIdx: null, openHist: null, savedAt: 0, sheet: null, delId: null, swapSlot: null, bodyInput: '' };
+  state = { view: 'home', data: null, draft: null, now: Date.now(), timer: null, summary: null, ai: null, liftId: null, toast: '', paused: false, howOpen: true, confirm: false, previewIdx: null, openHist: null, savedAt: 0, sheet: null, delId: null, swapSlot: null, infoId: null, skipAvatar: false, bodyInput: '' };
   KEY = 'lean-muscle-tracker:v2';
   BLOCK_LEN = 16;
   LIME = '#c6f432';
@@ -426,26 +472,30 @@ class Component extends DCLogic {
     return true;
   }
 
-  svg(key, hero) {
-    const K = 'dur="4s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.22;0.34;0.94;1" keySplines=".42 0 .58 1;0 0 1 1;.42 0 .58 1;0 0 1 1"';
-    const ST = { b: ['#eef2e8', 5], f: ['#7c8579', 4.5], e: ['#3d443b', 4], p: ['#2c332b', 9], k: ['#a7b0a2', 1.4] };
-    const S = (a, b, k) => { const [c, w] = ST[k || 'b']; return `<polyline points="${a}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round">${b ? `<animate attributeName="points" values="${a};${b};${b};${a};${a}" ${K}/>` : ''}</polyline>`; };
-    const O = (a, b, k) => {
-      const [x, y] = a.split(','), r = { h: 8, w: 6, j: 3.5, pl: 10 }[k], f = { h: '#eef2e8', w: '#c6f432', j: '#59625a', pl: 'none' }[k];
-      let s = `<circle cx="${x}" cy="${y}" r="${r}" fill="${f}"${k === 'pl' ? ' stroke="#c6f432" stroke-width="3"' : ''}>`;
-      if (b) { const [x2, y2] = b.split(','); s += `<animate attributeName="cx" values="${x};${x2};${x2};${x};${x}" ${K}/><animate attributeName="cy" values="${y};${y2};${y2};${y};${y}" ${K}/>`; }
-      return s + '</circle>';
-    };
-    if (!this._dg) this._dg = this.DGF(S, O);
-    const g = this._dg[key] || '';
-    const D = 'dur="4s" calcMode="discrete" repeatCount="indefinite"';
-    const lab = hero ? `<g font-family="Urbanist,sans-serif" font-size="8.5" font-weight="700" letter-spacing="1" fill="#c6f432"><text x="8" y="14">LIFT · 1s<animate attributeName="opacity" values="1;0" keyTimes="0;0.22" ${D}/></text><text x="8" y="14" opacity="0">SQUEEZE<animate attributeName="opacity" values="0;1;0" keyTimes="0;0.22;0.34" ${D}/></text><text x="8" y="14" opacity="0">LOWER · 2–3s<animate attributeName="opacity" values="0;1" keyTimes="0;0.34" ${D}/></text></g><rect x="0" y="128" width="0" height="2" rx="1" fill="#c6f432"><animate attributeName="width" values="0;200" dur="4s" repeatCount="indefinite"/></rect>` : '';
-    return `<svg viewBox="0 0 200 130" width="100%" style="display:block" xmlns="http://www.w3.org/2000/svg"><line x1="4" y1="123.5" x2="196" y2="123.5" stroke="#2a3128" stroke-width="2" stroke-linecap="round"/>${g}${lab}</svg>`;
+  dia(key, hero, sex) { const html = window.LMTFig.render(key, sex || this.sexOf(), !!hero); return React.createElement('div', hero ? { ref: el => this.heroEl = el, dangerouslySetInnerHTML: { __html: html } } : { dangerouslySetInnerHTML: { __html: html } }); }
+  sexOf() { return (this.state.data && this.state.data.sex) || 'male'; }
+  // Starting weight for a lift with no data. Once anything is logged, the choice that was
+  // active at the first session is fixed, so changing the avatar never moves real weights.
+  startW(D, ex) {
+    const sex = D.history.length ? (D.startSex || 'male') : (D.sex || 'male');
+    if (sex !== 'female' || !(ex.w > 0)) return ex.w;
+    const f = /quads|ham|glut|calv|abs/i.test(ex.mus) ? 0.65 : 0.55;
+    return Math.max(ex.t === 'd' ? 2 : ex.t === 'c' ? 1.25 : 2.5, this.rnd(ex, ex.w * f));
   }
-  dia(key, hero) { return React.createElement('div', hero ? { ref: el => this.heroEl = el, dangerouslySetInnerHTML: { __html: this.svg(key, true) } } : { dangerouslySetInnerHTML: { __html: this.svg(key, false) } }); }
+  setSex(sex) {
+    const D = this.clone(this.state.data), dr = this.state.draft; D.sex = sex;
+    const untouched = !D.history.length && !dr.startedAt && !Object.values(dr.ex).some(x => x.sets.some(s => s.done));
+    this.setState({ data: D, draft: untouched ? this.mkDraft(D, dr.idx) : dr }, () => this.save());
+  }
+  weekSets(D) {
+    const out = {}, since = Date.now() - 7 * 864e5;
+    D.history.filter(h => new Date(h.ts).getTime() >= since).forEach(h => h.exercises.forEach(e => { const ex = this.EX[e.id]; if (ex) window.LMTFig.muscles(ex.mus).forEach(m => out[m] = (out[m] || 0) + e.sets.length); }));
+    return out;
+  }
+  openInfo(id) { this.setState({ sheet: 'info', infoId: id }); }
 
   chart(pts, id, unit) {
-    if (!pts.length) return React.createElement('div', { style: { fontSize: 13, color: '#7c8579', padding: '8px 0' } }, 'Your chart builds as you log.');
+    if (!pts.length) return React.createElement('div', { style: { fontSize: 13, color: '#7888a3', padding: '8px 0' } }, 'Your chart builds as you log.');
     const W = 340, H = 170, l = 40, r = 16, t = 22, b = 26;
     let mn = Math.min(...pts.map(p => p.v)), mx = Math.max(...pts.map(p => p.v));
     if (mx === mn) { mx += 5; mn = Math.max(0, mn - 5); }
@@ -455,9 +505,9 @@ class Component extends DCLogic {
     const P = pts.map((p, i) => [+X(i).toFixed(1), +Y(p.v).toFixed(1)]);
     let d = `M${P[0]}`;
     for (let i = 0; i < P.length - 1; i++) { const p0 = P[i - 1] || P[i], p1 = P[i], p2 = P[i + 1], p3 = P[i + 2] || p2; d += ` C${p1[0] + (p2[0] - p0[0]) / 6},${p1[1] + (p2[1] - p0[1]) / 6} ${p2[0] - (p3[0] - p1[0]) / 6},${p2[1] - (p3[1] - p1[1]) / 6} ${p2}`; }
-    const ticks = [mn, (mn + mx) / 2, mx].map(v => `<text x="0" y="${Y(v) + 4}" fill="#7c8579" font-size="11">${Math.round(v)}${unit || 'kg'}</text><line x1="${l}" x2="${W - r}" y1="${Y(v)}" y2="${Y(v)}" stroke="#1d221b" stroke-dasharray="2 4"/>`).join('');
+    const ticks = [mn, (mn + mx) / 2, mx].map(v => `<text x="0" y="${Y(v) + 4}" fill="#7888a3" font-size="11">${Math.round(v)}${unit || 'kg'}</text><line x1="${l}" x2="${W - r}" y1="${Y(v)}" y2="${Y(v)}" stroke="#1d2a42" stroke-dasharray="2 4"/>`).join('');
     const area = P.length > 1 ? `<path d="${d} L${P[P.length - 1][0]},${H - b} L${P[0][0]},${H - b} Z" fill="url(#g${id})"/>` : '';
-    const marks = P.map((p, i) => `<circle cx="${p[0]}" cy="${p[1]}" r="11" fill="#1a2116"/><circle cx="${p[0]}" cy="${p[1]}" r="4.5" fill="#c6f432"/><text x="${p[0]}" y="${H - 6}" fill="#9aa296" font-size="11" text-anchor="middle">${pts[i].x}</text>`).join('');
+    const marks = P.map((p, i) => `<circle cx="${p[0]}" cy="${p[1]}" r="11" fill="#16273e"/><circle cx="${p[0]}" cy="${p[1]}" r="4.5" fill="#c6f432"/><text x="${p[0]}" y="${H - 6}" fill="#9ba9c0" font-size="11" text-anchor="middle">${pts[i].x}</text>`).join('');
     const svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;font-family:Urbanist,sans-serif" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c6f432" stop-opacity="0.22"/><stop offset="1" stop-color="#c6f432" stop-opacity="0"/></linearGradient></defs>${ticks}${area}${P.length > 1 ? `<path d="${d}" fill="none" stroke="#c6f432" stroke-width="2.5" stroke-linecap="round"/>` : ''}${marks}</svg>`;
     return React.createElement('div', { dangerouslySetInnerHTML: { __html: svg } });
   }
@@ -480,7 +530,7 @@ class Component extends DCLogic {
     if (t && t.lo === lo) return t;
     if (t) { const e1 = t.w * (1 + t.r / 30); return { w: ex.t === 'b' ? t.w : this.rnd(ex, e1 / (1 + (lo + 2) / 30)), r: lo, lo, hi }; }
     if (slot && ex.w > 0) for (const id of slot.opts) { const o = this.EX[id], ot = D.targets[id]; if (id !== ex.id && ot && o.w > 0 && ot.w > 0) { const e1 = ot.w * (1 + ot.r / 30) * (ex.w / o.w); return { w: this.rnd(ex, e1 / (1 + (lo + 2) / 30)), r: lo, lo, hi }; } }
-    return { w: ex.w, r: lo, lo, hi };
+    return { w: this.startW(D, ex), r: lo, lo, hi };
   }
   lastLog(D, exId) { for (let i = D.history.length - 1; i >= 0; i--) { const e = D.history[i].exercises.find(z => z.id === exId && z.sets.length); if (e) return e; } return null; }
   draftEx(D, slot, e, n) { const [lo, hi] = this.rangeFor(D, slot, e), t = this.targetFor(D, e, lo, hi, slot); return { exId: e.id, lo, hi, tw: t.w, tr: t.r, sets: Array.from({ length: n }, () => ({ w: String(t.w), r: String(t.r), done: false })), rating: 'target', pain: false, note: '' }; }
@@ -518,6 +568,7 @@ class Component extends DCLogic {
       } else { nr = Math.max(L.lo, Math.min(L.hi, minR + 1)); msg = `${ex.name}: hold ${this.fw(w)} kg and aim for ${nr} reps on every set.`; }
       D.targets[ex.id] = { w: nw, r: nr, lo: L.lo, hi: L.hi }; adj.push(msg);
     });
+    if (!D.history.length && !D.startSex) D.startSex = D.sex || 'male';
     D.history.push({ id: when.getTime(), ts: when.toISOString(), melIso: this.melIso(when), noTime: !!noTime, session: this.SESS[idx].name, idx, block: D.block, recovery, durationMin: durMin, exercises: logs.map(L => ({ id: L.exId, slot: L.slot, name: this.EX[L.exId].name, lo: L.lo, hi: L.hi, planned: L.planned, sets: L.sets, rating: L.rating, pain: L.pain, note: L.note })) });
     const l2 = D.history.slice(-2);
     D.reduceNext = l2.length === 2 && l2.every(h => h.recovery === 'amber' || h.recovery === 'red');
@@ -528,6 +579,8 @@ class Component extends DCLogic {
   }
   rebuild(history, keep) {
     const D = this.blank(); D.body = keep.body || []; D.goal = keep.goal || 4;
+    if (keep.sex) D.sex = keep.sex;
+    if (history.length) D.startSex = keep.startSex || 'male';
     history.forEach(h => this.applySession(D, h.idx, h.exercises.map(e => ({ slot: e.slot, exId: e.id, lo: e.lo, hi: e.hi, planned: e.planned != null ? e.planned : (this.SLOT[e.slot] || {}).sets || e.sets.length, sets: e.sets, rating: e.rating, pain: e.pain, note: e.note })), h.recovery, new Date(h.ts), h.durationMin, h.noTime));
     D.mlocks = Object.assign({}, keep.mlocks || {}); Object.assign(D.locks, D.mlocks);
     return D;
@@ -535,7 +588,7 @@ class Component extends DCLogic {
   seed() { return this.blank(); }
 
   async componentDidMount() {
-    await new Promise(r => { const t = () => window.LMT ? r() : setTimeout(t, 30); t(); });
+    await new Promise(r => { const t = () => window.LMT && window.LMTFig && window.LMTInfo ? r() : setTimeout(t, 30); t(); });
     this.defs();
     const parse = s => { try { return s ? JSON.parse(s) : null; } catch (e) { return null; } };
     let a = null, b = null;
@@ -617,15 +670,26 @@ class Component extends DCLogic {
     this.setState({ toast: `Exported ${rows.length - 1} sets (also copied to clipboard).` });
   }
   backup() { this.dl(`lean-muscle-backup-${this.melIso(new Date()).slice(0, 10)}.json`, JSON.stringify({ data: this.state.data, draft: this.state.draft, savedAt: Date.now(), v3: true }), 'application/json'); this.setState({ toast: 'Backup downloaded.' }); }
-  restore(ev) { const f = ev.target.files && ev.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { try { const o = JSON.parse(r.result); if (!o.data || !o.data.history) throw 0; let D = o.data; if (D.ver !== 3) D = this.rebuild(D.history, D); this.setState({ data: D, draft: this.mkDraft(D, D.nextIdx), toast: `Restored ${D.history.length} sessions.` }, () => this.save()); } catch (e) { this.setState({ toast: 'That file isn’t a valid backup.' }); } }; r.readAsText(f); }
+  restore(ev) { const f = ev.target.files && ev.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { try { const o = JSON.parse(r.result); if (!o.data || !o.data.history) throw 0; let D = o.data; if (D.ver !== 3) D = this.rebuild(D.history, D); if (!D.sex && this.state.data.sex) D.sex = this.state.data.sex; this.setState({ data: D, draft: this.mkDraft(D, D.nextIdx), toast: `Restored ${D.history.length} sessions.` }, () => this.save()); } catch (e) { this.setState({ toast: 'That file isn’t a valid backup.' }); } }; r.readAsText(f); }
   logBody() { const kg = parseFloat(this.state.bodyInput); if (!(kg > 20 && kg < 300)) return; this.setData(D => { D.body.push({ ts: new Date().toISOString(), kg }); }, { bodyInput: '' }); }
+
+  infoVals(id) {
+    const ex = this.EX[id], L = window.LMTInfo; if (!ex) return { name: '', muscles: '', use: '', points: [], health: '', healthUrl: '', healthSrc: '' };
+    const d = L.get(id), col = { 'Growth study': '#c6f432', 'Research review': '#5fe0c0', 'Muscle-activity study': '#7cc8ff', 'No direct study': '#ffb648' };
+    const link = k => k ? L.sources[k] : null;
+    return {
+      name: ex.name, muscles: ex.mus, use: d.use,
+      points: d.points.map(p => { const src = link(p.src); return { kind: p.kind, text: p.text, url: src ? src[1] : '', src: src ? src[0] : '', tag: { alignSelf: 'flex-start', padding: '3px 10px', borderRadius: 10, fontSize: 11, fontWeight: 800, letterSpacing: '0.05em', textTransform: 'uppercase', color: '#0b111a', background: col[p.kind] || '#7cc8ff' } }; }),
+      health: L.health.text, healthUrl: L.sources[L.health.src][1], healthSrc: L.sources[L.health.src][0]
+    };
+  }
 
   renderVals() {
     const S = this.state, D = S.data, dr = S.draft;
     if (!this.defs() || !D || !dr) return { isHome: false, isWorkout: false, isSummary: false, isProgress: false, isHistory: false, isProgram: false, showNav: false, confirmOpen: false, sheetSession: false, sheetSwap: false, sheetDel: false };
     const view = S.view, sess = this.SESS[dr.idx], now = S.now, B = this.BLOCKS[D.block], started = !!dr.startedAt;
-    const pill = (on, c) => ({ flex: 'none', height: 46, padding: '0 18px', borderRadius: 23, border: `1.5px solid ${on ? (c || this.LIME) : 'transparent'}`, background: on ? 'rgba(198,244,50,0.08)' : '#141813', color: on ? (c || this.LIME) : '#e2e7dc', fontSize: 15, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 });
-    const nav = on => ({ background: 'none', border: 'none', height: '100%', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4, fontSize: 12, fontWeight: 600, color: on ? this.LIME : '#6f776c' });
+    const pill = (on, c) => ({ flex: 'none', height: 46, padding: '0 18px', borderRadius: 23, border: `1.5px solid ${on ? (c || this.LIME) : 'transparent'}`, background: on ? 'rgba(198,244,50,0.08)' : '#121a29', color: on ? (c || this.LIME) : '#e2e9f6', fontSize: 15, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 });
+    const nav = on => ({ background: 'none', border: 'none', height: '100%', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4, fontSize: 12, fontWeight: 600, color: on ? this.LIME : '#6e7d98' });
     const H = D.history;
     const dateLbl = h => h.noTime ? this.melFmt(new Date(h.ts), { weekday: 'short', day: 'numeric', month: 'short' }) : this.melFmt(new Date(h.ts), { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false });
     const short = d => this.melFmt(new Date(d), { day: 'numeric', month: 'short' });
@@ -634,7 +698,7 @@ class Component extends DCLogic {
     const week = Array.from({ length: 7 }, (_, i) => {
       const d = new Date(base.getTime() + (i - dow) * 864e5), iso = d.toISOString().slice(0, 10), done = H.some(h => h.melIso.slice(0, 10) === iso), today = iso === todayIso;
       if (done) weekCount++;
-      return { dow: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][i], date: d.getUTCDate(), lbl: { fontSize: 14, color: today ? this.LIME : '#cfd6c8', fontWeight: 500 }, ring: { width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 600, border: `2px solid ${done ? this.LIME : today ? '#3a4236' : 'transparent'}`, color: today ? this.LIME : '#f1f4ec', background: done ? 'rgba(198,244,50,0.08)' : 'transparent' } };
+      return { dow: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][i], date: d.getUTCDate(), lbl: { fontSize: 14, color: today ? this.LIME : '#cdd8eb', fontWeight: 500 }, ring: { width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 600, border: `2px solid ${done ? this.LIME : today ? '#35486c' : 'transparent'}`, color: today ? this.LIME : '#f2f6fd', background: done ? 'rgba(198,244,50,0.08)' : 'transparent' } };
     });
     const pIdx = S.previewIdx == null ? dr.idx : S.previewIdx;
     const sessChips = this.SESS.map((s, i) => ({ label: i === dr.idx ? `${s.name} · next` : s.name, icon: s.name.startsWith('Upper') ? 'ph ph-hand-fist' : 'ph ph-person-simple-walk', style: pill(i === pIdx), tap: () => this.setState({ previewIdx: i }) }));
@@ -654,7 +718,7 @@ class Component extends DCLogic {
       hero: this.dia(ex.dg, true), name: ex.name, eq: ex.eq, rest: slot.rest.replace('m', ' min').replace('s', ' s'), muscles: ex.mus,
       scheme: `${x.sets.length} sets × ${x.lo}–${x.hi} reps${ex.uni ? ' / side' : ''}${D.reduceNext ? ' · −1 set (recovery)' : ''}${x.exId !== planId ? ' · swapped today' : ''}`,
       swapTap: () => this.setState({ sheet: 'swap', swapSlot: slot.id }),
-      restTap: () => this.startTimer(this.restSec(slot.rest)), setup: ex.setup, steps: ex.steps.map((t, i) => ({ n: i + 1, text: t })), avoid: ex.avoid,
+      restTap: () => this.startTimer(this.restSec(slot.rest)), infoTap: () => this.openInfo(ex.id), setup: ex.setup, steps: ex.steps.map((t, i) => ({ n: i + 1, text: t })), avoid: ex.avoid,
       hasWarm: !!ex.c && x.tw > 0, warm: `Warm-up first: ${this.fw(this.rnd(ex, x.tw * 0.5))} kg × 8, then ${this.fw(this.rnd(ex, x.tw * 0.75))} kg × 3. Rest 60 s, then start your working sets.`,
       prev: prev ? prev.sets.map(s => `${this.fw(s.w)}×${s.r}`).join(' · ') + ` · ${lab[prev.rating][0]}${prev.note ? ` · “${prev.note}”` : ''}` : 'First time',
       target: `${this.fw(x.tw)} kg × ${x.tr}${x.tr < x.hi ? '+' : ''}`,
@@ -663,10 +727,10 @@ class Component extends DCLogic {
         onW: ev => { const v = ev.target.value; this.upd(d => { const ss = d.ex[slot.id].sets; ss[i].w = v; if (i === 0) ss.forEach((z, j) => { if (j > 0 && !z.done) z.w = v; }); }); },
         onR: ev => { const v = ev.target.value; this.upd(d => { d.ex[slot.id].sets[i].r = v; }); },
         toggle: () => { const on = !s.done; try { navigator.vibrate && navigator.vibrate(12); } catch (e) {} this.upd(d => { d.ex[slot.id].sets[i].done = on; if (on && !d.startedAt) d.startedAt = Date.now(); }, () => on && this.startTimer(this.restSec(slot.rest))); },
-        doneStyle: { height: 52, borderRadius: 26, cursor: 'pointer', border: 'none', background: s.done ? this.LIME : '#0e110d', color: s.done ? '#0c110a' : '#4a5247', display: 'flex', alignItems: 'center', justifyContent: 'center' }
+        doneStyle: { height: 52, borderRadius: 26, cursor: 'pointer', border: 'none', background: s.done ? this.LIME : '#0b111d', color: s.done ? '#0c110a' : '#45556f', display: 'flex', alignItems: 'center', justifyContent: 'center' }
       })),
-      ratings: ['easy', 'target', 'hard'].map(r => ({ label: lab[r][0], sub: lab[r][1], tap: () => this.upd(d => { d.ex[slot.id].rating = r; }), style: { minHeight: 56, borderRadius: 20, cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 2, padding: '4px 2px', border: `1.5px solid ${x.rating === r ? this.LIME : '#252b23'}`, background: x.rating === r ? 'rgba(198,244,50,0.1)' : 'transparent', color: x.rating === r ? this.LIME : '#cfd6c8' } })),
-      painStyle: { height: 46, flex: 'none', padding: '0 14px', borderRadius: 23, cursor: 'pointer', fontSize: 14, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6, border: `1.5px solid ${x.pain ? this.RC.red : '#252b23'}`, background: x.pain ? 'rgba(255,90,60,0.12)' : 'transparent', color: x.pain ? this.RC.red : '#cfd6c8' },
+      ratings: ['easy', 'target', 'hard'].map(r => ({ label: lab[r][0], sub: lab[r][1], tap: () => this.upd(d => { d.ex[slot.id].rating = r; }), style: { minHeight: 56, borderRadius: 20, cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 2, padding: '4px 2px', border: `1.5px solid ${x.rating === r ? this.LIME : '#26354e'}`, background: x.rating === r ? 'rgba(198,244,50,0.1)' : 'transparent', color: x.rating === r ? this.LIME : '#cdd8eb' } })),
+      painStyle: { height: 46, flex: 'none', padding: '0 14px', borderRadius: 23, cursor: 'pointer', fontSize: 14, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6, border: `1.5px solid ${x.pain ? this.RC.red : '#26354e'}`, background: x.pain ? 'rgba(255,90,60,0.12)' : 'transparent', color: x.pain ? this.RC.red : '#cdd8eb' },
       painTap: () => this.upd(d => { d.ex[slot.id].pain = !d.ex[slot.id].pain; }),
       note: x.note, onNote: ev => { const v = ev.target.value; this.upd(d => { d.ex[slot.id].note = v; }); },
       flag: (D.pain[ex.id] || 0) > 0 || D.locks[slot.id] != null,
@@ -674,14 +738,14 @@ class Component extends DCLogic {
       big: this.fw(x.tw), bigSub: pts.length ? `Today’s target · best logged ${this.fw(Math.max(...pts.map(p => p.v)))} kg` : 'Today’s target. This starting weight is an estimate, so adjust it if it feels off.',
       chart: this.chart(pts, 'ex')
     };
-    const pager = sess.slots.map((s, k) => { const xx = dr.ex[s.id], all = xx.sets.every(z => z.done), on = k === ci; return { n: all ? '✓' : k + 1, tap: () => this.upd(d => { d.cur = k; }, () => window.scrollTo(0, 0)), style: { flex: 'none', width: 48, height: 48, borderRadius: '50%', border: `1.5px solid ${all ? this.LIME : 'transparent'}`, background: on ? this.LIME : '#141813', color: on ? '#0c110a' : all ? this.LIME : '#cfd6c8', fontSize: 16, fontWeight: 700, cursor: 'pointer' } }; });
+    const pager = sess.slots.map((s, k) => { const xx = dr.ex[s.id], all = xx.sets.every(z => z.done), on = k === ci; return { n: all ? '✓' : k + 1, tap: () => this.upd(d => { d.cur = k; }, () => window.scrollTo(0, 0)), style: { flex: 'none', width: 48, height: 48, borderRadius: '50%', border: `1.5px solid ${all ? this.LIME : 'transparent'}`, background: on ? this.LIME : '#121a29', color: on ? '#0c110a' : all ? this.LIME : '#cdd8eb', fontSize: 16, fontWeight: 700, cursor: 'pointer' } }; });
     const isLast = ci === sess.slots.length - 1;
     const savedT = S.savedAt ? this.melFmt(new Date(S.savedAt), { hour: '2-digit', minute: '2-digit', hour12: false }) : '';
-    const sheetBtn = (kind) => ({ flexShrink: 0, height: 54, borderRadius: 27, fontSize: 16, fontWeight: 700, cursor: 'pointer', border: kind === 'lime' ? 'none' : `1.5px solid ${kind === 'red' ? this.RC.red : '#3a4236'}`, background: kind === 'lime' ? `linear-gradient(90deg,${this.LIME},#7fe14f)` : 'transparent', color: kind === 'lime' ? '#0c110a' : kind === 'red' ? this.RC.red : '#f1f4ec' });
+    const sheetBtn = (kind) => ({ flexShrink: 0, height: 54, borderRadius: 27, fontSize: 16, fontWeight: 700, cursor: 'pointer', border: kind === 'lime' ? 'none' : `1.5px solid ${kind === 'red' ? this.RC.red : '#35486c'}`, background: kind === 'lime' ? `linear-gradient(90deg,${this.LIME},#5fe0c0)` : 'transparent', color: kind === 'lime' ? '#0c110a' : kind === 'red' ? this.RC.red : '#f2f6fd' });
 
     const swSlot = S.sheet === 'swap' && this.SLOT[S.swapSlot];
     const swCur = swSlot ? dr.ex[swSlot.id].exId : null, swBlockPlan = swSlot ? swSlot.opts[B.v] : null;
-    const swapOpts = swSlot ? swSlot.opts.filter(id => id !== swCur).map(id => { const e = this.EX[id]; return { name: e.name, eq: e.eq, diagram: this.dia(e.dg), today: () => this.swapEx(swSlot.id, id, false), always: () => this.swapEx(swSlot.id, id, true), alwaysLabel: id === swBlockPlan ? 'Back to plan' : 'Always use', tag: id === swBlockPlan ? 'Plan' : '' }; }) : [];
+    const swapOpts = swSlot ? swSlot.opts.filter(id => id !== swCur).map(id => { const e = this.EX[id]; return { name: e.name, eq: e.eq, diagram: this.dia(e.dg), info: () => this.openInfo(id), today: () => this.swapEx(swSlot.id, id, false), always: () => this.swapEx(swSlot.id, id, true), alwaysLabel: id === swBlockPlan ? 'Back to plan' : 'Always use', tag: id === swBlockPlan ? 'Plan' : '' }; }) : [];
     const delH = S.sheet === 'del' ? H.find(h => h.id === S.delId) : null;
 
     const sm = S.summary || { adj: [], prs: [], name: '', when: '', vol: 0, sets: 0, dur: null }, ai = S.ai || {};
@@ -711,7 +775,7 @@ class Component extends DCLogic {
       howOpen: S.howOpen, howIcon: S.howOpen ? 'ph ph-caret-up' : 'ph ph-caret-down', toggleHow: () => this.setState({ howOpen: !S.howOpen }),
       notStarted: !started, started, startSession: () => this.startSession(),
       prevEx: () => ci > 0 && this.upd(d => { d.cur = ci - 1; }, () => window.scrollTo(0, 0)),
-      prevStyle: { width: 58, height: 58, flex: 'none', borderRadius: '50%', border: 'none', background: '#141813', fontSize: 22, cursor: ci > 0 ? 'pointer' : 'default', opacity: ci > 0 ? 1 : 0.35, display: 'flex', alignItems: 'center', justifyContent: 'center' },
+      prevStyle: { width: 58, height: 58, flex: 'none', borderRadius: '50%', border: 'none', background: '#121a29', fontSize: 22, cursor: ci > 0 ? 'pointer' : 'default', opacity: ci > 0 ? 1 : 0.35, display: 'flex', alignItems: 'center', justifyContent: 'center' },
       nextEx: () => isLast ? this.setState({ confirm: true }) : this.upd(d => { d.cur = ci + 1; }, () => window.scrollTo(0, 0)),
       nextLabel: isLast ? 'Finish workout' : `Next · ${this.EX[dr.ex[sess.slots[ci + 1].id].exId].name.split(' (')[0]}`,
       askFinish: () => this.setState({ confirm: true }), confirmOpen: S.confirm, closeConfirm: () => this.setState({ confirm: false }), stopProp: e => e.stopPropagation(),
@@ -731,20 +795,29 @@ class Component extends DCLogic {
       liftChips: ids.map(id => ({ label: seen[id].split(' (')[0], style: Object.assign(pill(id === lid), { height: 40, fontSize: 14 }), tap: () => this.setState({ liftId: id }) })),
       liftName: lid ? seen[lid] : '', liftBig: lpts.length ? this.fw(lpts[lpts.length - 1].v) : '0',
       liftDelta: lpts.length > 1 ? `${this.fw(lpts[0].v)} → ${this.fw(lpts[lpts.length - 1].v)} kg across ${lpts.length} sessions · best est. 1-rep max ${Math.round(D.best[lid] || 0)} kg` : `Top set from your one logged session · est. 1-rep max ${Math.round(D.best[lid] || 0)} kg`, liftChart: this.chart(lpts, 'lift'),
-      volBars: last8.map(h => ({ label: h.session.replace('Upper ', 'U').replace('Lower ', 'L'), val: (this.vol(h) / 1000).toFixed(1) + 't', bar: { width: '100%', maxWidth: 34, borderRadius: 10, background: 'linear-gradient(to top,#3dd68c,#c6f432)', height: `${Math.max(4, this.vol(h) / maxV * 72)}%` } })),
+      volBars: last8.map(h => ({ label: h.session.replace('Upper ', 'U').replace('Lower ', 'L'), val: (this.vol(h) / 1000).toFixed(1) + 't', bar: { width: '100%', maxWidth: 34, borderRadius: 10, background: 'linear-gradient(to top,#4db8ff,#c6f432)', height: `${Math.max(4, this.vol(h) / maxV * 72)}%` } })),
       bodyInput: S.bodyInput, onBody: ev => this.setState({ bodyInput: ev.target.value }), logBody: () => this.logBody(),
       bodySub: bLast ? `${this.fw(bLast.kg)} kg · ${short(bLast.ts)}${body.length > 1 ? ` · ${bLast.kg - body[0].kg >= 0 ? '+' : ''}${this.fw(bLast.kg - body[0].kg)} kg since start` : ''}` : 'Weigh in 1–2× a week, same time of day',
       bodyChart: this.chart(body.slice(-8).map(b => ({ x: short(b.ts), v: b.kg })), 'body'),
-      histList: [...H].reverse().map(h => ({ name: h.session, when: dateLbl(h) + (h.noTime ? ' · baseline' : ''), vol: `${this.vol(h).toLocaleString()} kg`, dur: h.durationMin ? `${h.durationMin} min` : '', open: S.openHist === h.id, tap: () => this.setState({ openHist: S.openHist === h.id ? null : h.id }), delTap: () => this.setState({ sheet: 'del', delId: h.id }), dot: { width: 12, height: 12, borderRadius: '50%', flex: 'none', background: h.recovery ? this.RC[h.recovery] : '#3a4236' }, details: h.exercises.map(e => ({ name: e.name, sets: (e.sets.map(s => `${this.fw(s.w)}×${s.r}`).join(' · ') || 'skipped') + ` · ${lab[e.rating][0]}${e.pain ? ' · joint pain' : ''}${e.note ? ' · ' + e.note : ''}` })) })),
+      histList: [...H].reverse().map(h => ({ name: h.session, when: dateLbl(h) + (h.noTime ? ' · baseline' : ''), vol: `${this.vol(h).toLocaleString()} kg`, dur: h.durationMin ? `${h.durationMin} min` : '', open: S.openHist === h.id, tap: () => this.setState({ openHist: S.openHist === h.id ? null : h.id }), delTap: () => this.setState({ sheet: 'del', delId: h.id }), dot: { width: 12, height: 12, borderRadius: '50%', flex: 'none', background: h.recovery ? this.RC[h.recovery] : '#35486c' }, details: h.exercises.map(e => ({ name: e.name, sets: (e.sets.map(s => `${this.fw(s.w)}×${s.r}`).join(' · ') || 'skipped') + ` · ${lab[e.rating][0]}${e.pain ? ' · joint pain' : ''}${e.note ? ' · ' + e.note : ''}` })) })),
       exportCsv: () => this.exportCsv(), toast: S.toast,
-      blocks: this.BLOCKS.map((b, i) => ({ title: `Block ${i + 1} · ${b.name}`, desc: b.desc, status: i === D.block ? `Now · ${D.blockCount}/${this.BLOCK_LEN}` : 'Rotates in automatically', style: { borderRadius: 24, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 8, background: i === D.block ? 'rgba(198,244,50,0.07)' : '#141813', border: `1.5px solid ${i === D.block ? this.LIME : 'transparent'}` }, bar: { height: '100%', background: this.LIME, width: i === D.block ? `${D.blockCount / this.BLOCK_LEN * 100}%` : '0%' } })),
-      progSessions: this.SESS.map(s => ({ name: s.name, items: s.slots.map(sl => { const e = this.exFor(D, sl), [lo, hi] = this.rangeFor(D, sl, e), t = this.targetFor(D, e, lo, hi, sl); return { name: e.name, scheme: `${sl.sets}×${lo}–${hi} · ${this.fw(t.w)} kg` }; }) })),
+      blocks: this.BLOCKS.map((b, i) => ({ title: `Block ${i + 1} · ${b.name}`, desc: b.desc, status: i === D.block ? `Now · ${D.blockCount}/${this.BLOCK_LEN}` : 'Rotates in automatically', style: { borderRadius: 24, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 8, background: i === D.block ? 'rgba(198,244,50,0.07)' : '#121a29', border: `1.5px solid ${i === D.block ? this.LIME : 'transparent'}` }, bar: { height: '100%', background: this.LIME, width: i === D.block ? `${D.blockCount / this.BLOCK_LEN * 100}%` : '0%' } })),
+      progSessions: this.SESS.map(s => ({ name: s.name, items: s.slots.map(sl => { const e = this.exFor(D, sl), [lo, hi] = this.rangeFor(D, sl, e), t = this.targetFor(D, e, lo, hi, sl); return { info: () => this.openInfo(this.exFor(D, sl).id), name: e.name, scheme: `${sl.sets}×${lo}–${hi} · ${this.fw(t.w)} kg` }; }) })),
       goalOpts: [3, 4].map(n => ({ label: `${n} sessions / week`, style: Object.assign(pill((D.goal || 4) === n), { flex: 1, justifyContent: 'center' }), tap: () => this.setData(d => { d.goal = n; }) })),
-      safeguards: [{ text: 'Double progression: when you hit the top of the rep range at Easy or Target, the load goes up 2.5–5%.' }, { text: 'Rated Hard twice in a row, or under the rep range twice in a row, cuts the load by 5%.' }, { text: D.reduceNext ? 'Recovery safeguard ACTIVE: next session runs 1 fewer set per exercise.' : 'Recovery Amber/Red two sessions in a row removes 1 set per exercise for the next session.' }, { text: 'Joint pain flagged twice swaps in a joint-friendly alternative. Never prescribed: behind-the-neck presses/pulldowns, narrow upright rows, bench dips, kipping, or heavy deadlifts/back squats to failure.' }, { text: 'Baseline: your 24 Nov Upper A. Every other lift starts from an estimate scaled to that strength, so correct it the first time you do it.' }],
+      safeguards: [{ text: 'Double progression: when you hit the top of the rep range at Easy or Target, the load goes up 2.5–5%.' }, { text: 'Rated Hard twice in a row, or under the rep range twice in a row, cuts the load by 5%.' }, { text: D.reduceNext ? 'Recovery safeguard ACTIVE: next session runs 1 fewer set per exercise.' : 'Recovery Amber/Red two sessions in a row removes 1 set per exercise for the next session.' }, { text: 'Joint pain flagged twice swaps in a joint-friendly alternative. Never prescribed: behind-the-neck presses/pulldowns, narrow upright rows, bench dips, kipping, or heavy deadlifts/back squats to failure.' }, { text: 'A lift you haven’t logged yet starts from an estimate, so correct the weight the first time you do it.' }],
       locks: lockList,
       storageText: `${H.length} sessions saved on this device${window.storage ? ' and in app storage' : ''}. Every change auto-saves${savedT ? ` (last at ${savedT})` : ''}. Turn on Cloud backup to keep a private copy off this phone.`,
       cloudOpen: () => window.LMTSync.open(), cloudStatus: window.LMTSync ? window.LMTSync.status() : '',
       backup: () => this.backup(), restore: ev => this.restore(ev),
+      sheetInfo: S.sheet === 'info' && !!this.EX[S.infoId], info: this.infoVals(S.infoId),
+      chooseAvatar: !S.skipAvatar && !D.sex && !D.history.length && !(D.body || []).length,
+      restoreInstead: () => this.setState({ skipAvatar: true }, () => this.go('program')),
+      avatars: ['male', 'female'].map(k => { const on = D.sex === k || (!D.sex && D.history.length > 0 && k === 'male'); return { label: k === 'male' ? 'Male' : 'Female', diagram: this.dia('hammer', false, k), tap: () => this.setSex(k), style: { padding: 8, borderRadius: 22, cursor: 'pointer', background: '#121a29', border: `2px solid ${on ? this.LIME : 'transparent'}`, display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'stretch' }, lbl: { fontSize: 15, fontWeight: 700, color: on ? this.LIME : '#cdd8eb' } }; }),
+      avatarNote: D.history.length ? 'Changes the figure only. Your weights come from your logged history.' : 'Also sets your starting weights. Female ones are estimates: about 55% (upper body) and 65% (lower body and abs) of the male starting points.',
+      sexUrl: window.LMTInfo.sources.sexstr[1], sexLink: D.history.length ? '' : 'Why',
+      muscleMap: React.createElement('div', { dangerouslySetInnerHTML: { __html: window.LMTFig.bodyMap(this.weekSets(D)) } }),
+      mapKey: [['0', 0], ['1–4', 1], ['5–9', 5], ['10+', 10]].map(([label, n]) => ({ label, dot: { width: 10, height: 10, borderRadius: '50%', background: window.LMTFig.tone(n) } })),
+      muscleRows: (() => { const w = this.weekSets(D); return ['Chest', 'Lats', 'Upper back', 'Front delts', 'Side delts', 'Rear delts', 'Biceps', 'Triceps', 'Forearms', 'Abs', 'Quads', 'Hamstrings', 'Glutes', 'Calves'].map(name => ({ name, n: w[name] || 0, num: { fontWeight: 700, color: w[name] ? '#f2f6fd' : '#7888a3' } })); })(),
       navHome: nav(view === 'home' || view === 'summary'), navWorkout: nav(false), navHistory: nav(view === 'history'), navProgram: nav(view === 'program'),
       navCenter: { width: 72, height: 72, borderRadius: '50%', border: 'none', background: view === 'progress' ? '#dcff6a' : this.LIME, color: '#0c110a', marginTop: -36, boxShadow: '0 8px 30px -4px rgba(198,244,50,0.55)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }
     };

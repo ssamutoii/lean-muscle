@@ -3,8 +3,8 @@
   "short_name": "Lean Muscle",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#0a0c0a",
-  "theme_color": "#0a0c0a",
+  "background_color": "#090d14",
+  "theme_color": "#090d14",
   "icons": [
     {
       "src": "lmt-icon.png",
