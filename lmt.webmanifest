@@ -1,0 +1,16 @@
+{
+  "name": "Lean Muscle Tracker",
+  "short_name": "Lean Muscle",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0a0c0a",
+  "theme_color": "#0a0c0a",
+  "icons": [
+    {
+      "src": "lmt-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
