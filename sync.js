@@ -38,7 +38,7 @@
   async function push(force) {
     const s = st(), local = load(KEY);
     if (busy || !s.token || s.conflict || !local || !local.data) return;
-    if (!force && (hash(local.data) === s.hash || Date.now() < retryAt || !navigator.onLine)) return;
+    if (!force && (isEmpty(local.data) || hash(local.data) === s.hash || Date.now() < retryAt || !navigator.onLine)) return;
     busy = true;
     try { await upload(s.token, local, s.sha); }
     catch (e) {

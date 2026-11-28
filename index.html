@@ -7,6 +7,8 @@
 <script src="vendor/react-dom.production.min.js"></script>
 <style>html,body{overscroll-behavior-y:none}</style>
 <script src="sync.js"></script>
+<script src="vendor/firebase.js"></script>
+<script src="account.js"></script>
 <script src="./support.js"></script>
 <title>Lean Muscle</title>
 <link rel="manifest" href="lmt.webmanifest">
@@ -60,6 +62,9 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
     <div style="flex:1;min-width:0;color:#0c110a"><div style="font-size:20px;font-weight:700">{{ heroTitle }}</div><div style="font-size:14px;font-weight:600;opacity:0.75;margin-top:2px">{{ heroSub }}</div></div>
     <button onClick="{{ heroTap }}" style="height:50px;padding:0 20px;margin-right:8px;flex:none;border-radius:25px;border:none;background:#f4f7ef;color:#0c110a;font-size:15px;font-weight:700;letter-spacing:0.05em;cursor:pointer" style-active="transform:scale(0.96)">{{ heroBtn }}</button>
   </div>
+  <sc-if value="{{ signedOut }}">
+    <button onClick="{{ accountOpen }}" style="min-height:52px;border-radius:26px;border:1.5px solid #35486c;background:#121a29;color:#f2f6fd;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px"><i class="ph ph-user-circle" style="font-size:20px;color:#7cc8ff"></i>Sign in to save your log to an account</button>
+  </sc-if>
   <sc-if value="{{ heroStarted }}">
     <div style="display:flex;gap:8px;margin-top:-12px">
       <button onClick="{{ restartSession }}" style="flex:1;height:44px;border-radius:22px;border:1.5px solid #35486c;background:none;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px"><i class="ph ph-arrow-counter-clockwise"></i>Restart</button>
@@ -341,9 +346,14 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
   <div style="font-size:13px;color:#9ba9c0;line-height:1.45">{{ avatarNote }} <a href="{{ sexUrl }}" target="_blank" rel="noopener">{{ sexLink }}</a></div>
   <div style="font-size:18px;font-weight:600;margin-top:6px">Weekly goal</div>
   <div style="display:flex;gap:8px"><sc-for list="{{ goalOpts }}" as="g" hint-placeholder-count="2"><button onClick="{{ g.tap }}" style="{{ g.style }}">{{ g.label }}</button></sc-for></div>
+  <div style="font-size:18px;font-weight:600;margin-top:6px">Account</div>
+  <button onClick="{{ accountOpen }}" style="min-height:52px;border-radius:26px;border:none;background:#c6f432;color:#0c110a;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph ph-user-circle" style="font-size:18px"></i>{{ accountLabel }}</button>
+  <div data-lmt-account style="font-size:13px;color:#9ba9c0;line-height:1.45">{{ accountStatus }}</div>
   <div style="font-size:18px;font-weight:600;margin-top:6px">Data</div>
+  <sc-if value="{{ hasGit }}">
   <button onClick="{{ cloudOpen }}" style="min-height:52px;border-radius:26px;border:none;background:#c6f432;color:#0c110a;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph ph-cloud-arrow-up" style="font-size:18px"></i>Cloud backup</button>
   <div data-lmt-status style="font-size:13px;color:#9ba9c0">{{ cloudStatus }}</div>
+  </sc-if>
   <div style="border-radius:26px;background:#121a29;padding:16px 18px;display:flex;flex-direction:column;gap:12px">
     <div style="font-size:14px;color:#cdd8eb;line-height:1.45;display:flex;gap:8px"><i class="ph ph-cloud-check" style="color:#c6f432;font-size:18px;flex:none"></i><span>{{ storageText }}</span></div>
     <div style="display:flex;gap:8px">
@@ -437,6 +447,7 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
     <div style="font-size:26px;font-weight:700">Choose your avatar</div>
     <div style="font-size:14px;color:#9ba9c0;line-height:1.5">It sets the figure in your animations and your starting weights. You can change it later in Program.</div>
     <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px"><sc-for list="{{ avatars }}" as="a" hint-placeholder-count="2"><button onClick="{{ a.tap }}" style="{{ a.style }}">{{ a.diagram }}<span style="{{ a.lbl }}">{{ a.label }}</span></button></sc-for></div>
+    <button onClick="{{ accountOpen }}" style="height:48px;border-radius:24px;border:1.5px solid #c6f432;background:none;color:#c6f432;font-size:14px;font-weight:700;cursor:pointer">Sign in or create an account</button>
     <button onClick="{{ restoreInstead }}" style="height:48px;border:none;background:none;color:#7cc8ff;font-size:14px;font-weight:700;cursor:pointer">I already have a backup</button>
   </div>
 </div>
@@ -606,11 +617,14 @@ class Component extends DCLogic {
       if (S.timer && now >= S.timer.end) { this.beep(); this.setState({ timer: null, now }); }
       else if (S.timer || (S.draft && S.draft.startedAt && (S.view === 'workout' || S.view === 'home'))) this.setState({ now });
     }, 500);
+    this.acct = () => this.setState({ acct: Date.now() });
+    window.addEventListener('lmt-account', this.acct);
+    this.acct();
     this.vis = () => { if (document.visibilityState === 'visible' && this.state.draft && this.state.draft.startedAt) { this.wl = null; this.wake(true); } };
     document.addEventListener('visibilitychange', this.vis);
     if (draft.startedAt) this.wake(true);
   }
-  componentWillUnmount() { clearInterval(this.iv); document.removeEventListener('visibilitychange', this.vis); }
+  componentWillUnmount() { window.removeEventListener('lmt-account', this.acct); clearInterval(this.iv); document.removeEventListener('visibilitychange', this.vis); }
   componentDidUpdate() { const s = this.heroEl && this.heroEl.querySelector('svg'); if (s && s.pauseAnimations) { if (this.state.paused && !s.animationsPaused()) s.pauseAnimations(); else if (!this.state.paused && s.animationsPaused()) s.unpauseAnimations(); } }
   async wake(on) { try { if (on) { if (!this.wl && navigator.wakeLock) this.wl = await navigator.wakeLock.request('screen'); } else if (this.wl) { await this.wl.release(); this.wl = null; } } catch (e) { this.wl = null; } }
   beep() { try { navigator.vibrate && navigator.vibrate([250, 120, 250]); } catch (e) {} try { const c = new (window.AudioContext || window.webkitAudioContext)(), o = c.createOscillator(), g = c.createGain(); o.frequency.value = 880; o.connect(g); g.connect(c.destination); g.gain.setValueAtTime(0.2, c.currentTime); g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.6); o.start(); o.stop(c.currentTime + 0.6); } catch (e) {} }
@@ -806,7 +820,10 @@ class Component extends DCLogic {
       goalOpts: [3, 4].map(n => ({ label: `${n} sessions / week`, style: Object.assign(pill((D.goal || 4) === n), { flex: 1, justifyContent: 'center' }), tap: () => this.setData(d => { d.goal = n; }) })),
       safeguards: [{ text: 'Double progression: when you hit the top of the rep range at Easy or Target, the load goes up 2.5–5%.' }, { text: 'Rated Hard twice in a row, or under the rep range twice in a row, cuts the load by 5%.' }, { text: D.reduceNext ? 'Recovery safeguard ACTIVE: next session runs 1 fewer set per exercise.' : 'Recovery Amber/Red two sessions in a row removes 1 set per exercise for the next session.' }, { text: 'Joint pain flagged twice swaps in a joint-friendly alternative. Never prescribed: behind-the-neck presses/pulldowns, narrow upright rows, bench dips, kipping, or heavy deadlifts/back squats to failure.' }, { text: 'A lift you haven’t logged yet starts from an estimate, so correct the weight the first time you do it.' }],
       locks: lockList,
-      storageText: `${H.length} sessions saved on this device${window.storage ? ' and in app storage' : ''}. Every change auto-saves${savedT ? ` (last at ${savedT})` : ''}. Turn on Cloud backup to keep a private copy off this phone.`,
+      storageText: `${H.length} sessions saved on this device${window.storage ? ' and in app storage' : ''}. Every change auto-saves${savedT ? ` (last at ${savedT})` : ''}. ${window.LMTAccount.signedIn() ? '' : ' Sign in to keep a copy off this phone.'}`,
+      accountOpen: () => window.LMTAccount.open(), accountStatus: window.LMTAccount.status(), signedOut: window.LMTAccount.signedOut(),
+      accountLabel: window.LMTAccount.signedIn() ? 'Your account' : 'Sign in or create account',
+      hasGit: window.LMTSync.status().indexOf('Off.') !== 0,
       cloudOpen: () => window.LMTSync.open(), cloudStatus: window.LMTSync ? window.LMTSync.status() : '',
       backup: () => this.backup(), restore: ev => this.restore(ev),
       sheetInfo: S.sheet === 'info' && !!this.EX[S.infoId], info: this.infoVals(S.infoId),
