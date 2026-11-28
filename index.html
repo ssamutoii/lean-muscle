@@ -36,6 +36,8 @@
 <script src="lmt-library.js"></script>
 <script src="lmt-figures.js"></script>
 <script src="lmt-info.js"></script>
+<script src="lmt-plan.js"></script>
+<script src="lmt-avatar.js"></script>
 <link href="vendor/urbanist.css" rel="stylesheet">
 <link rel="stylesheet" href="vendor/regular/style.css">
 <link rel="stylesheet" href="vendor/fill/style.css">
@@ -55,12 +57,21 @@ input[type=number]{-moz-appearance:textfield}
 <div class="lmt-view" style="padding:24px 20px 120px;display:flex;flex-direction:column;gap:22px">
   <div style="display:flex;align-items:center;gap:12px">
     <div style="flex:1;min-width:0"><div style="font-size:26px;font-weight:700;letter-spacing:-0.01em">{{ greet }}</div><div style="font-size:14px;color:#9ba9c0;margin-top:2px">{{ blockLabel }}</div></div>
-    <button onClick="{{ goSettings }}" aria-label="Your account and settings" style="width:48px;height:48px;flex:none;border-radius:50%;border:1px solid #2c3d5c;background:#121a29;color:#f2f6fd;font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center"><sc-if value="{{ initial }}">{{ initial }}</sc-if><sc-if value="{{ noInitial }}"><i class="ph ph-user" style="font-size:22px"></i></sc-if></button>
+    <button class="me" onClick="{{ goProfile }}" aria-label="Your profile">{{ meFace }}</button>
   </div>
   <button onClick="{{ heroTap }}" style="width:100%;border:none;border-radius:24px;padding:20px;background:linear-gradient(100deg,#c6f432 0%,#5fe0c0 55%,#4db8ff 100%);color:#0c110a;display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;box-shadow:0 14px 36px -16px rgba(150,230,70,0.55)">
     <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><span style="font-size:26px;font-weight:700;line-height:1.1">{{ heroTitle }}</span><span style="font-size:14px;font-weight:600;opacity:0.75">{{ heroSub }}</span></span>
     <span style="flex:none;height:48px;padding:0 20px;border-radius:14px;background:#0c140f;color:#f4f7ef;font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="ph-fill ph-play"></i>{{ heroBtn }}</span>
   </button>
+  <sc-if value="{{ showPersonal }}">
+    <button onClick="{{ startSetup }}" style="margin-top:-8px;border:none;border-radius:20px;padding:16px;background:linear-gradient(120deg,#ffffff,#dfe9f7);color:#0f1a2c;display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer"><span style="width:44px;height:44px;flex:none;border-radius:14px;background:#0f1a2c;color:#c6f432;display:flex;align-items:center;justify-content:center;font-size:22px"><i class="ph ph-sparkle"></i></span><span style="flex:1"><b style="display:block;font-size:16px">Personalise your plan</b><span style="font-size:13px;color:#5b6b85">Avatar, body stats and your goal. Takes a minute.</span></span><i class="ph ph-caret-right"></i></button>
+  </sc-if>
+  <sc-if value="{{ homeTgt }}">
+    <button onClick="{{ goProfile }}" style="margin-top:-8px;border:none;border-radius:20px;padding:12px;background:#121a29;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;cursor:pointer;text-align:left"><sc-for list="{{ homeTiles }}" as="t" hint-placeholder-count="3"><span style="{{ t.style }}"><span style="display:block;font-size:12px;opacity:.75;font-weight:600">{{ t.k }}</span><span style="display:block;font-size:18px;font-weight:700;margin-top:2px">{{ t.v }}</span></span></sc-for></button>
+  </sc-if>
+  <sc-if value="{{ homeMob }}">
+    <button onClick="{{ goProgram }}" style="margin-top:-8px;border:none;border-radius:20px;padding:14px 16px;background:#121a29;color:#f2f6fd;display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left"><i class="ph ph-person-simple-tai-chi" style="font-size:24px;color:#5fe0c0"></i><span style="flex:1"><b style="display:block;font-size:15px">Mobility routine</b><span style="font-size:13px;color:#9ba9c0">{{ mobSub }}</span></span><i class="ph ph-caret-right"></i></button>
+  </sc-if>
   <sc-if value="{{ signedOut }}">
     <button onClick="{{ accountOpen }}" style="min-height:52px;margin-top:-8px;border-radius:16px;border:1px solid #2c3d5c;background:#121a29;color:#f2f6fd;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px"><i class="ph ph-user-circle" style="font-size:20px;color:#7cc8ff"></i>Sign in to save your log to an account</button>
   </sc-if>
@@ -272,6 +283,7 @@ input[type=number]{-moz-appearance:textfield}
 <sc-if value="{{ isProgress }}">
 <div class="lmt-view" style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:20px">
   <div style="font-size:26px;font-weight:600">Progress</div>
+  <div class="lmt-seg" role="tablist"><button role="tab" aria-selected="{{ isProgress }}" onClick="{{ goProgress }}">Charts</button><button role="tab" aria-selected="{{ isHistory }}" onClick="{{ goHistory }}">History</button></div>
   <div style="border-radius:26px;background:#121a29;padding:16px 18px;display:flex;flex-direction:column;gap:12px">
     <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><div style="font-size:17px;font-weight:600">Muscle map</div><div style="font-size:13px;color:#9ba9c0">Sets in the last 7 days</div></div>
     {{ muscleMap }}
@@ -309,7 +321,8 @@ input[type=number]{-moz-appearance:textfield}
 
 <sc-if value="{{ isHistory }}">
 <div class="lmt-view" style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:14px">
-  <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:26px;font-weight:600">History</div><button onClick="{{ exportCsv }}" style="height:44px;padding:0 16px;border-radius:22px;border:1.5px solid #c6f432;background:transparent;color:#c6f432;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ph ph-download-simple"></i>Export CSV</button></div>
+  <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:26px;font-weight:600">Progress</div><button onClick="{{ exportCsv }}" style="height:44px;padding:0 16px;border-radius:22px;border:1.5px solid #c6f432;background:transparent;color:#c6f432;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ph ph-download-simple"></i>Export</button></div>
+  <div class="lmt-seg" role="tablist"><button role="tab" aria-selected="{{ isProgress }}" onClick="{{ goProgress }}">Charts</button><button role="tab" aria-selected="{{ isHistory }}" onClick="{{ goHistory }}">History</button></div>
   <div style="font-size:13px;color:#9ba9c0">{{ toast }}</div>
   <sc-if value="{{ noHistory }}"><div style="color:#9ba9c0;font-size:15px">No sessions yet.</div></sc-if>
   <sc-for list="{{ histList }}" as="h" hint-placeholder-count="2">
@@ -334,11 +347,13 @@ input[type=number]{-moz-appearance:textfield}
 
 <sc-if value="{{ isProgram }}">
 <div class="lmt-view" style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:18px">
-  <div style="font-size:26px;font-weight:600">Program</div>
-  <div class="lmt-seg" role="tablist"><button role="tab" aria-selected="{{ planOn }}" onClick="{{ showPlan }}">Plan</button><button role="tab" aria-selected="{{ settingsOn }}" onClick="{{ showSettings }}">Settings</button></div>
-  <sc-if value="{{ planOn }}">
-  <div class="lmt-view" style="display:flex;flex-direction:column;gap:18px">
-  <div style="font-size:14px;color:#9ba9c0;line-height:1.5">An upper and lower body rotation. Every 16 sessions (about 4–5 weeks) the exercises and rep ranges change, with new starting weights worked out from your strength.</div>
+  <div style="font-size:26px;font-weight:600">Your plan</div>
+  <div style="border-radius:26px;padding:18px;background:linear-gradient(135deg,#e4f7a6 0%,#c3ecd9 60%,#bcdcff 100%);color:#10220a;display:flex;flex-direction:column;gap:6px">
+    <div style="font-size:24px;font-weight:700">{{ planGoal }}</div>
+    <div style="font-size:14px;line-height:1.45;opacity:.85">{{ planSplit }}</div>
+    <button onClick="{{ goProfile }}" style="align-self:flex-start;margin-top:6px;min-height:42px;padding:0 16px;border-radius:14px;border:none;background:#10220a;color:#e4f7a6;font-size:14px;font-weight:700;cursor:pointer">Change goal or days</button>
+  </div>
+  <div style="font-size:14px;color:#9ba9c0;line-height:1.5">{{ planIntro }}</div>
   <div style="display:flex;flex-direction:column;gap:10px">
     <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="4">
       <div style="{{ b.style }}">
@@ -347,6 +362,11 @@ input[type=number]{-moz-appearance:textfield}
         <div style="height:4px;border-radius:2px;background:#212e45;overflow:hidden"><div style="{{ b.bar }}"></div></div>
       </div>
     </sc-for>
+  </div>
+  <div style="border-radius:26px;background:#121a29;padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><div style="font-size:17px;font-weight:600">Mobility routine</div><div style="font-size:13px;color:#9ba9c0">{{ mobSub }}</div></div>
+    <div style="font-size:13px;color:#9ba9c0;line-height:1.45">{{ mobWhy }}</div>
+    <sc-for list="{{ mobList }}" as="m" hint-placeholder-count="3"><button onClick="{{ m.tap }}" style="{{ m.style }}"><span style="{{ m.box }}"><i class="ph ph-check"></i></span><span style="flex:1;min-width:0;text-align:left"><span style="display:block;font-size:15px;font-weight:600">{{ m.name }}</span><span style="display:block;font-size:13px;color:#9ba9c0;line-height:1.4;margin-top:2px">{{ m.how }}</span></span><span style="flex:none;font-size:13px;color:#7cc8ff;font-weight:700">{{ m.hold }}</span></button></sc-for>
   </div>
   <div style="font-size:18px;font-weight:600;margin-top:6px">This block</div>
   <sc-for list="{{ progSessions }}" as="s" hint-placeholder-count="4">
@@ -364,24 +384,50 @@ input[type=number]{-moz-appearance:textfield}
   <sc-for list="{{ locks }}" as="l" hint-placeholder-count="0">
     <div style="display:flex;gap:10px;align-items:center;font-size:14px;color:#ffb648"><i class="ph ph-lock" style="font-size:18px"></i><span style="flex:1">{{ l.text }}</span><button onClick="{{ l.tap }}" style="height:36px;padding:0 14px;border-radius:18px;border:1px solid #35486c;background:none;font-size:13px;cursor:pointer;color:#f2f6fd">Unlock</button></div>
   </sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isProfile }}">
+<div class="lt lmt-view">
+  <div class="lt-top"><h1 style="flex:1">Profile</h1></div>
+  <div class="lt-stage" data-av-stage onClick="{{ avPoke }}">
+    <div style="position:absolute;left:16px;top:16px;right:16px;display:flex;gap:12px;align-items:center;z-index:2">
+      <label class="lt-photo" aria-label="Change profile photo" style="cursor:pointer">{{ meFace }}<input type="file" accept="image/*" onChange="{{ onPhoto }}" style="display:none"></label>
+      <div style="min-width:0;flex:1"><div style="font-size:22px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ meName }}</div><div class="mut">{{ meSub }}</div></div>
+    </div>
+    <div class="fig" style="height:330px;padding-top:70px">{{ avatarBig }}</div><div class="floor"></div>
   </div>
-  </sc-if>
-  <sc-if value="{{ settingsOn }}">
-  <div class="lmt-view" style="display:flex;flex-direction:column;gap:18px">
-  <div style="font-size:18px;font-weight:600;margin-top:6px">Account</div>
-  <button onClick="{{ accountOpen }}" style="min-height:52px;border-radius:26px;border:none;background:#c6f432;color:#0c110a;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph ph-user-circle" style="font-size:18px"></i>{{ accountLabel }}</button>
-  <div data-lmt-account style="font-size:13px;color:#9ba9c0;line-height:1.45">{{ accountStatus }}</div>
-  <div style="font-size:18px;font-weight:600;margin-top:6px">Your avatar</div>
-  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px"><sc-for list="{{ avatars }}" as="a" hint-placeholder-count="2"><button onClick="{{ a.tap }}" style="{{ a.style }}">{{ a.diagram }}<span style="{{ a.lbl }}">{{ a.label }}</span></button></sc-for></div>
-  <div style="font-size:13px;color:#9ba9c0;line-height:1.45">{{ avatarNote }} <a href="{{ sexUrl }}" target="_blank" rel="noopener">{{ sexLink }}</a></div>
-  <div style="font-size:18px;font-weight:600;margin-top:6px">Weekly goal</div>
-  <div style="display:flex;gap:8px"><sc-for list="{{ goalOpts }}" as="g" hint-placeholder-count="2"><button onClick="{{ g.tap }}" style="{{ g.style }}">{{ g.label }}</button></sc-for></div>
-  <div style="font-size:18px;font-weight:600;margin-top:6px">Data</div>
+  <div class="lt-row"><button class="lt-btn" onClick="{{ openStudio }}" style="flex:1.3"><i class="ph ph-paint-brush"></i>Edit avatar</button><label class="lt-btn ghost" style="flex:1;cursor:pointer"><i class="ph ph-camera"></i>{{ photoLabel }}<input type="file" accept="image/*" onChange="{{ onPhoto }}" style="display:none"></label></div>
+  <sc-if value="{{ hasPhoto }}"><button class="lt-chip" onClick="{{ removePhoto }}" style="align-self:flex-start">Use my avatar as my picture</button></sc-if>
+  <div class="lt-card">
+    <div class="lt-row"><h2 style="flex:1">Daily targets</h2><span class="sml" style="font-weight:700">{{ tgtGoal }}</span></div>
+    <sc-if value="{{ tgtReady }}"><div class="lt-tiles"><sc-for list="{{ tgtTiles }}" as="t" hint-placeholder-count="4"><div class="{{ t.cls }}"><span class="k">{{ t.k }}</span><span class="v">{{ t.v }}</span><span class="s">{{ t.s }}</span></div></sc-for></div></sc-if>
+    <sc-if value="{{ tgtNote }}"><p class="mut" style="color:#8a4b00">{{ tgtNote }}</p></sc-if>
+    <sc-if value="{{ tgtMissing }}"><p class="mut">Add your year born, height and weight to see calories and protein worked out for you.</p></sc-if>
+    <p class="sml">{{ tgtHow }}</p>
+    <div style="display:flex;flex-direction:column;gap:10px;padding-top:4px;border-top:1px solid #e3e9f2"><div style="font-size:14px;font-weight:700;padding-top:10px">Why this plan works</div>
+    <sc-for list="{{ goalWhy }}" as="w" hint-placeholder-count="3"><div class="lt-why"><i class="ph ph-seal-check"></i><span>{{ w.text }} <a href="{{ w.url }}" target="_blank" rel="noopener">{{ w.src }}</a></span></div></sc-for></div>
+  </div>
+  <h2 style="margin-top:6px">About you</h2>
+  <div class="lt-card">
+    <div class="lt-field"><label for="pf-name">Name</label><input id="pf-name" class="lt-input" type="text" autocomplete="given-name" value="{{ pfName }}" onChange="{{ onName }}" placeholder="What should we call you?"></div>
+    <div class="lt-field"><label>Sex, used for calorie and starting-weight estimates</label><div class="lt-chips"><sc-for list="{{ sexOpts }}" as="o" hint-placeholder-count="2"><button class="{{ o.cls }}" onClick="{{ o.tap }}">{{ o.label }}</button></sc-for></div></div>
+    <div class="lt-row" style="align-items:flex-start"><div class="lt-field"><label for="pf-year">Year born</label><input id="pf-year" class="lt-input" type="number" inputmode="numeric" value="{{ pfYear }}" onChange="{{ onYear }}" placeholder="1995"></div><div class="lt-field"><label for="pf-h">Height (cm)</label><input id="pf-h" class="lt-input" type="number" inputmode="decimal" value="{{ pfHeight }}" onChange="{{ onHeight }}" placeholder="178"></div></div>
+    <div class="lt-field"><label for="pf-w">Weight (kg)</label><div class="lt-row"><input id="pf-w" class="lt-input" type="number" inputmode="decimal" step="0.1" value="{{ pfWeightIn }}" onChange="{{ onWeightIn }}" placeholder="{{ pfWeightPh }}"><sc-if value="{{ showWeightBtn }}"><button class="lt-btn" onClick="{{ saveWeight }}" style="flex:none">Log</button></sc-if></div><span class="sml">{{ pfWeightNote }}</span></div>
+  </div>
+  <div class="lt-card"><h2>How active are you day to day?</h2><sc-for list="{{ actOpts }}" as="o" hint-placeholder-count="4"><button class="{{ o.cls }}" onClick="{{ o.tap }}"><span><b>{{ o.label }}</b><span class="d">{{ o.d }}</span></span></button></sc-for></div>
+  <h2 style="margin-top:6px">Your goal</h2>
+  <sc-for list="{{ goalCards }}" as="o" hint-placeholder-count="5"><button class="{{ o.cls }}" onClick="{{ o.tap }}"><span class="ic"><i class="{{ o.icon }}"></i></span><span><b>{{ o.label }}</b><span class="d">{{ o.d }}</span></span></button></sc-for>
+  <div class="lt-card"><h2>Training days a week</h2><div class="lt-chips"><sc-for list="{{ dayOpts }}" as="o" hint-placeholder-count="3"><button class="{{ o.cls }}" onClick="{{ o.tap }}">{{ o.label }}</button></sc-for></div><p class="mut">{{ dayNote }}</p></div>
+  <div class="lt-card"><h2>Lifting experience</h2><sc-for list="{{ expOpts }}" as="o" hint-placeholder-count="3"><button class="{{ o.cls }}" onClick="{{ o.tap }}"><span><b>{{ o.label }}</b><span class="d">{{ o.d }}</span></span></button></sc-for><p class="sml">{{ expNote }}</p></div>
+  <h2 style="margin-top:6px">Account</h2>
+  <div class="lt-card"><button class="lt-btn full" onClick="{{ accountOpen }}"><i class="ph ph-user-circle"></i>{{ accountLabel }}</button><div data-lmt-account class="sml">{{ accountStatus }}</div><button class="lt-chip" onClick="{{ redoSetup }}" style="align-self:flex-start">Run the setup again</button></div>
+  <div style="font-size:18px;font-weight:700;margin-top:6px;color:#0f1a2c">Data</div>
   <sc-if value="{{ hasGit }}">
   <button onClick="{{ cloudOpen }}" style="min-height:52px;border-radius:26px;border:none;background:#c6f432;color:#0c110a;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph ph-cloud-arrow-up" style="font-size:18px"></i>Cloud backup</button>
   <div data-lmt-status style="font-size:13px;color:#9ba9c0">{{ cloudStatus }}</div>
   </sc-if>
-  <div style="border-radius:26px;background:#121a29;padding:16px 18px;display:flex;flex-direction:column;gap:12px">
+  <div style="border-radius:22px;background:#0f1a2c;color:#f2f6fd;padding:16px 18px;display:flex;flex-direction:column;gap:12px">
     <div style="font-size:14px;color:#cdd8eb;line-height:1.45;display:flex;gap:8px"><i class="ph ph-cloud-check" style="color:#c6f432;font-size:18px;flex:none"></i><span>{{ storageText }}</span></div>
     <div style="display:flex;gap:8px">
       <button onClick="{{ backup }}" style="flex:1;height:48px;border-radius:24px;border:1.5px solid #c6f432;background:none;color:#c6f432;font-size:14px;font-weight:700;cursor:pointer">Download backup</button>
@@ -389,8 +435,75 @@ input[type=number]{-moz-appearance:textfield}
     </div>
     <div style="font-size:12px;color:#7888a3">{{ toast }}</div>
   </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isAvatar }}">
+<div class="lt lmt-view" style="padding-bottom:40px">
+  <div class="lt-top"><button class="lt-icon" onClick="{{ avBack }}" aria-label="Back"><i class="ph ph-caret-left"></i></button><h1 style="flex:1;font-size:22px">Your avatar</h1><button class="lt-btn" onClick="{{ avBack }}" style="min-height:44px">Done</button></div>
+  <div class="lt-stage" data-av-stage onClick="{{ avPoke }}"><div class="fig">{{ avatarBig }}</div><div class="floor"></div></div>
+  <div class="lt-tabs" role="tablist"><sc-for list="{{ avTabs }}" as="t" hint-placeholder-count="5"><button role="tab" aria-selected="{{ t.on }}" onClick="{{ t.tap }}">{{ t.label }}</button></sc-for></div>
+  <div class="lt-card">
+    <sc-for list="{{ avGroups }}" as="g" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:13px;font-weight:700;color:#26344d">{{ g.title }}</div>
+        <sc-if value="{{ g.chips }}"><div class="lt-chips"><sc-for list="{{ g.items }}" as="o" hint-placeholder-count="4"><button class="{{ o.cls }}" onClick="{{ o.tap }}">{{ o.label }}</button></sc-for></div></sc-if>
+        <sc-if value="{{ g.sw }}"><div class="lt-sw"><sc-for list="{{ g.items }}" as="o" hint-placeholder-count="6"><button class="{{ o.cls }}" style="{{ o.style }}" onClick="{{ o.tap }}" aria-label="{{ o.label }}"></button></sc-for></div></sc-if>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSetup }}">
+<div class="lt lmt-view">
+  <div class="lt-top"><sc-if value="{{ suBackOn }}"><button class="lt-icon" onClick="{{ suBack }}" aria-label="Back"><i class="ph ph-caret-left"></i></button></sc-if><div class="lt-steps" style="flex:1"><sc-for list="{{ suDots }}" as="d" hint-placeholder-count="5"><span class="{{ d.cls }}"></span></sc-for></div><button class="lt-chip" onClick="{{ suSkip }}" style="background:none">Skip</button></div>
+  <div><h1>{{ suTitle }}</h1><p class="mut" style="margin-top:6px">{{ suSub }}</p></div>
+  <sc-if value="{{ su0 }}">
+  <div class="lt-stage" data-av-stage onClick="{{ avPoke }}"><div class="fig">{{ avatarBig }}</div><div class="floor"></div></div>
+  <div class="lt-tabs" role="tablist"><sc-for list="{{ avTabs }}" as="t" hint-placeholder-count="5"><button role="tab" aria-selected="{{ t.on }}" onClick="{{ t.tap }}">{{ t.label }}</button></sc-for></div>
+  <div class="lt-card">
+    <sc-for list="{{ avGroups }}" as="g" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:13px;font-weight:700;color:#26344d">{{ g.title }}</div>
+        <sc-if value="{{ g.chips }}"><div class="lt-chips"><sc-for list="{{ g.items }}" as="o" hint-placeholder-count="4"><button class="{{ o.cls }}" onClick="{{ o.tap }}">{{ o.label }}</button></sc-for></div></sc-if>
+        <sc-if value="{{ g.sw }}"><div class="lt-sw"><sc-for list="{{ g.items }}" as="o" hint-placeholder-count="6"><button class="{{ o.cls }}" style="{{ o.style }}" onClick="{{ o.tap }}" aria-label="{{ o.label }}"></button></sc-for></div></sc-if>
+      </div>
+    </sc-for>
+  </div>
+  <button class="lt-chip" onClick="{{ restoreInstead }}" style="align-self:center;background:none;color:#2f68b5">I have a backup file to restore</button>
+  </sc-if>
+  <sc-if value="{{ su1 }}">
+  <div class="lt-card">
+    <div class="lt-field"><label for="pf-name">Name</label><input id="pf-name" class="lt-input" type="text" autocomplete="given-name" value="{{ pfName }}" onChange="{{ onName }}" placeholder="What should we call you?"></div>
+    <div class="lt-field"><label>Sex, used for calorie and starting-weight estimates</label><div class="lt-chips"><sc-for list="{{ sexOpts }}" as="o" hint-placeholder-count="2"><button class="{{ o.cls }}" onClick="{{ o.tap }}">{{ o.label }}</button></sc-for></div></div>
+    <div class="lt-row" style="align-items:flex-start"><div class="lt-field"><label for="pf-year">Year born</label><input id="pf-year" class="lt-input" type="number" inputmode="numeric" value="{{ pfYear }}" onChange="{{ onYear }}" placeholder="1995"></div><div class="lt-field"><label for="pf-h">Height (cm)</label><input id="pf-h" class="lt-input" type="number" inputmode="decimal" value="{{ pfHeight }}" onChange="{{ onHeight }}" placeholder="178"></div></div>
+    <div class="lt-field"><label for="pf-w">Weight (kg)</label><div class="lt-row"><input id="pf-w" class="lt-input" type="number" inputmode="decimal" step="0.1" value="{{ pfWeightIn }}" onChange="{{ onWeightIn }}" placeholder="{{ pfWeightPh }}"><sc-if value="{{ showWeightBtn }}"><button class="lt-btn" onClick="{{ saveWeight }}" style="flex:none">Log</button></sc-if></div><span class="sml">{{ pfWeightNote }}</span></div>
+  </div>
+  <div class="lt-card"><h2>How active are you day to day?</h2><sc-for list="{{ actOpts }}" as="o" hint-placeholder-count="4"><button class="{{ o.cls }}" onClick="{{ o.tap }}"><span><b>{{ o.label }}</b><span class="d">{{ o.d }}</span></span></button></sc-for></div>
+  </sc-if>
+  <sc-if value="{{ su2 }}">
+  <sc-for list="{{ goalCards }}" as="o" hint-placeholder-count="5"><button class="{{ o.cls }}" onClick="{{ o.tap }}"><span class="ic"><i class="{{ o.icon }}"></i></span><span><b>{{ o.label }}</b><span class="d">{{ o.d }}</span></span></button></sc-for>
+  </sc-if>
+  <sc-if value="{{ su3 }}">
+  <div class="lt-card"><h2>Training days a week</h2><div class="lt-chips"><sc-for list="{{ dayOpts }}" as="o" hint-placeholder-count="3"><button class="{{ o.cls }}" onClick="{{ o.tap }}">{{ o.label }}</button></sc-for></div><p class="mut">{{ dayNote }}</p></div>
+  <div class="lt-card"><h2>Lifting experience</h2><sc-for list="{{ expOpts }}" as="o" hint-placeholder-count="3"><button class="{{ o.cls }}" onClick="{{ o.tap }}"><span><b>{{ o.label }}</b><span class="d">{{ o.d }}</span></span></button></sc-for><p class="sml">{{ expNote }}</p></div>
+  </sc-if>
+  <sc-if value="{{ su4 }}">
+  <div class="lt-card"><div class="lt-row"><div class="lt-photo" style="width:56px;height:56px">{{ meFace }}</div><div><div style="font-size:18px;font-weight:700">{{ planGoal }}</div><div class="mut">{{ planSplit }}</div></div></div>
+    <sc-for list="{{ suSessions }}" as="x" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:2px;padding-top:10px;border-top:1px solid #e3e9f2"><b style="font-size:15px">{{ x.name }}</b><span class="mut" style="font-size:13px">{{ x.list }}</span></div></sc-for>
+  </div>
+  <div class="lt-card">
+    <div class="lt-row"><h2 style="flex:1">Daily targets</h2><span class="sml" style="font-weight:700">{{ tgtGoal }}</span></div>
+    <sc-if value="{{ tgtReady }}"><div class="lt-tiles"><sc-for list="{{ tgtTiles }}" as="t" hint-placeholder-count="4"><div class="{{ t.cls }}"><span class="k">{{ t.k }}</span><span class="v">{{ t.v }}</span><span class="s">{{ t.s }}</span></div></sc-for></div></sc-if>
+    <sc-if value="{{ tgtNote }}"><p class="mut" style="color:#8a4b00">{{ tgtNote }}</p></sc-if>
+    <sc-if value="{{ tgtMissing }}"><p class="mut">Add your year born, height and weight to see calories and protein worked out for you.</p></sc-if>
+    <p class="sml">{{ tgtHow }}</p>
+    <div style="display:flex;flex-direction:column;gap:10px;padding-top:4px;border-top:1px solid #e3e9f2"><div style="font-size:14px;font-weight:700;padding-top:10px">Why this plan works</div>
+    <sc-for list="{{ goalWhy }}" as="w" hint-placeholder-count="3"><div class="lt-why"><i class="ph ph-seal-check"></i><span>{{ w.text }} <a href="{{ w.url }}" target="_blank" rel="noopener">{{ w.src }}</a></span></div></sc-for></div>
   </div>
   </sc-if>
+  <div class="lt-sticky"><button class="lt-btn full" onClick="{{ suNext }}">{{ suNextLabel }}</button></div>
 </div>
 </sc-if>
 
@@ -470,28 +583,17 @@ input[type=number]{-moz-appearance:textfield}
   </div>
 </div>
 </sc-if>
-<sc-if value="{{ chooseAvatar }}">
-<div class="lmt-view" style="position:fixed;inset:0;background:rgba(5,8,13,0.94);z-index:70;display:flex;align-items:center;justify-content:center;padding:20px">
-  <div style="width:100%;max-width:400px;display:flex;flex-direction:column;gap:16px;text-align:center">
-    <div style="font-size:26px;font-weight:700">Choose your avatar</div>
-    <div style="font-size:14px;color:#9ba9c0;line-height:1.5">It sets the figure in your animations and your starting weights. You can change it later in Program, under Settings.</div>
-    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px"><sc-for list="{{ avatars }}" as="a" hint-placeholder-count="2"><button onClick="{{ a.tap }}" style="{{ a.style }}">{{ a.diagram }}<span style="{{ a.lbl }}">{{ a.label }}</span></button></sc-for></div>
-    <sc-if value="{{ signedOut }}"><button onClick="{{ accountOpen }}" style="height:48px;border-radius:24px;border:1.5px solid #c6f432;background:none;color:#c6f432;font-size:14px;font-weight:700;cursor:pointer">Sign in or create an account</button></sc-if>
-    <button onClick="{{ restoreInstead }}" style="height:48px;border:none;background:none;color:#7cc8ff;font-size:14px;font-weight:700;cursor:pointer">I already have a backup</button>
-  </div>
-</div>
-</sc-if>
 
 <sc-if value="{{ showNav }}" hint-placeholder-val="{{ true }}">
 <nav class="lmt-nav" aria-label="Main">
-  <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5"><button onClick="{{ t.tap }}" class="{{ t.cls }}" aria-current="{{ t.current }}"><span class="ic"><i class="{{ t.icon }}"></i></span>{{ t.label }}</button></sc-for>
+  <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5"><button onClick="{{ t.tap }}" class="{{ t.cls }}" aria-current="{{ t.current }}"><span class="ic">{{ t.svg }}</span>{{ t.label }}</button></sc-for>
 </nav>
 </sc-if>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { view: 'home', data: null, draft: null, now: Date.now(), timer: null, summary: null, ai: null, liftId: null, toast: '', paused: false, howOpen: true, confirm: false, previewIdx: null, openHist: null, savedAt: 0, sheet: null, delId: null, swapSlot: null, infoId: null, skipAvatar: false, bodyInput: '', progTab: 'plan' };
+  state = { view: 'home', data: null, draft: null, now: Date.now(), timer: null, summary: null, ai: null, liftId: null, toast: '', paused: false, howOpen: true, confirm: false, previewIdx: null, openHist: null, savedAt: 0, sheet: null, delId: null, swapSlot: null, infoId: null, skipAvatar: false, bodyInput: '', progTab: 'plan', suStep: 0, avTab: 'body', pfWeightIn: '', avKick: 0 };
   KEY = 'lean-muscle-tracker:v2';
   BLOCK_LEN = 16;
   LIME = '#c6f432';
@@ -506,7 +608,7 @@ class Component extends DCLogic {
     return true;
   }
 
-  dia(key, hero, sex) { const html = window.LMTFig.render(key, sex || this.sexOf(), !!hero); return React.createElement('div', hero ? { ref: el => this.heroEl = el, dangerouslySetInnerHTML: { __html: html } } : { dangerouslySetInnerHTML: { __html: html } }); }
+  dia(key, hero, sex) { const D = this.state.data, look = D && D.avatar ? window.LMTAvatar.look(D.avatar, D.sex) : null, html = window.LMTFig.render(key, look ? look.sex : (sex || this.sexOf()), !!hero, look); return React.createElement('div', hero ? { ref: el => this.heroEl = el, dangerouslySetInnerHTML: { __html: html } } : { dangerouslySetInnerHTML: { __html: html } }); }
   sexOf() { return (this.state.data && this.state.data.sex) || 'male'; }
   // Starting weight for a lift with no data. Once anything is logged, the choice that was
   // active at the first session is fixed, so changing the avatar never moves real weights.
@@ -568,7 +670,7 @@ class Component extends DCLogic {
   }
   lastLog(D, exId) { for (let i = D.history.length - 1; i >= 0; i--) { const e = D.history[i].exercises.find(z => z.id === exId && z.sets.length); if (e) return e; } return null; }
   draftEx(D, slot, e, n) { const [lo, hi] = this.rangeFor(D, slot, e), t = this.targetFor(D, e, lo, hi, slot); return { exId: e.id, lo, hi, tw: t.w, tr: t.r, sets: Array.from({ length: n }, () => ({ w: String(t.w), r: String(t.r), done: false })), rating: 'target', pain: false, note: '' }; }
-  mkDraft(D, idx) { const ex = {}; this.SESS[idx].slots.forEach(slot => { ex[slot.id] = this.draftEx(D, slot, this.exFor(D, slot), Math.max(1, slot.sets - (D.reduceNext ? 1 : 0))); }); return { idx, recovery: null, startedAt: null, cur: 0, ex }; }
+  mkDraft(D, idx) { const ex = {}, newbie = (D.profile || {}).exp === 'new' && D.block === 0; this.SESS[idx].slots.forEach(slot => { ex[slot.id] = this.draftEx(D, slot, this.exFor(D, slot), Math.max(1, slot.sets - (D.reduceNext ? 1 : 0) - (newbie && slot.sets > 2 ? 1 : 0))); }); return { idx, recovery: null, startedAt: null, cur: 0, ex }; }
 
   applySession(D, idx, logs, recovery, when, durMin, noTime) {
     const adj = [], prs = [];
@@ -607,12 +709,13 @@ class Component extends DCLogic {
     const l2 = D.history.slice(-2);
     D.reduceNext = l2.length === 2 && l2.every(h => h.recovery === 'amber' || h.recovery === 'red');
     if (D.reduceNext) adj.push('Recovery was Amber/Red two sessions in a row, so next session runs 1 fewer set per exercise.');
-    D.nextIdx = (idx + 1) % 4; D.blockCount++;
-    if (D.blockCount >= this.BLOCK_LEN) { D.block = (D.block + 1) % 4; D.blockCount = 0; adj.push(`Block complete. Next up is Block ${D.block + 1} · ${this.BLOCKS[D.block].name}: exercises and rep ranges rotate, with starting weights worked out from your current strength.`); }
+    D.nextIdx = this.nextAfter(D, idx); D.blockCount++;
+    if (D.blockCount >= this.blockLen(D)) { D.block = (D.block + 1) % 4; D.blockCount = 0; adj.push(`Block complete. Next up is Block ${D.block + 1} · ${this.BLOCKS[D.block].name}: exercises and rep ranges rotate, with starting weights worked out from your current strength.`); }
     return { adj, prs };
   }
   rebuild(history, keep) {
     const D = this.blank(); D.body = keep.body || []; D.goal = keep.goal || 4;
+    ['profile', 'avatar', 'plan', 'mob'].forEach(k => { if (keep[k]) D[k] = this.clone(keep[k]); });
     if (keep.sex) D.sex = keep.sex;
     if (history.length) D.startSex = keep.startSex || 'male';
     history.forEach(h => this.applySession(D, h.idx, h.exercises.map(e => ({ slot: e.slot, exId: e.id, lo: e.lo, hi: e.hi, planned: e.planned != null ? e.planned : (this.SLOT[e.slot] || {}).sets || e.sets.length, sets: e.sets, rating: e.rating, pain: e.pain, note: e.note })), h.recovery, new Date(h.ts), h.durationMin, h.noTime));
@@ -621,8 +724,65 @@ class Component extends DCLogic {
   }
   seed() { return this.blank(); }
 
+  // ---------- plan, profile and avatar ----------
+  tpl(D) { const T = window.LMT.templates; return (T[(D.plan && D.plan.days) || 4] || T[4]).sessions; }
+  blockLen(D) { return this.tpl(D).length * 4; }
+  nextAfter(D, idx) { const t = this.tpl(D); return t[(t.indexOf(idx) + 1) % t.length]; }
+  prof(D) { return (D && D.profile) || {}; }
+  weightOf(D) { const b = (D.body || []); return b.length ? b[b.length - 1].kg : null; }
+  needsSetup(D) { return !this.prof(D).setup && !D.history.length && !(D.body || []).length; }
+  setProfile(p, extra) { this.setData(D => { D.profile = Object.assign({}, D.profile || {}, p); }, extra); }
+  applyDays(D, n) { D.plan = Object.assign({}, D.plan || {}, { days: n }); D.goal = n; const t = this.tpl(D); if (!t.includes(D.nextIdx)) D.nextIdx = t[0]; D.blockCount = Math.min(D.blockCount, this.blockLen(D) - 1); }
+  redraft(D) { const dr = this.state.draft; return dr && dr.startedAt ? dr : this.mkDraft(D, D.nextIdx); }
+  setDays(n) { const D = this.clone(this.state.data); this.applyDays(D, n); this.setState({ data: D, draft: this.redraft(D), previewIdx: null }, () => this.save()); }
+  setGoal(id) {
+    const D = this.clone(this.state.data), g = window.LMTPlan.GOALS.find(x => x.id === id);
+    D.profile = Object.assign({}, D.profile || {}, { goal: id });
+    if (this.state.view === 'setup' && !(D.plan && D.plan.chosen)) this.applyDays(D, g.days);
+    this.setState({ data: D, draft: this.redraft(D), previewIdx: null }, () => this.save());
+  }
+  setExp(v) { const D = this.clone(this.state.data); D.profile = Object.assign({}, D.profile || {}, { exp: v }); this.setState({ data: D, draft: this.redraft(D) }, () => this.save()); }
+  setEstSex(sex) { const D = this.clone(this.state.data); D.profile = Object.assign({}, D.profile || {}, { sexSet: true }); this.setState({ data: D }, () => this.setSex(sex)); }
+  avatarOf(D) { return window.LMTAvatar.norm(D.avatar, D.sex); }
+  setAv(patch) {
+    const D = this.clone(this.state.data), A = window.LMTAvatar, cur = this.avatarOf(D);
+    if (patch.base && patch.base !== cur.base) { const d = A.defaults(patch.base); patch = Object.assign({ body: d.body, hair: d.hair, top: d.top, bottom: d.bottom, face: 'none' }, patch); }
+    D.avatar = A.norm(Object.assign({}, cur, patch));
+    let draft = this.state.draft;
+    if (patch.base && !this.prof(D).sexSet && !D.history.length && D.sex !== patch.base) { D.sex = patch.base; if (!draft.startedAt && !Object.values(draft.ex).some(x => x.sets.some(z => z.done))) draft = this.mkDraft(D, draft.idx); }
+    this.setState({ data: D, draft, avKick: Date.now() }, () => this.save());
+  }
+  avSvg(a, opt) { const k = JSON.stringify([a, opt]); this._av = this._av || {}; if (!this._av[k]) { if (Object.keys(this._av).length > 40) this._av = {}; this._av[k] = window.LMTAvatar.build(a, opt); } return this._av[k]; }
+  face(D) {
+    const p = this.prof(D);
+    if (p.photo) return React.createElement('img', { src: p.photo, alt: '' });
+    return React.createElement('div', { className: 'av-head', dangerouslySetInnerHTML: { __html: this.avSvg(this.avatarOf(D), { head: true, still: true }) } });
+  }
+  onPhoto(ev) {
+    const f = ev.target.files && ev.target.files[0]; ev.target.value = ''; if (!f) return;
+    const url = URL.createObjectURL(f), img = new Image();
+    img.onload = () => {
+      const n = 240, c = document.createElement('canvas'), m = Math.min(img.width, img.height); c.width = c.height = n;
+      c.getContext('2d').drawImage(img, (img.width - m) / 2, (img.height - m) / 2, m, m, 0, 0, n, n);
+      URL.revokeObjectURL(url); this.setProfile({ photo: c.toDataURL('image/jpeg', 0.82) }, { toast: '' });
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); this.setState({ toast: 'That photo couldn’t be opened. Try a JPG or PNG.' }); };
+    img.src = url;
+  }
+  saveWeight(quiet) {
+    const kg = parseFloat(this.state.pfWeightIn); if (!(kg > 20 && kg < 300)) return false;
+    this.setData(D => { const b = D.body || (D.body = []), last = b[b.length - 1], today = this.melIso(new Date()).slice(0, 10); if (last && this.melIso(new Date(last.ts)).slice(0, 10) === today) last.kg = kg; else b.push({ ts: new Date().toISOString(), kg }); }, { pfWeightIn: '' });
+    return true;
+  }
+  mobToggle(i) { const today = this.melIso(new Date()).slice(0, 10); this.setData(D => { const m = D.mob && D.mob.day === today ? D.mob : { day: today, done: [] }; m.done = m.done.includes(i) ? m.done.filter(x => x !== i) : m.done.concat(i); D.mob = m; }); }
+  startSetup(step) { this.setState({ view: 'setup', suStep: step || 0, avTab: 'body', sheet: null }, () => window.scrollTo(0, 0)); }
+  finishSetup(skipped) {
+    if (!skipped) this.saveWeight(true);
+    this.setData(D => { D.profile = Object.assign({}, D.profile || {}, { setup: skipped ? 'skipped' : true }); if (!D.sex) D.sex = this.avatarOf(D).base; }, { view: 'home', suStep: 0 }); window.scrollTo(0, 0);
+  }
+
   async componentDidMount() {
-    await new Promise(r => { const t = () => window.LMT && window.LMTFig && window.LMTInfo ? r() : setTimeout(t, 30); t(); });
+    await new Promise(r => { const t = () => window.LMT && window.LMTFig && window.LMTInfo && window.LMTPlan && window.LMTAvatar ? r() : setTimeout(t, 30); t(); });
     this.defs();
     const parse = s => { try { return s ? JSON.parse(s) : null; } catch (e) { return null; } };
     let a = null, b = null;
@@ -634,7 +794,7 @@ class Component extends DCLogic {
     if (data.ver !== 3) { data = this.rebuild(data.history || [], data); if (!anyDone(draft)) draft = null; }
     if (draft && draft.startedAt && !anyDone(draft) && !(best && best.v3)) draft.startedAt = null;
     if (!draft || !this.SESS[draft.idx]) draft = this.mkDraft(data, data.nextIdx);
-    this.setState({ data, draft, savedAt: best ? best.savedAt : 0 }, () => this.save());
+    this.setState({ data, draft, savedAt: best ? best.savedAt : 0, view: this.needsSetup(data) ? 'setup' : 'home' }, () => this.save());
     this.iv = setInterval(() => {
       const S = this.state, now = Date.now();
       if (S.timer && now >= S.timer.end) { this.beep(); this.setState({ timer: null, now }); }
@@ -648,7 +808,7 @@ class Component extends DCLogic {
     if (draft.startedAt) this.wake(true);
   }
   componentWillUnmount() { window.removeEventListener('lmt-account', this.acct); clearInterval(this.iv); document.removeEventListener('visibilitychange', this.vis); }
-  componentDidUpdate() { const s = this.heroEl && this.heroEl.querySelector('svg'); if (s && s.pauseAnimations) { if (this.state.paused && !s.animationsPaused()) s.pauseAnimations(); else if (!this.state.paused && s.animationsPaused()) s.unpauseAnimations(); } }
+  componentDidUpdate() { if (this.state.avKick !== this._kick) { this._kick = this.state.avKick; requestAnimationFrame(() => document.querySelectorAll('[data-av-stage]').forEach(el => window.LMTAvatar.react(el))); } const s = this.heroEl && this.heroEl.querySelector('svg'); if (s && s.pauseAnimations) { if (this.state.paused && !s.animationsPaused()) s.pauseAnimations(); else if (!this.state.paused && s.animationsPaused()) s.unpauseAnimations(); } }
   async wake(on) { try { if (on) { if (!this.wl && navigator.wakeLock) this.wl = await navigator.wakeLock.request('screen'); } else if (this.wl) { await this.wl.release(); this.wl = null; } } catch (e) { this.wl = null; } }
   beep() { try { navigator.vibrate && navigator.vibrate([250, 120, 250]); } catch (e) {} try { const c = new (window.AudioContext || window.webkitAudioContext)(), o = c.createOscillator(), g = c.createGain(); o.frequency.value = 880; o.connect(g); g.connect(c.destination); g.gain.setValueAtTime(0.2, c.currentTime); g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.6); o.start(); o.stop(c.currentTime + 0.6); } catch (e) {} }
 
@@ -691,7 +851,7 @@ class Component extends DCLogic {
     try {
       if (!window.claude || !window.claude.complete) throw 0;
       const lines = e.exercises.map(x => `${x.name} (${x.lo}-${x.hi}): ${x.sets.map(s => s.w + 'x' + s.r).join(', ') || 'skipped'} [${x.rating}${x.pain ? ', joint pain' : ''}${x.note ? ', note: ' + x.note : ''}]`).join('\n');
-      const p = `You are a hypertrophy coach. Lifter goal: lean muscle. Session ${e.session}, ${e.durationMin || '?'} min, recovery: ${e.recovery || 'not logged'}.\n${lines}\n\nRule-based changes already applied:\n${adj.join('\n')}\n\nGive at most 3 bullets, each under 22 words and starting with "- ": sanity-check the changes, flag any form or recovery concern, and give one focus cue for next time. Never suggest behind-the-neck presses/pulldowns, narrow-grip upright rows, bench dips, kipping, or heavy conventional deadlifts/back squats to failure.`;
+      const p = `You are a strength coach. Lifter goal: ${((window.LMTPlan.GOALS.find(g => g.id === (this.state.data.profile || {}).goal) || {}).name || 'Build muscle').toLowerCase()}. Session ${e.session}, ${e.durationMin || '?'} min, recovery: ${e.recovery || 'not logged'}.\n${lines}\n\nRule-based changes already applied:\n${adj.join('\n')}\n\nGive at most 3 bullets, each under 22 words and starting with "- ": sanity-check the changes, flag any form or recovery concern, and give one focus cue for next time. Never suggest behind-the-neck presses/pulldowns, narrow-grip upright rows, bench dips, kipping, or heavy conventional deadlifts/back squats to failure.`;
       const t = await window.claude.complete(p);
       this.setState({ ai: { lines: String(t).split('\n').map(s => s.replace(/^[-•*\s]+/, '').trim()).filter(Boolean).slice(0, 3) } });
     } catch (x) { this.setState({ ai: { err: true } }); }
@@ -721,6 +881,87 @@ class Component extends DCLogic {
     };
   }
 
+  icon(k, on) {
+    const c = 'currentColor', bg = '#c6f432', ink = '#0c110a';
+    const st = `fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"`;
+    const svg = {
+      home: on ? `<path d="M4.5 20V11.5a7.5 7.5 0 0 1 15 0V20Z" fill="${c}"/><path d="M10 20v-3.5a2 2 0 0 1 4 0V20" fill="${bg}"/><circle cx="12" cy="10.5" r="1.4" fill="${bg}"/>` : `<path d="M4.5 20V11.5a7.5 7.5 0 0 1 15 0V20Z" ${st}/><path d="M10 20v-3.5a2 2 0 0 1 4 0V20" ${st}/><circle cx="12" cy="10.5" r="1.1" fill="${c}"/>`,
+      train: on ? `<path d="M8.5 9.5a3.5 3.5 0 0 1 7 0" ${st} stroke-width="2.4"/><circle cx="12" cy="15" r="6.2" fill="${c}"/><path d="M9.5 14.5h5" stroke="${bg}" stroke-width="1.8" stroke-linecap="round"/>` : `<path d="M8.5 9.5a3.5 3.5 0 0 1 7 0" ${st}/><circle cx="12" cy="15" r="6" ${st}/><path d="M9.5 14.5h5" ${st}/>`,
+      progress: on ? `<rect x="3.5" y="13" width="4" height="7" rx="2" fill="${c}"/><rect x="10" y="9" width="4" height="11" rx="2" fill="${c}"/><circle cx="18.5" cy="6.5" r="2.6" fill="${c}"/><rect x="16.5" y="11" width="4" height="9" rx="2" fill="${c}"/>` : `<rect x="3.5" y="13" width="4" height="7" rx="2" ${st}/><rect x="10" y="9" width="4" height="11" rx="2" ${st}/><circle cx="18.5" cy="6" r="2" ${st}/><rect x="16.5" y="11" width="4" height="9" rx="2" ${st}/>`,
+      plan: on ? `<rect x="7" y="3" width="13" height="15" rx="3.5" fill="${c}" opacity=".45"/><rect x="4" y="6" width="13" height="15" rx="3.5" fill="${c}"/><path d="M7.5 13.5l2.2 2.2 3.8-4" stroke="${bg}" stroke-width="1.9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>` : `<path d="M8 5.5A2.5 2.5 0 0 1 10.5 3h7A2.5 2.5 0 0 1 20 5.5v9a2.5 2.5 0 0 1-2.5 2.5" ${st}/><rect x="4" y="6" width="13" height="15" rx="3" ${st}/><path d="M7.5 13.5l2.2 2.2 3.8-4" ${st}/>`,
+      profile: on ? `<circle cx="12" cy="8.5" r="5" fill="${c}"/><circle cx="10.2" cy="8.8" r="1" fill="${bg}"/><circle cx="13.8" cy="8.8" r="1" fill="${bg}"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0Z" fill="${c}"/>` : `<circle cx="12" cy="8.5" r="5" ${st}/><circle cx="10.2" cy="8.8" r=".9" fill="${c}"/><circle cx="13.8" cy="8.8" r=".9" fill="${c}"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0" ${st}/>`
+    }[k];
+    return React.createElement('span', { style: { display: 'flex' }, dangerouslySetInnerHTML: { __html: `<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" style="color:${on ? ink : 'currentColor'}">${svg}</svg>` } });
+  }
+
+  personalVals(D, view) {
+    const S = this.state, P = window.LMTPlan, A = window.LMTAvatar, p = this.prof(D), av = this.avatarOf(D);
+    const chip = (on) => on ? 'lt-chip on' : 'lt-chip', opt = on => on ? 'lt-opt on' : 'lt-opt';
+    const goal = P.GOALS.find(g => g.id === p.goal) || P.GOALS[0], days = (D.plan && D.plan.days) || 4, T = window.LMT.templates[days];
+    const w = this.weightOf(D), tg = P.targets(p, w, D.sex || av.base);
+    const link = k => ({ url: P.SRC[k][1], src: P.SRC[k][0] });
+    // avatar editor
+    const O = A.OPTS[av.base], kick = () => {};
+    const list = (key, items) => items.map(([v, label]) => ({ label, cls: chip(av[key] === v), tap: () => this.setAv({ [key]: v }) }));
+    const sw = (key, cols) => cols.map((c, i) => ({ label: `Colour ${i + 1}`, cls: av[key] === i ? 'on' : '', style: { background: c }, tap: () => this.setAv({ [key]: i }) }));
+    const tab = S.avTab || 'body';
+    const groups = {
+      body: [{ title: 'Avatar', chips: true, items: [['male', 'Male'], ['female', 'Female']].map(([v, label]) => ({ label, cls: chip(av.base === v), tap: () => this.setAv({ base: v }) })) }, { title: 'Body type', chips: true, items: list('body', O.body) }, { title: av.base === 'male' ? 'Facial hair' : 'Face', chips: true, items: list('face', O.face) }],
+      skin: [{ title: 'Skin tone', sw: true, items: sw('skin', A.SKIN) }],
+      hair: [{ title: 'Hairstyle', chips: true, items: list('hair', O.hair) }, { title: 'Hair colour', sw: true, items: sw('hairCol', A.HAIRC) }],
+      outfit: [{ title: 'Top', chips: true, items: list('top', O.top) }, { title: 'Top colour', sw: true, items: sw('topCol', A.CLOTH) }, { title: 'Bottoms', chips: true, items: list('bottom', O.bottom) }, { title: 'Bottoms colour', sw: true, items: sw('botCol', A.CLOTH) }, { title: 'Shoes', sw: true, items: sw('shoeCol', A.CLOTH) }],
+      extras: [{ title: 'Accessories', chips: true, items: A.OPTS.acc.map(([v, label]) => ({ label, cls: chip(av.acc.includes(v)), tap: () => this.setAv({ acc: av.acc.includes(v) ? av.acc.filter(x => x !== v) : av.acc.concat(v) }) })) }]
+    }[tab].map(g => Object.assign({ chips: false, sw: false }, g));
+    // targets
+    const tiles = !tg.ready ? [] : tg.adultOnly ? [
+      { cls: 'lt-tile t-mint', k: 'Protein', v: `${tg.protein} g`, s: 'a day' }, { cls: 'lt-tile t-sky', k: 'Steps', v: `${(tg.stepsLo / 1000)}–${tg.stepsHi / 1000}k`, s: 'a day' }, { cls: 'lt-tile t-sand', k: 'Cardio', v: tg.cardio, s: 'moderate, a week' }
+    ] : [
+      { cls: 'lt-tile t-lime', k: 'Calories', v: tg.kcal.toLocaleString(), s: tg.rate ? `${tg.rate > 0 ? '+' : ''}${tg.rate} kg a week` : 'maintenance' },
+      { cls: 'lt-tile t-mint', k: 'Protein', v: `${tg.protein} g`, s: 'a day' },
+      { cls: 'lt-tile t-sky', k: 'Steps', v: `${(tg.stepsLo / 1000)}–${tg.stepsHi / 1000}k`, s: 'a day' },
+      { cls: 'lt-tile t-sand', k: 'Cardio', v: tg.cardio, s: 'moderate, a week' }
+    ];
+    const how = !tg.ready ? '' : tg.adultOnly ? 'Calorie targets are only given for adults.' : `Maintenance is about ${tg.maintain.toLocaleString()} kcal a day, worked out with the Mifflin-St Jeor equation, the most accurate of the common formulas. It’s an estimate: if your weight isn’t moving as planned after 2–3 weeks, adjust by 100–200 kcal.`;
+    const why = goal.why.map(([text, k]) => Object.assign({ text }, link(k)));
+    if (tg.ready && !tg.adultOnly) why.push(Object.assign({ text: 'Calorie estimate source:' }, link('bmr')));
+    // mobility
+    const today = this.melIso(new Date()).slice(0, 10), mdone = D.mob && D.mob.day === today ? D.mob.done : [];
+    const mob = P.MOBILITY.map(([name, how2, sec, sides], i) => { const on = mdone.includes(i); return { name, how: how2, hold: `${sec} s${sides ? ' each side' : ''}`, tap: () => this.mobToggle(i), style: { display: 'flex', alignItems: 'center', gap: 12, padding: '10px 0', background: 'none', border: 'none', borderTop: '1px solid #1f2b42', color: '#f2f6fd', cursor: 'pointer', width: '100%' }, box: { width: 28, height: 28, flex: 'none', borderRadius: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15, border: on ? 'none' : '1.5px solid #35486c', background: on ? this.LIME : 'none', color: on ? '#0c110a' : 'transparent' } }; });
+    // setup steps
+    const st = S.suStep || 0, titles = [['Make your avatar', 'Pick a look. It also does every exercise demo for you.'], ['About you', 'Used to work out your calorie, protein and step targets. Only you can see it.'], ['What’s your goal?', 'Your plan, targets and tips change with it. You can switch any time.'], ['Your week', 'How often you can train, and how long you’ve been lifting.'], ['Your plan is ready', 'Built from current research. Tap a source to read it.']];
+    const nextSetup = () => { if (st === 1) this.saveWeight(true); if (st < 4) this.setState({ suStep: st + 1 }, () => window.scrollTo(0, 0)); else this.finishSetup(false); };
+    const planSplit = `${days} days a week · ${T.name}: ${T.sessions.map(i => this.SESS[i].name).join(', ')}`;
+    return {
+      meFace: this.face(D), meName: p.name || 'Your profile', meSub: `${goal.name} · ${days} days a week`,
+      avatarBig: React.createElement('div', { style: { width: '100%', height: '100%' }, dangerouslySetInnerHTML: { __html: this.avSvg(av, {}) } }),
+      avPoke: () => this.setState({ avKick: Date.now() }), openStudio: () => this.setState({ view: 'avatar', avTab: 'body' }, () => window.scrollTo(0, 0)), avBack: () => this.go('profile'),
+      avTabs: [['body', 'Body'], ['skin', 'Skin'], ['hair', 'Hair'], ['outfit', 'Outfit'], ['extras', 'Extras']].map(([k, label]) => ({ label, on: String(tab === k), tap: () => this.setState({ avTab: k }) })),
+      avGroups: groups,
+      hasPhoto: !!p.photo, photoLabel: p.photo ? 'Change photo' : 'Add photo', onPhoto: ev => this.onPhoto(ev), removePhoto: () => this.setProfile({ photo: null }),
+      pfName: p.name || '', onName: ev => this.setProfile({ name: ev.target.value.slice(0, 40) }),
+      pfYear: p.birthYear || '', onYear: ev => { const y = parseInt(ev.target.value, 10); this.setProfile({ birthYear: y > 1920 && y <= P.yearNow() - 10 ? y : (ev.target.value ? p.birthYear || null : null) }); },
+      pfHeight: p.height || '', onHeight: ev => { const h = parseFloat(ev.target.value); this.setProfile({ height: h > 100 && h < 250 ? h : (ev.target.value ? p.height || null : null) }); },
+      pfWeightIn: S.pfWeightIn, onWeightIn: ev => this.setState({ pfWeightIn: ev.target.value }), pfWeightPh: w ? this.fw(w) : '80', showWeightBtn: view === 'profile', saveWeight: () => this.saveWeight(),
+      pfWeightNote: w ? `Last logged ${this.fw(w)} kg. Updating it here also adds to your weight chart.` : 'Saved to your weight chart in Progress.',
+      sexOpts: [['male', 'Male'], ['female', 'Female']].map(([v, label]) => ({ label, cls: chip((D.sex || av.base) === v), tap: () => this.setEstSex(v) })),
+      actOpts: P.ACTIVITY.map(([v, label, d]) => ({ label, d, cls: opt((p.activity || 'light') === v), tap: () => this.setProfile({ activity: v }) })),
+      goalCards: P.GOALS.map(g => ({ label: g.name, d: g.line, icon: `ph ph-${g.icon}`, cls: opt(goal.id === g.id && !!p.goal || (!p.goal && g.id === 'muscle' && view !== 'setup')), tap: () => this.setGoal(g.id) })),
+      dayOpts: [2, 3, 4].map(n => ({ label: `${n} days`, cls: chip(days === n), tap: () => { this.setDays(n); this.setData(DD => { DD.plan = Object.assign({}, DD.plan, { chosen: true }); }); } })),
+      dayNote: days === 4 ? 'Upper / lower split: each muscle trained twice a week across four sessions.' : `Full-body sessions: every major muscle trained ${days === 3 ? 'three' : 'two'} times a week, which meets the twice-a-week guideline.`,
+      expOpts: P.EXPERIENCE.map(([v, label, d]) => ({ label, d, cls: opt((p.exp || 'some') === v), tap: () => this.setExp(v) })),
+      expNote: (p.exp || 'some') === 'new' ? 'Your first block runs one set fewer on bigger lifts while you learn them.' : 'Sets stay at the full program volume.',
+      tgtGoal: goal.name, tgtReady: tg.ready, tgtMissing: !tg.ready, tgtTiles: tiles, tgtNote: tg.note || '', tgtHow: how, goalWhy: why,
+      homeTgt: tg.ready && !!p.setup && view === 'home', homeTiles: tiles.slice(0, 3).map(t => ({ k: t.k, v: t.v, style: { borderRadius: 14, padding: '10px 12px', background: { 'lt-tile t-lime': '#e4f7a6', 'lt-tile t-mint': '#d3f5ea', 'lt-tile t-sky': '#d7ebff', 'lt-tile t-sand': '#efe5d2' }[t.cls], color: '#0f1a2c' } })),
+      showPersonal: !p.setup && view === 'home', startSetup: () => this.startSetup(0), redoSetup: () => this.startSetup(0),
+      homeMob: goal.id === 'active' && !!p.goal, mobList: mob, mobSub: `${mdone.length}/${P.MOBILITY.length} done today · about 7 min`, mobWhy: 'Hold each stretch to mild tightness, not pain. Daily gives the most gain; 2–3 days a week still helps.',
+      planGoal: goal.name, planSplit, planIntro: `Every ${this.blockLen(D)} sessions (about 4–5 weeks) the exercises and rep ranges change, with new starting weights worked out from your strength.`,
+      suSessions: T.sessions.map(i => ({ name: this.SESS[i].name, list: this.SESS[i].slots.map(sl => this.exFor(D, sl).name.split(' (')[0]).join(' · ') })),
+      su0: st === 0, su1: st === 1, su2: st === 2, su3: st === 3, su4: st === 4, suTitle: titles[st][0], suSub: titles[st][1], suBackOn: st > 0,
+      suDots: [0, 1, 2, 3, 4].map(i => ({ cls: i <= st ? 'on' : '' })), suBack: () => this.setState({ suStep: Math.max(0, st - 1) }), suSkip: () => this.finishSetup(true),
+      suNext: nextSetup, suNextLabel: st === 4 ? 'Start training' : 'Continue'
+    };
+  }
+
   renderVals() {
     const S = this.state, D = S.data, dr = S.draft;
     if (!this.defs() || !D || !dr) return { isHome: false, isWorkout: false, isSummary: false, isProgress: false, isHistory: false, isProgram: false, showNav: false, confirmOpen: false, sheetSession: false, sheetSwap: false, sheetDel: false };
@@ -737,7 +978,7 @@ class Component extends DCLogic {
       return { dow: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][i], date: d.getUTCDate(), lbl: { fontSize: 14, color: today ? this.LIME : '#cdd8eb', fontWeight: 500 }, ring: { width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 600, border: `2px solid ${done ? this.LIME : today ? '#35486c' : 'transparent'}`, color: today ? this.LIME : '#f2f6fd', background: done ? 'rgba(198,244,50,0.08)' : 'transparent' } };
     });
     const pIdx = S.previewIdx == null ? dr.idx : S.previewIdx;
-    const sessChips = this.SESS.map((s, i) => ({ label: i === dr.idx ? `${s.name} · next` : s.name, icon: s.name.startsWith('Upper') ? 'ph ph-hand-fist' : 'ph ph-person-simple-walk', style: pill(i === pIdx), tap: () => this.setState({ previewIdx: i }) }));
+    const T = this.tpl(D); const sessChips = T.map(i => [this.SESS[i], i]).map(([s, i]) => ({ label: i === dr.idx ? `${s.name} · next` : s.name, icon: s.name.startsWith('Upper') ? 'ph ph-hand-fist' : s.name.startsWith('Full') ? 'ph ph-person-arms-spread' : 'ph ph-person-simple-walk', style: pill(i === pIdx), tap: () => this.setState({ previewIdx: i }) }));
     const previewCards = this.SESS[pIdx].slots.map((slot, k) => { const e = pIdx === dr.idx ? this.EX[dr.ex[slot.id].exId] : this.exFor(D, slot), [lo, hi] = this.rangeFor(D, slot, e); return { name: e.name, meta: `${slot.sets} × ${lo}–${hi}`, diagram: this.dia(e.dg), tap: () => pIdx === dr.idx ? this.openWorkout(k) : this.setState({ previewIdx: pIdx }) }; });
     const recentHome = [...H].reverse().slice(0, 3).map(h => ({ tap: () => this.setState({ openHist: h.id }, () => this.go('history')), name: h.session, when: `${dateLbl(h)} · ${this.vol(h).toLocaleString()} kg`, big: h.durationMin || '', unit: h.durationMin ? 'min' : '' }));
     let tot = 0, done = 0; sess.slots.forEach(s => dr.ex[s.id].sets.forEach(z => { tot++; if (z.done) done++; }));
@@ -793,19 +1034,20 @@ class Component extends DCLogic {
     const lockList = Object.keys(D.locks).map(sid => { const sl = this.SLOT[sid]; return { text: `${this.EX[sl.opts[D.locks[sid]]].name} replaces ${this.EX[sl.opts[B.v]].name}`, tap: () => this.setData(d => { delete d.locks[sid]; delete d.mlocks[sid]; }) }; });
 
     return {
-      isHome: view === 'home', isWorkout: view === 'workout', isSummary: view === 'summary', isProgress: view === 'progress', isHistory: view === 'history', isProgram: view === 'program', showNav: view !== 'workout',
-      greet: hr < 12 ? 'Good morning' : hr < 18 ? 'Good afternoon' : 'Good evening', blockLabel: `Block ${D.block + 1}: ${B.name}`, weekGoal: `${weekCount}/${D.goal || 4}`,
+      isHome: view === 'home', isWorkout: view === 'workout', isSummary: view === 'summary', isProgress: view === 'progress', isHistory: view === 'history', isProgram: view === 'program', isProfile: view === 'profile', isAvatar: view === 'avatar', isSetup: view === 'setup', showNav: !['workout', 'avatar', 'setup'].includes(view),
+      greet: (hr < 12 ? 'Good morning' : hr < 18 ? 'Good afternoon' : 'Good evening') + (this.prof(D).name ? `, ${this.prof(D).name.trim().split(' ')[0]}` : ''), blockLabel: `Block ${D.block + 1}: ${B.name}`, weekGoal: `${weekCount}/${D.goal || 4}`,
       heroTitle: sess.name, heroSub: started ? `In progress · ${Math.floor((now - dr.startedAt) / 60000)} min · ${done}/${tot} sets` : `${sess.slots.length} exercises · ${tot} sets`, heroBtn: started ? 'Resume' : 'Start',
       heroTap: () => started ? this.go('workout') : this.startSession(), heroStarted: started,
       restartSession: () => this.restartSession(), discardSession: () => this.discardSession(),
       showSwitch: pIdx !== dr.idx, switchLabel: started ? `Switch to ${this.SESS[pIdx].name} (discards the session in progress)` : `Do ${this.SESS[pIdx].name} today instead`, doSwitch: () => this.switchSession(pIdx),
       startWorkout: () => this.openWorkout(), week, sessChips, previewCards, recentHome,
-      goHome: () => this.go('home'), goHistory: () => this.go('history'), goProgress: () => this.go('progress'), goProgram: () => this.go('program'), goSettings: () => this.setState({ progTab: 'settings' }, () => this.go('program')),
+      goHome: () => this.go('home'), goHistory: () => this.go('history'), goProgress: () => this.go('progress'), goProgram: () => this.go('program'), goProfile: () => this.go('profile'), goSettings: () => this.setState({ progTab: 'settings' }, () => this.go('program')),
       planOn: S.progTab === 'plan', settingsOn: S.progTab === 'settings', showPlan: () => this.setState({ progTab: 'plan' }), showSettings: () => this.setState({ progTab: 'settings' }),
       initial: window.LMTAccount.email().slice(0, 1).toUpperCase(), noInitial: !window.LMTAccount.email(),
       posLabel: `Exercise ${ci + 1} of ${sess.slots.length}`,
       workoutPad: { padding: `0 16px ${tm ? 200 : 130}px`, display: 'flex', flexDirection: 'column', gap: 16 },
-      tabs: [['home', 'Home', 'house', () => this.go('home')], ['workout', 'Workout', 'barbell', () => this.openWorkout()], ['progress', 'Progress', 'chart-bar', () => this.go('progress')], ['history', 'History', 'clock-counter-clockwise', () => this.go('history')], ['program', 'Program', 'stack', () => this.setState({ progTab: 'plan' }, () => this.go('program'))]].map(([k, label, icon, tap]) => { const on = view === k || (k === 'home' && view === 'summary'); return { label, tap, cls: on ? 'on' : '', current: on ? 'page' : 'false', icon: `${on ? 'ph-fill' : 'ph'} ph-${icon}` }; }),
+      tabs: [['home', 'Home', () => this.go('home')], ['train', 'Train', () => this.openWorkout()], ['progress', 'Progress', () => this.go('progress')], ['plan', 'Plan', () => this.go('program')], ['profile', 'Profile', () => this.go('profile')]].map(([k, label, tap]) => { const on = { home: view === 'home' || view === 'summary', train: false, progress: view === 'progress' || view === 'history', plan: view === 'program', profile: view === 'profile' }[k]; return { label, tap, cls: on ? 'on' : '', current: on ? 'page' : 'false', svg: this.icon(k, on) }; }),
+      ...this.personalVals(D, view),
       wTitle: sess.name, elapsed: started ? this.dur(now - dr.startedAt) : 'Not started', savedText: savedT ? `Saved ${savedT}` : 'Auto-save on',
       openMenu: () => this.setState({ sheet: 'session' }),
       recoveryOpts, recoveryNote: dr.recovery ? recLab[dr.recovery] : 'Optional check-in',
@@ -826,7 +1068,7 @@ class Component extends DCLogic {
       sessStatus: started ? `${sess.name} · running ${this.dur(now - dr.startedAt)} · ${done}/${tot} sets ticked` : `${sess.name} · not started yet`,
       resumeLabel: started ? 'Resume session' : 'Start session', resumeTap: () => started ? this.setState({ sheet: null }) : this.startSession(),
       btnLime: sheetBtn('lime'), btnPlain: sheetBtn('plain'), btnRed: sheetBtn('red'),
-      sessOpts: this.SESS.map((s, i) => ({ label: i === dr.idx ? `${s.name} · current` : i === D.nextIdx ? `${s.name} · next in rotation` : s.name, tap: () => i !== dr.idx && this.switchSession(i), style: Object.assign(pill(i === dr.idx), { width: '100%', justifyContent: 'space-between', flexShrink: 0 }) })),
+      sessOpts: T.map(i => [this.SESS[i], i]).map(([s, i]) => ({ label: i === dr.idx ? `${s.name} · current` : i === D.nextIdx ? `${s.name} · next in rotation` : s.name, tap: () => i !== dr.idx && this.switchSession(i), style: Object.assign(pill(i === dr.idx), { width: '100%', justifyContent: 'space-between', flexShrink: 0 }) })),
       swapSub: swSlot ? `Same muscles: ${this.EX[swCur].mus}. Use one if the machine is taken or the exercise doesn’t feel right today.` : '', swapOpts,
       delText: delH ? `${delH.session} · ${dateLbl(delH)}. Your targets are recalculated from the sessions that remain.` : '', confirmDel: () => delH && this.deleteSession(delH.id),
       sumTitle: sm.name, sumWhen: sm.when + ' · Melbourne', sumStats: [{ label: 'Duration', val: sm.dur ? `${sm.dur} min` : '—' }, { label: 'Volume', val: `${sm.vol.toLocaleString()} kg` }, { label: 'Sets', val: sm.sets }],
@@ -842,8 +1084,8 @@ class Component extends DCLogic {
       bodyChart: this.chart(body.slice(-8).map(b => ({ x: short(b.ts), v: b.kg })), 'body'),
       histList: [...H].reverse().map(h => ({ name: h.session, when: dateLbl(h) + (h.noTime ? ' · baseline' : ''), vol: `${this.vol(h).toLocaleString()} kg`, dur: h.durationMin ? `${h.durationMin} min` : '', open: S.openHist === h.id, tap: () => this.setState({ openHist: S.openHist === h.id ? null : h.id }), delTap: () => this.setState({ sheet: 'del', delId: h.id }), dot: { width: 12, height: 12, borderRadius: '50%', flex: 'none', background: h.recovery ? this.RC[h.recovery] : '#35486c' }, details: h.exercises.map(e => ({ name: e.name, sets: (e.sets.map(s => `${this.fw(s.w)}×${s.r}`).join(' · ') || 'skipped') + ` · ${lab[e.rating][0]}${e.pain ? ' · joint pain' : ''}${e.note ? ' · ' + e.note : ''}` })) })),
       exportCsv: () => this.exportCsv(), toast: S.toast,
-      blocks: this.BLOCKS.map((b, i) => ({ title: `Block ${i + 1} · ${b.name}`, desc: b.desc, status: i === D.block ? `Now · ${D.blockCount}/${this.BLOCK_LEN}` : 'Rotates in automatically', style: { borderRadius: 24, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 8, background: i === D.block ? 'rgba(198,244,50,0.07)' : '#121a29', border: `1.5px solid ${i === D.block ? this.LIME : 'transparent'}` }, bar: { height: '100%', background: this.LIME, width: i === D.block ? `${D.blockCount / this.BLOCK_LEN * 100}%` : '0%' } })),
-      progSessions: this.SESS.map(s => ({ name: s.name, items: s.slots.map(sl => { const e = this.exFor(D, sl), [lo, hi] = this.rangeFor(D, sl, e), t = this.targetFor(D, e, lo, hi, sl); return { info: () => this.openInfo(this.exFor(D, sl).id), name: e.name, scheme: `${sl.sets}×${lo}–${hi} · ${this.fw(t.w)} kg` }; }) })),
+      blocks: this.BLOCKS.map((b, i) => ({ title: `Block ${i + 1} · ${b.name}`, desc: b.desc, status: i === D.block ? `Now · ${D.blockCount}/${this.blockLen(D)}` : 'Rotates in automatically', style: { borderRadius: 24, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 8, background: i === D.block ? 'rgba(198,244,50,0.07)' : '#121a29', border: `1.5px solid ${i === D.block ? this.LIME : 'transparent'}` }, bar: { height: '100%', background: this.LIME, width: i === D.block ? `${D.blockCount / this.BLOCK_LEN * 100}%` : '0%' } })),
+      progSessions: T.map(i => this.SESS[i]).map(s => ({ name: s.name, items: s.slots.map(sl => { const e = this.exFor(D, sl), [lo, hi] = this.rangeFor(D, sl, e), t = this.targetFor(D, e, lo, hi, sl); return { info: () => this.openInfo(this.exFor(D, sl).id), name: e.name, scheme: `${sl.sets}×${lo}–${hi} · ${this.fw(t.w)} kg` }; }) })),
       goalOpts: [3, 4].map(n => ({ label: `${n} sessions / week`, style: Object.assign(pill((D.goal || 4) === n), { flex: 1, justifyContent: 'center' }), tap: () => this.setData(d => { d.goal = n; }) })),
       safeguards: [{ text: 'Double progression: when you hit the top of the rep range at Easy or Target, the load goes up 2.5–5%.' }, { text: 'Rated Hard twice in a row, or under the rep range twice in a row, cuts the load by 5%.' }, { text: D.reduceNext ? 'Recovery safeguard ACTIVE: next session runs 1 fewer set per exercise.' : 'Recovery Amber/Red two sessions in a row removes 1 set per exercise for the next session.' }, { text: 'Joint pain flagged twice swaps in a joint-friendly alternative. Never prescribed: behind-the-neck presses/pulldowns, narrow upright rows, bench dips, kipping, or heavy deadlifts/back squats to failure.' }, { text: 'A lift you haven’t logged yet starts from an estimate, so correct the weight the first time you do it.' }],
       locks: lockList,
@@ -855,7 +1097,7 @@ class Component extends DCLogic {
       backup: () => this.backup(), restore: ev => this.restore(ev),
       sheetInfo: S.sheet === 'info' && !!this.EX[S.infoId], info: this.infoVals(S.infoId),
       chooseAvatar: !S.skipAvatar && !D.sex && !D.history.length && !(D.body || []).length,
-      restoreInstead: () => this.setState({ skipAvatar: true, progTab: 'settings' }, () => this.go('program')),
+      restoreInstead: () => this.setProfile({ setup: 'skipped' }, { view: 'profile' }),
       avatars: ['male', 'female'].map(k => { const on = D.sex === k || (!D.sex && D.history.length > 0 && k === 'male'); return { label: k === 'male' ? 'Male' : 'Female', diagram: this.dia('hammer', false, k), tap: () => this.setSex(k), style: { padding: 8, borderRadius: 22, cursor: 'pointer', background: '#121a29', border: `2px solid ${on ? this.LIME : 'transparent'}`, display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'stretch' }, lbl: { fontSize: 15, fontWeight: 700, color: on ? this.LIME : '#cdd8eb' } }; }),
       avatarNote: D.history.length ? 'Changes the figure only. Your weights come from your logged history.' : 'Also sets your starting weights. Female ones are estimates: about 55% (upper body) and 65% (lower body and abs) of the male starting points.',
       sexUrl: window.LMTInfo.sources.sexstr[1], sexLink: D.history.length ? '' : 'Why',

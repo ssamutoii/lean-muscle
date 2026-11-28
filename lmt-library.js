@@ -72,7 +72,13 @@
   { name: 'Lower A', slots: [S('la1', 3, 8, 10, '2-3m', ['legPress','smithSquat','pendulum','goblet']), S('la2', 3, 8, 10, '2-3m', ['rdl','hipExt','dbRdl','smithRdl']), S('la3', 3, 10, 12, '90s', ['seatedLegCurl','slSeatedCurl','lyingCurl','standCurl']), S('la4', 3, 12, 15, '60s', ['standCalf','lpCalf','seatedCalf','slCalf']), S('la5', 3, 12, 15, '60s', ['cableCrunch','revCrunch','hanging','captain'])] },
   { name: 'Upper B', slots: [S('ub1', 3, 8, 10, '2-3m', ['flatPress','machPress','smithFlat','pushup']), S('ub2', 3, 10, 12, '2m', ['seatedRow','wideRow','chestRow','machRow']), S('ub3', 3, 8, 10, '2-3m', ['ohp','machOhp','smithOhp','arnold']), S('ub4', 3, 12, 15, '60-90s', ['facePull','revPec','csRearFly','cableRearFly']), S('ub5', 2, 10, 12, '60-90s', ['preacher','hammer','incCurl','bayesian']), S('ub6', 2, 10, 12, '60-90s', ['pushdown','rgPushdown','ohTri','ohDbTri'])] },
   { name: 'Lower B', slots: [S('lb1', 3, 8, 10, '2-3m', ['split','ffeSplit','legPress','goblet']), S('lb2', 3, 10, 12, '90s', ['lyingCurl','standCurl','seatedLegCurl','slSeatedCurl']), S('lb3', 3, 12, 15, '60-90s', ['legExt','slLegExt','lpLow','goblet']), S('lb4', 3, 12, 15, '60s', ['seatedCalf','slCalf','standCalf','lpCalf']), S('lb5', 3, 10, 15, '60s', ['hanging','captain','cableCrunch','revCrunch'])] }
+    // Full body, for 2 or 3 training days a week: every major muscle at least twice a week
+  ,{ name: 'Full Body A', slots: [S('fa1', 3, 8, 10, '2-3m', ['legPress','smithSquat','pendulum','goblet']), S('fa2', 3, 8, 10, '2-3m', ['incPress','incMachPress','incSmith','nIncDb']), S('fa3', 3, 8, 10, '2-3m', ['chestRow','machRow','saRow','seatedRow']), S('fa4', 2, 8, 10, '2m', ['rdl','hipExt','dbRdl','smithRdl']), S('fa5', 2, 12, 15, '60-90s', ['lateral','dbLateral','machLateral','cableY']), S('fa6', 2, 10, 15, '60s', ['cableCrunch','revCrunch','hanging','captain'])] },
+  { name: 'Full Body B', slots: [S('fb1', 3, 8, 10, '2-3m', ['split','ffeSplit','legPress','goblet']), S('fb2', 3, 10, 12, '2m', ['pulldown','saPulldown','widePulldown','pullup']), S('fb3', 3, 8, 10, '2-3m', ['flatPress','machPress','smithFlat','pushup']), S('fb4', 2, 10, 12, '90s', ['seatedLegCurl','slSeatedCurl','lyingCurl','standCurl']), S('fb5', 2, 12, 15, '60-90s', ['facePull','revPec','csRearFly','cableRearFly']), S('fb6', 2, 10, 12, '60-90s', ['preacher','hammer','incCurl','bayesian'])] },
+  { name: 'Full Body C', slots: [S('fc1', 3, 8, 10, '2-3m', ['goblet','smithSquat','legPress','pendulum']), S('fc2', 3, 8, 10, '2-3m', ['ohp','machOhp','smithOhp','arnold']), S('fc3', 3, 10, 12, '2m', ['seatedRow','wideRow','chestRow','machRow']), S('fc4', 2, 8, 10, '2m', ['hipExt','rdl','dbRdl','smithRdl']), S('fc5', 2, 10, 12, '60-90s', ['ohTri','ohDbTri','saOhTri','pushdown']), S('fc6', 2, 12, 15, '60s', ['standCalf','lpCalf','seatedCalf','slCalf'])] }
   ];
+  // which sessions rotate for each number of training days a week
+  const templates = { 4: { name: 'Upper / Lower', sessions: [0, 1, 2, 3] }, 3: { name: 'Full Body', sessions: [4, 5, 6] }, 2: { name: 'Full Body', sessions: [4, 5] } };
   const blocks = [
     { name: 'Foundation', v: 0, rep: null, desc: 'Your base program. Learn the lifts and build the log.' },
     { name: 'Variation', v: 1, rep: null, desc: 'Same movement patterns, new exercises that hit the muscles from fresh angles.' },
@@ -176,5 +182,5 @@
   };
   const OWN = ["incMachPress","incSmith","nIncDb","machRow","saPulldown","widePulldown","cableY","machLateral","saOhTri","lpLow","pendulum","goblet","dbRdl","smithRdl","slSeatedCurl","smithFlat","wideRow","machOhp","smithOhp","arnold","csRearFly","cableRearFly","rgPushdown","slLegExt"];
   exercises.forEach(e => { if (OWN.includes(e.id)) e.dg = e.id; });
-  window.LMT = { exercises, sessions, blocks, DG: (S, O) => Object.assign(DG(S, O), distinct(S, O)) };
+  window.LMT = { exercises, sessions, blocks, templates, DG: (S, O) => Object.assign(DG(S, O), distinct(S, O)) };
 })();

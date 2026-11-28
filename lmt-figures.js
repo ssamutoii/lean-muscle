@@ -25,11 +25,23 @@
     return out;
   };
 
-  const C = {
+  const C0 = {
     skin: '#e8eef7', far: '#5c6a80', hairM: '#8a6248', hairF: '#c4825a', teeM: '#9fc3ee', shortM: '#2f68b5', topF: '#43c3c9', legF: '#2f68b5',
     farCloth: '#1d355a', shoe: '#f5f9ff', farShoe: '#33415c', line: '#17253f', steel: '#7290b6', steelD: '#46607f', pad: '#33507c', padD: '#243a5c',
     cable: '#58bbff', bell: '#274d80', bellEdge: '#93c9ff', hot: '#c6f432'
   };
+
+  let C = C0, K = null;
+  const hx = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const mix = (a, b, t) => '#' + hx(a).map((v, i) => Math.round(v + (hx(b)[i] - v) * t).toString(16).padStart(2, '0')).join('');
+  const clampK = v => Math.max(.85, Math.min(1.3, v || 1));
+  // dress the figure like the person's avatar
+  function wear(look) {
+    if (!look) { C = C0; K = null; return; }
+    C = Object.assign({}, C0, { skin: look.skin, hairM: look.hair, hairF: look.hair, teeM: look.top, topF: look.top, shortM: look.bottom, legF: look.bottom, shoe: look.shoe,
+      far: mix(look.skin, '#16263f', .5), farCloth: mix(look.bottom, '#16263f', .55), farShoe: mix(look.shoe, '#16263f', .6) });
+    K = { arm: clampK(look.arm), leg: clampK(look.leg), torso: clampK(look.torso), legs: look.legsCovered, armsFull: look.armsCovered, sleeves: look.sleeves, midriff: look.midriff, hair: look.hairStyle };
+  }
 
   function Scene(sex) {
     const items = [], fem = sex === 'female';
@@ -81,46 +93,47 @@
         if (!l) return;
         const hip = far ? add(p.hip, 7, -4) : p.hip, k = far ? add(l.knee, 9, -4) : l.knee, a = far ? add(l.ank, 10, -2) : l.ank;
         const toe = l.toe ? (far ? add(l.toe, 10, -2) : l.toe) : add(a, 18 * (l.dir || face), 5);
-        const x = far ? {} : OL, skin = far ? C.far : C.skin, cloth = far ? C.farCloth : (fem ? C.legF : C.shortM);
-        S.cap(hip, k, fem ? 14 : 14, fem ? 8 : 9, fem ? cloth : skin, x);
-        S.cap(k, a, fem ? 8 : 9.5, fem ? 4.5 : 5.5, fem ? cloth : skin, x);
-        if (fem) S.cap(P(k, a, .86), a, 4.8, 4.5, skin);
-        else S.cap(hip, P(hip, k, .56), 14.8, 11, cloth, x);
+        const x = far ? {} : OL, skin = far ? C.far : C.skin, cloth = far ? C.farCloth : (fem ? C.legF : C.shortM), kl = K ? K.leg : 1, cov = K ? K.legs : fem;
+        S.cap(hip, k, 14 * kl, (fem ? 8 : 9) * kl, cov ? cloth : skin, x);
+        S.cap(k, a, (fem ? 8 : 9.5) * kl, fem ? 4.5 : 5.5, cov ? cloth : skin, x);
+        if (cov) S.cap(P(k, a, .86), a, 4.8, 4.5, skin);
+        else S.cap(hip, P(hip, k, fem ? .5 : .56), 14.8 * kl, 11 * kl, cloth, x);
         S.cap(a, toe, 6.2, 4.2, far ? C.farShoe : C.shoe, x);
       };
       const arm = (m, far) => {
         if (!m) return;
         const sh = far ? add(p.sh, 8, -4) : p.sh, e = far ? add(m.el, 9, -4) : m.el, h = far ? add(m.ha, 9, -4) : m.ha;
         const x = far ? {} : OL, skin = far ? C.far : C.skin;
-        S.cap(sh, e, fem ? 8 : 10.5, fem ? 5.2 : 7, skin, x);
-        if (!fem) S.cap(sh, P(sh, e, .42), 11.2, 9, far ? C.farCloth : C.teeM, x);
-        S.cap(e, h, fem ? 5.4 : 7, fem ? 3.4 : 4.2, skin, x);
+        const ka = K ? K.arm : 1, top = far ? C.farCloth : C.teeM, full = K && K.armsFull, slv = K ? K.sleeves : !fem;
+        S.cap(sh, e, (fem ? 8 : 10.5) * ka, (fem ? 5.2 : 7) * ka, full ? top : skin, x);
+        if (slv) S.cap(sh, P(sh, e, .42), (fem ? 9 : 11.2) * ka, (fem ? 7 : 9) * ka, top, x);
+        S.cap(e, h, (fem ? 5.4 : 7) * ka, fem ? 3.4 : 4.2, full ? top : skin, x);
         S.dot(h, fem ? 4.6 : 5.6, skin, x);
       };
       leg(p.fl, 1); arm(p.fa, 1); o.far && o.far();
       // torso
       if (fem) {
         const waist = mv(P(p.hip, p.sh, .38), fr, -1);
-        S.cap(p.sh, waist, 14, 9, C.skin); S.cap(waist, p.hip, 9, 13.5, C.skin);
+        const kt = K ? K.torso : 1, mid = K ? K.midriff : true;
+        S.cap(p.sh, waist, 14 * kt, 9 * kt, C.skin); S.cap(waist, p.hip, 9 * kt, 13.5 * kt, C.skin);
         S.dot(mv(P(p.hip, p.sh, .72), fr, 8), 7.5, C.topF);
-        S.cap(p.sh, P(p.hip, p.sh, .58), 13.6, 10.6, C.topF);
-        S.cap(P(p.hip, p.sh, .2), p.hip, 10.6, 14, C.legF);
+        S.cap(p.sh, P(p.hip, p.sh, mid ? .58 : .2), 13.6 * kt, (mid ? 10.6 : 9.6) * kt, C.topF);
+        S.cap(P(p.hip, p.sh, .2), p.hip, 10.6 * kt, 14 * kt, C.legF);
       } else {
-        S.cap(p.sh, p.hip, 17.5, 12.5, C.skin);
-        S.cap(p.sh, P(p.hip, p.sh, .22), 17.5, 13, C.teeM);
-        S.cap(P(p.hip, p.sh, .24), p.hip, 13, 13.8, C.shortM);
+        const kt = K ? K.torso : 1;
+        S.cap(p.sh, p.hip, 17.5 * kt, 12.5 * kt, C.skin);
+        S.cap(p.sh, P(p.hip, p.sh, .22), 17.5 * kt, 13 * kt, C.teeM);
+        S.cap(P(p.hip, p.sh, .24), p.hip, 13 * kt, 13.8 * kt, C.shortM);
       }
       // neck, hair and head
       S.cap(p.sh, head, fem ? 5.5 : 7.5, fem ? 5 : 6.5, C.skin);
-      if (fem) {
-        const root = mv(mv(head, hf, -10), hu, 5), tail = mv(mv(root, hf, -9), hu, -24);
-        S.cap(root, tail, 7.5, 3, C.hairF);
-        S.dot(mv(mv(head, hf, -2.5), hu, 2.5), 13.6, C.hairF);
-        S.dot(mv(mv(head, hf, 2), hu, -1.5), 11, C.skin);
-      } else {
-        S.dot(mv(mv(head, hf, -1), hu, 2.5), 13.2, C.hairM);
-        S.dot(mv(mv(head, hf, 1.5), hu, -1), 12, C.skin);
-      }
+      const hs = K ? K.hair : (fem ? 'ponytail' : 'crop');
+      const tail = ['ponytail', 'braids', 'long', 'curls'].includes(hs), big = ['afro', 'curls', 'afropuff'].includes(hs) ? 3 : 0, bun = ['highbun', 'afropuff', 'manbun'].includes(hs);
+      if (tail) { const root = mv(mv(head, hf, -10), hu, fem ? 5 : 0), end = mv(mv(root, hf, -9), hu, fem ? -24 : -14); S.cap(root, end, 7.5, hs === 'braids' ? 2.5 : 3, C.hairF); }
+      if (bun) S.dot(mv(mv(head, hf, -6), hu, 14), hs === 'afropuff' ? 9 : 6.5, C.hairF);
+      if (hs !== 'bald') S.dot(mv(mv(head, hf, fem ? -2.5 : -1), hu, 2.5), (fem ? 13.6 : hs === 'buzz' ? 12.4 : 13.2) + big, C.hairF);
+      S.dot(mv(mv(head, hf, fem ? 2 : 1.5), hu, fem ? -1.5 : -1), fem ? 11 : 12, C.skin);
+      S.dot(mv(mv(head, hf, 7.5), hu, 1), 1.4, '#1b1d26');
       // worked muscles on the trunk and legs
       const at = (k, off) => mv(P(p.hip, p.sh, k), fr, off);
       if (M.includes('chest')) glow(at(.68, 8), at(.92, 9), 6.5, 5, g);
@@ -166,31 +179,36 @@
       const SL = [x - sw, sy], SR = [x + sw, sy], head = [x, sy - 30];
       [[p.ll, -1], [p.rl, 1]].forEach(([l, s]) => {
         if (!l) return; const h = [x + s * (hw - 5), hy];
-        S.cap(h, l.knee, 11.5, 7.5, fem ? C.legF : C.skin, OL);
-        S.cap(l.knee, l.ank, fem ? 7 : 8, 5, fem ? C.legF : C.skin, OL);
-        if (!fem) S.cap(h, P(h, l.knee, .55), 12.2, 10, C.shortM, OL);
+        const kl = K ? K.leg : 1, cov = K ? K.legs : fem, cl = fem ? C.legF : C.shortM;
+        S.cap(h, l.knee, 11.5 * kl, 7.5 * kl, cov ? cl : C.skin, OL);
+        S.cap(l.knee, l.ank, (fem ? 7 : 8) * kl, 5, cov ? cl : C.skin, OL);
+        if (!cov) S.cap(h, P(h, l.knee, .55), 12.2 * kl, 10 * kl, cl, OL);
         S.cap(l.ank, add(l.ank, s * 9, 5), 6, 5, C.shoe, OL);
       });
-      if (fem) { S.cap([x + 7, sy - 38], [x + 22, sy - 6], 8, 3, C.hairF); }
+      const hsF = K ? K.hair : (fem ? 'ponytail' : 'crop');
+      if (['ponytail', 'braids', 'long', 'curls'].includes(hsF)) { S.cap([x + 7, sy - 38], [x + 22, sy - 6], 8, 3, C.hairF); }
       o.far && o.far();
       const wy = sy + (hy - sy) * .64;
       S.poly([SL, [x - sw * .35, sy - 7], [x + sw * .35, sy - 7], SR, [x + ww, wy], [x + hw, hy + 4], [x - hw, hy + 4], [x - ww, wy]], C.skin, { stroke: C.skin, 'stroke-width': 6, 'stroke-linejoin': 'round' });
-      const top = fem ? C.topF : C.teeM, tb = fem ? sy + (hy - sy) * .42 : wy + 6, tw = fem ? sw * .72 : ww + 1;
+      const midF = K ? K.midriff : fem, top = fem ? C.topF : C.teeM, tb = midF ? sy + (hy - sy) * .42 : wy + 6, tw = midF ? sw * .72 : ww + 1;
       S.poly([[x - sw + 2, sy], [x - sw * .3, sy - 5], [x + sw * .3, sy - 5], [x + sw - 2, sy], [x + tw, tb], [x - tw, tb]], top, { stroke: top, 'stroke-width': 5, 'stroke-linejoin': 'round' });
       const sh = fem ? C.legF : C.shortM;
       S.poly([[x - (fem ? ww + 1 : ww + 1), wy + 6], [x + ww + 1, wy + 6], [x + hw, hy + 6], [x - hw, hy + 6]], sh, { stroke: sh, 'stroke-width': 6, 'stroke-linejoin': 'round' });
       S.cap([x, sy - 6], [x, sy - 20], fem ? 5.5 : 8, fem ? 5 : 7, C.skin);
-      if (fem) { S.dot([x, head[1] - 2], 14.5, C.hairF); S.dot([x, head[1] + 2], 11, C.skin); }
-      else { S.dot([x, head[1] - 2.5], 13, C.hairM); S.dot([x, head[1] + 1], 12, C.skin); }
+      if (['highbun', 'afropuff', 'manbun'].includes(hsF)) S.dot([x, head[1] - 17], hsF === 'afropuff' ? 10 : 7, C.hairF);
+      if (hsF !== 'bald') S.dot([x, head[1] - (fem ? 2 : 2.5)], (fem ? 14.5 : hsF === 'buzz' ? 12.2 : 13) + (['afro', 'curls', 'afropuff'].includes(hsF) ? 4 : 0), C.hairF);
+      S.dot([x, head[1] + (fem ? 2 : 1)], fem ? 11 : 12, C.skin);
+      [-1, 1].forEach(s => S.dot([x + s * 4.5, head[1] + 2], 1.3, '#1b1d26'));
       if (M.includes('lats')) [-1, 1].forEach(s => glow([x + s * (sw - 6), sy + 14], [x + s * (ww - 3), wy - 4], 6, 3, g));
       if (M.includes('upperback')) [-1, 1].forEach(s => glow([x + s * 5, sy + 8], [x + s * (sw - 9), sy + 4], 5, 5, g));
       if (M.includes('chest')) [-1, 1].forEach(s => glow([x + s * 4, sy + 12], [x + s * (sw - 9), sy + 9], 6, 6, g));
       o.mid && o.mid();
       [[p.l, SL], [p.r, SR]].forEach(([m, s]) => {
         if (!m) return;
-        S.cap(s, m.el, fem ? 7.5 : 10.5, fem ? 5 : 7, C.skin, OL);
-        if (!fem) S.cap(s, P(s, m.el, .4), 11.2, 9, C.teeM, OL);
-        S.cap(m.el, m.ha, fem ? 5 : 7, fem ? 3.4 : 4.4, C.skin, OL);
+        const ka = K ? K.arm : 1, full = K && K.armsFull, slv = K ? K.sleeves : !fem, tc = fem ? C.topF : C.teeM;
+        S.cap(s, m.el, (fem ? 7.5 : 10.5) * ka, (fem ? 5 : 7) * ka, full ? tc : C.skin, OL);
+        if (slv) S.cap(s, P(s, m.el, .4), (fem ? 8.5 : 11.2) * ka, (fem ? 7 : 9) * ka, tc, OL);
+        S.cap(m.el, m.ha, (fem ? 5 : 7) * ka, fem ? 3.4 : 4.4, full ? tc : C.skin, OL);
         S.dot(m.ha, fem ? 4.6 : 5.6, C.skin, OL);
         if (M.includes('delts')) glow(s, P(s, m.el, .26), 7.5, 5.5, g);
         if (M.includes('triceps')) glow(P(s, m.el, .38), P(s, m.el, .82), 4.5, 3.2, g);
@@ -573,18 +591,21 @@
   };
 
   const ease = x => x * x * (3 - 2 * x);
-  const LIFT = [0, .055, .11, .165, .22], LOWER = [.34, .49, .64, .79, .94];
+  const NL = 8, NW = 11, steps = n => Array.from({ length: n }, (_, i) => i / (n - 1));
+  const LIFT = steps(NL).map(t => +(t * .22).toFixed(4)), LOWER = steps(NW).map(t => +(.34 + t * .6).toFixed(4));
   const TIMES = [...LIFT, ...LOWER, 1];
-  const VALS = [...[0, .25, .5, .75, 1].map(ease), ...[1, .75, .5, .25, 0].map(ease), 0];
+  const VALS = [...steps(NL).map(ease), ...steps(NW).map(t => ease(1 - t)), 0];
   const attrs = o => Object.keys(o).filter(k => k !== 'd').map(k => `${k}="${o[k]}"`).join(' ');
   const cache = {};
 
   function frame(key, sex, t, g) { const S = Scene(sex); (EX[key] || EX.hammer)(S, t, g); return S.items; }
 
-  function render(key, sex, hero) {
-    const ck = key + '|' + sex + '|' + (hero ? 1 : 0);
+  function render(key, sex, hero, look) {
+    const ck = key + '|' + sex + '|' + (hero ? 1 : 0) + '|' + (look ? JSON.stringify(look) : '');
     if (cache[ck]) return cache[ck];
-    const frames = VALS.map((v, i) => frame(key, sex, v, i < 6 ? v : v * .6));
+    wear(look);
+    let frames;
+    try { frames = VALS.map((v, i) => frame(key, sex, v, i <= NL ? v : v * .6)); } finally { wear(null); }
     const base = frames[0];
     const D = `dur="4s" repeatCount="indefinite" keyTimes="${TIMES.join(';')}"`;
     const body = base.map((it, i) => {
