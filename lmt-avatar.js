@@ -95,7 +95,7 @@
       const k = c + (dir || 'h'); if (grads[k]) return `url(#${grads[k]})`;
       const id = uid + 'g' + Object.keys(grads).length; grads[k] = id;
       const v = dir === 'v';
-      defs.push(`<linearGradient id="${id}" x1="0" y1="0" x2="${v ? 0 : 1}" y2="${v ? 1 : 0}"><stop offset="0" stop-color="${shade(c, v ? .16 : -.06)}"/><stop offset=".38" stop-color="${shade(c, .1)}"/><stop offset=".72" stop-color="${c}"/><stop offset="1" stop-color="${shade(c, -.28)}"/></linearGradient>`);
+      defs.push(`<linearGradient id="${id}" x1="0" y1="0" x2="${v ? 0 : 1}" y2="${v ? 1 : 0}"><stop offset="0" stop-color="${shade(c, v ? .16 : -.12)}"/><stop offset=".26" stop-color="${shade(c, .18)}"/><stop offset=".55" stop-color="${c}"/><stop offset=".85" stop-color="${shade(c, -.24)}"/><stop offset="1" stop-color="${shade(c, -.42)}"/></linearGradient>`);
       return `url(#${id})`;
     };
     const W = (c, w) => {
@@ -105,7 +105,16 @@
       return `url(#${id})`;
     };
     const clip = (y1, y2, extra) => { const id = uid + 'c' + defs.length; defs.push(`<clipPath id="${id}"><rect x="-20" y="${y1}" width="280" height="${y2 - y1}"/>${extra || ''}</clipPath>`); return `clip-path="url(#${id})"`; };
-    const path = (d, fill, x) => `<path d="${d}" fill="${fill}"${x ? ' ' + x : ''}/>`;
+    const flat = !!opt.head;
+    defs.push(`<radialGradient id="${uid}v" cx=".34" cy=".26" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset=".32" stop-color="#fff" stop-opacity=".07"/><stop offset=".66" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></radialGradient>`,
+      `<filter id="${uid}b" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="3.2"/></filter>`,
+      `<filter id="${uid}bb" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="6"/></filter>`,
+      `<pattern id="${uid}k" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".7" fill="#000" opacity=".07"/><circle cx="3" cy="3" r=".7" fill="#000" opacity=".06"/><circle cx="3" cy="1" r=".55" fill="#fff" opacity=".08"/><circle cx="1" cy="3" r=".55" fill="#fff" opacity=".07"/></pattern>`);
+    const VOL = `url(#${uid}v)`;
+    const path = (d, fill, x) => `<path d="${d}" fill="${fill}"${x ? ' ' + x : ''}/>` + (!flat && String(fill).startsWith('url(') ? `<path d="${d}" fill="${VOL}"${x ? ' ' + x : ''}/>` : '');
+    // knitted fabric: soft ribbing over the colour
+    const cloth = (d, fill, x) => path(d, fill, x) + (flat ? '' : `<path d="${d}" fill="url(#${uid}k)"${x ? ' ' + x : ''}/>`);
+    const soft = (shape, op, big) => `<g filter="url(#${uid}${big ? 'bb' : 'b'})" opacity="${op}">${shape}</g>`;
     const out = { back: [], legs: [], torso: [], armL: [], armR: [], head: [], front: [] };
 
     // ---------- geometry ----------
@@ -127,15 +136,15 @@
     // ---------- legs, shoes and bottoms ----------
     const legs = [-1, 1].map(s => limb(legC(s), legR(0)));
     out.legs.push(`<g ${clip(206, 400)}>` + legs.map(d => path(d, G(skin))).join('') + '</g>');
-    if (a.bottom === 'leggings' || a.bottom === 'tights') out.legs.push(`<g ${clip(206, a.bottom === 'tights' ? 330 : 357)}>${legs.map(d => path(d, BG)).join('')}</g>`);
-    else if (a.bottom === 'bike') out.legs.push(`<g ${clip(206, 286)}>${legs.map(d => path(d, BG)).join('')}</g>`);
+    if (a.bottom === 'leggings' || a.bottom === 'tights') out.legs.push(`<g ${clip(206, a.bottom === 'tights' ? 330 : 357)}>${legs.map(d => cloth(d, BG)).join('')}</g>`);
+    else if (a.bottom === 'bike') out.legs.push(`<g ${clip(206, 286)}>${legs.map(d => cloth(d, BG)).join('')}</g>`);
     else if (a.bottom === 'shorts') {
       const wide = [-1, 1].map(s => limb(legC(s), legR(fem ? 2.5 : 4.5)));
-      out.legs.push(`<g ${clip(206, fem ? 258 : 276)}>${wide.map(d => path(d, BG)).join('')}</g>`);
+      out.legs.push(`<g ${clip(206, fem ? 258 : 276)}>${wide.map(d => cloth(d, BG)).join('')}</g>`);
       out.legs.push(`<g ${clip(fem ? 253 : 271, fem ? 258 : 276)}>${wide.map(d => path(d, shade(botC, -.18))).join('')}</g>`);
     } else if (a.bottom === 'joggers') {
       const wide = [-1, 1].map(s => limb(legC(s), legR(3.5)));
-      out.legs.push(`<g ${clip(206, 360)}>${wide.map(d => path(d, BG)).join('')}</g>`);
+      out.legs.push(`<g ${clip(206, 360)}>${wide.map(d => cloth(d, BG)).join('')}</g>`);
       out.legs.push(`<g ${clip(350, 362)}>${[-1, 1].map(s => limb(legC(s), legR(1.5))).map(d => path(d, shade(botC, -.2))).join('')}</g>`);
       // side stripe
       out.legs.push([-1, 1].map(s => `<path d="${smooth(legC(s).slice(0, 4).map((p, i) => [p[0] + s * legR(3.5)[i] * .82, p[1]]), false)}" fill="none" stroke="${lum(botC) > .6 ? shade(botC, -.3) : shade(botC, .35)}" stroke-width="2" opacity=".7"/>`).join(''));
@@ -144,7 +153,8 @@
     out.legs.push([-1, 1].map(s => {
       const x = CX + s * (axo + 2), y = 368, w = 15 + B.ca * .25;
       const shoe = `M${f(x - w)},${y + 10} C${f(x - w)},${y - 6} ${f(x - 6)},${y - 10} ${f(x)},${y - 9} C${f(x + 8)},${y - 9} ${f(x + w)},${y - 4} ${f(x + w)},${y + 10} Z`;
-      return path(shoe, G(shoeC)) + `<rect x="${f(x - w - 1)}" y="${y + 8}" width="${f(2 * w + 2)}" height="7" rx="3.5" fill="${lum(shoeC) > .75 ? '#c9d1de' : '#f4f6fa'}"/>` + `<path d="M${f(x - 5)},${y - 4} l10,0 M${f(x - 6)},${y + 1} l12,0" stroke="${lum(shoeC) > .6 ? shade(shoeC, -.35) : shade(shoeC, .45)}" stroke-width="1.6" stroke-linecap="round"/>`;
+      const panel = `M${f(x - w + 3)},${y + 6} C${f(x - w + 4)},${y - 2} ${f(x - 4)},${y - 3} ${f(x)},${y + 2} C${f(x + 4)},${y - 3} ${f(x + w - 4)},${y - 2} ${f(x + w - 3)},${y + 6} Z`;
+      return soft(`<ellipse cx="${f(x)}" cy="${y + 15}" rx="${f(w + 2)}" ry="3.5" fill="#1a1020"/>`, .35) + path(shoe, G('#f4f6fa')) + path(panel, G(shoeC)) + `<rect x="${f(x - w - 1)}" y="${y + 8}" width="${f(2 * w + 2)}" height="7.5" rx="3.75" fill="${G('#dfe4ec', 'v')}"/>` + `<path d="M${f(x - 4)},${y - 5} l8,0 M${f(x - 5)},${y - 1.5} l10,0" stroke="#c4ccd8" stroke-width="1.5" stroke-linecap="round"/>`;
     }).join(''));
 
     // ---------- torso ----------
@@ -158,13 +168,13 @@
     }
     // bottoms over the hips
     const waistTop = a.bottom === 'leggings' || a.bottom === 'tights' || a.bottom === 'bike' ? (fem ? 192 : 196) : 198;
-    out.torso.push(`<g ${clip(waistTop, 260)}>${path(torso, BG)}</g>`, `<g ${clip(waistTop, waistTop + 7)}>${path(torso, shade(botC, -.2))}</g>`);
+    out.torso.push(`<g ${clip(waistTop, 260)}>${cloth(torso, BG)}</g>`, `<g ${clip(waistTop, waistTop + 7)}>${path(torso, shade(botC, -.2))}</g>`);
     if (a.bottom === 'shorts' || a.bottom === 'joggers') out.torso.push(`<path d="M${CX - 3},${waistTop + 8} l-2,10 M${CX + 3},${waistTop + 8} l2,10" stroke="${shade(botC, .5)}" stroke-width="1.5" stroke-linecap="round"/>`);
     // tops
     const T = a.top, low = { tank: 204, tee: 206, long: 206, hoodie: 212, bra: 160, crop: 172 }[T];
     const highY = 92;
-    out.torso.push(`<g ${clip(highY, low)}>${path(torso, G(topC))}</g>`);
-    out.torso.push(`<g ${clip(low - 5, low)}>${path(torso, shade(topC, -.15))}</g>`);
+    out.torso.push(`<g ${clip(highY, low)}>${cloth(torso, G(topC))}</g>`);
+    out.torso.push(`<g ${clip(low - 6, low)}>${path(torso, shade(topC, -.12))}${flat ? '' : `<path d="${torso}" fill="url(#${uid}k)"/>`}</g>`);
     if (T === 'tank' || T === 'bra') {
       const ah = fem ? 10 : 12, nw = B.nk + (T === 'bra' ? 11 : fem ? 9 : 8), nd = T === 'bra' ? 132 : fem ? 128 : 124;
       const cut = [-1, 1].map(s => `<ellipse cx="${CX + s * (B.sw + 2)}" cy="${sh + 10}" rx="${B.sw - B.ch + ah + 6}" ry="${fem ? 30 : 28}"/>`).join('') + `<path d="M${CX - nw},${92} Q${CX - nw + 2},${nd} ${CX},${nd} Q${CX + nw - 2},${nd} ${CX + nw},${92} Z"/>`;
@@ -179,6 +189,14 @@
     if (fem && B.bust && (T === 'tee' || T === 'long' || T === 'tank' || T === 'crop')) out.torso.push(`<path d="M${CX - B.ch + 6},${150} Q${CX - B.ch / 2},${158} ${CX - 3},${150} M${CX + B.ch - 6},${150} Q${CX + B.ch / 2},${158} ${CX + 3},${150}" fill="none" stroke="${shade(topC, -.25)}" stroke-width="1.3" opacity=".6"/>`);
     if (B.traps) out.torso.push(`<path d="M${CX - B.nk - 2},${100} Q${CX - B.sw * .6},${102} ${CX - B.sw + 8},${110} M${CX + B.nk + 2},${100} Q${CX + B.sw * .6},${102} ${CX + B.sw - 8},${110}" fill="none" stroke="${shade(T === 'tank' ? skin : topC, -.15)}" stroke-width="1.5" opacity=".5"/>`);
 
+    if (!flat) {
+      const ao = shade(skin, -.55), tc = `clip-path="url(#${tclip})"`;
+      out.torso.push(`<g ${tc}>` + soft(`<ellipse cx="${CX}" cy="${101}" rx="${B.nk + 12}" ry="7" fill="#1a1020"/>`, .28)
+        + soft([-1, 1].map(s => `<ellipse cx="${CX + s * (B.ch + 2)}" cy="${170}" rx="7" ry="44" fill="#1a1020"/>`).join(''), .26)
+        + (low < 190 ? soft(`<ellipse cx="${CX}" cy="${low + 3}" rx="${B.ch}" ry="4" fill="${ao}"/>`, .45) : '')
+        + soft(`<ellipse cx="${CX}" cy="${waistTop + 1}" rx="${B.wa + 6}" ry="3.5" fill="#1a1020"/>`, .22) + '</g>');
+    }
+
     // ---------- arms ----------
     [-1, 1].forEach(s => {
       const g = s < 0 ? out.armL : out.armR, c = armC(s), d = limb(c, armR(0)), hp = hand(s);
@@ -186,16 +204,20 @@
       const sleeve = { tee: 160, crop: 156, long: 236, hoodie: 238 }[T];
       if (sleeve) {
         const wd = limb(c, armR(T === 'tee' || T === 'crop' ? 2 : 1.6).map((r, i) => i === 0 ? r - 2 : r));
-        g.push(`<g ${clip(90, sleeve)}>${path(wd, G(topC))}</g><g ${clip(sleeve - 5, sleeve)}>${path(wd, shade(topC, -.18))}</g>`);
+        g.push(`<g ${clip(90, sleeve)}>${cloth(wd, G(topC))}</g><g ${clip(sleeve - 5, sleeve)}>${path(wd, shade(topC, -.18))}</g>`);
       }
       if (!sleeve && !fem && (a.body === 'muscular' || a.body === 'athletic')) g.push(`<path d="${smooth([[c[1][0] - s * B.ua * .2, 142], [c[1][0] + s * B.ua * .1, 158], [c[2][0] - s * 2, 178]], false)}" fill="none" stroke="${shade(skin, -.15)}" stroke-width="1.4" opacity=".5"/>`);
-      g.push(`<ellipse cx="${f(hp[0])}" cy="${hp[1]}" rx="${f(B.fa * .78 + 2)}" ry="${f(B.fa * .95 + 2.5)}" fill="${G(skin)}"/>`);
+      const hr = B.fa * .8 + 2, hh = B.fa * .95 + 3;
+      g.push(path(`M${f(hp[0] - hr)},${f(hp[1] - hh * .5)} C${f(hp[0] - hr)},${f(hp[1] + hh)} ${f(hp[0] + hr)},${f(hp[1] + hh)} ${f(hp[0] + hr)},${f(hp[1] - hh * .5)} C${f(hp[0] + hr)},${f(hp[1] - hh * 1.1)} ${f(hp[0] - hr)},${f(hp[1] - hh * 1.1)} ${f(hp[0] - hr)},${f(hp[1] - hh * .5)} Z`, G(skin)));
+      g.push(`<path d="M${f(hp[0] - s * hr * .7)},${f(hp[1] - hh * .3)} q${f(-s * 3)},${f(hh * .5)} ${f(-s * 1)},${f(hh * .9)}" stroke="${shade(skin, -.22)}" stroke-width="1.3" fill="none" stroke-linecap="round" opacity=".7"/>`);
       if (a.acc.includes('wristbands')) g.push(`<rect x="${f(c[4][0] - B.fa - 1)}" y="230" width="${f(2 * B.fa + 2)}" height="9" rx="4" fill="${G(CLOTH[2])}"/>`);
       if (s < 0 && a.acc.includes('watch')) g.push(`<rect x="${f(c[4][0] - B.fa * .75 - 1)}" y="229" width="${f(B.fa * 1.5 + 2)}" height="8" rx="2" fill="#1c2433"/><rect x="${f(c[4][0] - 4)}" y="227.5" width="8" height="11" rx="2.5" fill="#2b3a55" stroke="#c6f432" stroke-width="1"/>`);
     });
 
     // ---------- head, face and hair ----------
-    const hairBack = [], hairFront = [], H = G(hair), hd = shade(hair, -.25);
+    const hairBack = [], hairFront = [], hd = shade(hair, -.25);
+    const hgid = uid + 'hg'; defs.push(`<linearGradient id="${hgid}" x1="0" y1="0" x2=".35" y2="1"><stop offset="0" stop-color="${shade(hair, .06)}"/><stop offset=".22" stop-color="${shade(hair, lum(hair) < .2 ? .3 : .22)}"/><stop offset=".34" stop-color="${hair}"/><stop offset="1" stop-color="${shade(hair, -.38)}"/></linearGradient>`);
+    const H = `url(#${hgid})`;
     const capD = (lift, line) => `M${CX - R - 2},${HY + 4} C${CX - R - 4},${HY - R - 10 - lift} ${CX + R + 4},${HY - R - 10 - lift} ${CX + R + 2},${HY + 4} C${CX + R - 1},${HY - 6} ${CX + R - 8},${HY - line} ${CX},${HY - line - 2} C${CX - R + 8},${HY - line} ${CX - R + 1},${HY - 6} ${CX - R - 2},${HY + 4} Z`;
     const curls = (cx, cy, rx, ry, r, n) => Array.from({ length: n }, (_, i) => { const t = Math.PI * (1 + i / (n - 1)); return `<circle cx="${f(cx + rx * Math.cos(t))}" cy="${f(cy + ry * Math.sin(t))}" r="${r}" fill="${H}"/>`; }).join('');
     switch (a.hair) {
@@ -228,22 +250,25 @@
     }
     out.back.push(hairBack.join(''));
     const head = out.head;
-    head.push(`<rect x="${CX - B.nk + 1}" y="${HY + 16}" width="${(B.nk - 1) * 2}" height="${30}" rx="${B.nk - 1}" fill="${G(skin)}"/>`);
-    head.push(`<path d="M${CX - B.nk + 1},${HY + 30} Q${CX},${HY + 40} ${CX + B.nk - 1},${HY + 30} L${CX + B.nk - 1},${HY + 24} L${CX - B.nk + 1},${HY + 24} Z" fill="${shade(skin, -.2)}" opacity=".5"/>`);
-    [-1, 1].forEach(s => head.push(`<ellipse cx="${CX + s * (R - 1)}" cy="${HY + 4}" rx="6" ry="8" fill="${shade(skin, -.06)}"/><ellipse cx="${CX + s * (R - 1)}" cy="${HY + 4}" rx="2.5" ry="4" fill="${shade(skin, -.2)}"/>`));
+    head.push(path(`M${CX - B.nk + 1},${HY + 16} h${(B.nk - 1) * 2} v30 h-${(B.nk - 1) * 2} Z`, G(skin)));
+    head.push(flat ? '' : soft(`<ellipse cx="${CX}" cy="${HY + R - 2}" rx="${B.nk + 2}" ry="9" fill="${shade(skin, -.55)}"/>`, .5));
+    [-1, 1].forEach(s => head.push(`<ellipse cx="${CX + s * (R - 1)}" cy="${HY + 5}" rx="6.5" ry="8.5" fill="${G(shade(skin, -.04))}"/><path d="M${CX + s * (R - 1)},${HY + 1} q${s * 3},2 ${s * .5},7" stroke="${shade(skin, -.28)}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`));
     const jaw = fem ? 0 : 2;
-    head.push(`<path d="M${CX},${HY - R - 2} C${CX + R + 2},${HY - R - 2} ${CX + R + 1},${HY + 4} ${CX + R - 2 + jaw},${HY + 14} C${CX + R - 8},${HY + R + 2} ${CX + 8},${HY + R + 3} ${CX},${HY + R + 3} C${CX - 8},${HY + R + 3} ${CX - R + 8},${HY + R + 2} ${CX - R + 2 - jaw},${HY + 14} C${CX - R - 1},${HY + 4} ${CX - R - 2},${HY - R - 2} ${CX},${HY - R - 2} Z" fill="${G(skin)}"/>`);
-    head.push(`<ellipse cx="${CX - 9}" cy="${HY - 12}" rx="9" ry="5" fill="#fff" opacity=".18"/>`);
+    head.push(path(`M${CX},${HY - R - 2} C${CX + R + 2},${HY - R - 2} ${CX + R + 1},${HY + 4} ${CX + R - 2 + jaw},${HY + 14} C${CX + R - 8},${HY + R + 2} ${CX + 8},${HY + R + 3} ${CX},${HY + R + 3} C${CX - 8},${HY + R + 3} ${CX - R + 8},${HY + R + 2} ${CX - R + 2 - jaw},${HY + 14} C${CX - R - 1},${HY + 4} ${CX - R - 2},${HY - R - 2} ${CX},${HY - R - 2} Z`, G(skin)));
+    head.push(flat ? '' : soft(`<ellipse cx="${CX - 10}" cy="${HY - 10}" rx="12" ry="8" fill="#fff"/>`, .22) + soft(`<ellipse cx="${CX + R - 6}" cy="${HY + 10}" rx="6" ry="14" fill="${shade(skin, -.5)}"/>`, .18));
     if (a.face === 'stubble') head.push(`<path d="M${CX - R + 3},${HY + 10} C${CX - R + 8},${HY + R + 2} ${CX + R - 8},${HY + R + 2} ${CX + R - 3},${HY + 10} C${CX + 10},${HY + 18} ${CX - 10},${HY + 18} ${CX - R + 3},${HY + 10} Z" fill="${hair}" opacity=".28"/>`);
     if (a.face === 'beard') head.push(`<path d="M${CX - R + 2},${HY + 4} C${CX - R + 4},${HY + R + 10} ${CX + R - 4},${HY + R + 10} ${CX + R - 2},${HY + 4} C${CX + R - 6},${HY + 16} ${CX + 12},${HY + 26} ${CX},${HY + 26} C${CX - 12},${HY + 26} ${CX - R + 6},${HY + 16} ${CX - R + 2},${HY + 4} Z" fill="${H}"/><path d="M${CX - 10},${HY + 12} Q${CX},${HY + 8} ${CX + 10},${HY + 12}" fill="none" stroke="${H}" stroke-width="4" stroke-linecap="round"/><ellipse cx="${CX}" cy="${HY + 17}" rx="8" ry="4.5" fill="${shade(skin, -.08)}"/>`);
     // eyes: simple dots, with a blink
-    head.push(`<g class="av-eyes" style="transform-origin:${CX}px ${HY + 3}px">` + [-1, 1].map(s => `<ellipse cx="${CX + s * 10}" cy="${HY + 3}" rx="3.4" ry="4" fill="#1b1d26"/><circle cx="${CX + s * 10 + 1.2}" cy="${HY + 1.6}" r="1.1" fill="#fff"/>`).join('') + '</g>');
+    head.push(`<g class="av-eyes" style="transform-origin:${CX}px ${HY + 4}px">` + [-1, 1].map(s => `<ellipse cx="${CX + s * 10.5}" cy="${HY + 4}" rx="3.6" ry="4.9" fill="#231a19"/><ellipse cx="${CX + s * 10.5 + 1.3}" cy="${HY + 2.2}" rx="1.3" ry="1.5" fill="#fff" opacity=".9"/>${fem ? `<path d="M${CX + s * 13.2},${HY + 1.4} l${s * 2.6},-2.2" stroke="#231a19" stroke-width="1.6" fill="none" stroke-linecap="round"/>` : ''}`).join('') + '</g>');
     if (a.face === 'lashes') head.push([-1, 1].map(s => `<path d="M${CX + s * 13.5},${HY + 0.5} l${s * 3},-2.5" stroke="#1b1d26" stroke-width="1.6" stroke-linecap="round"/>`).join(''));
-    head.push([-1, 1].map(s => `<path d="M${CX + s * 5.5},${HY - 6} q${s * 4.5},-${fem ? 3.5 : 2.5} ${s * 9},0" stroke="${a.hair === 'bald' || a.hair === 'buzz' ? shade(skin, -.45) : shade(hair, -.1)}" stroke-width="${fem ? 2 : 2.8}" fill="none" stroke-linecap="round"/>`).join(''));
-    head.push(`<path d="M${CX - 1.5},${HY + 6} q2,4 3,3" stroke="${shade(skin, -.25)}" stroke-width="1.6" fill="none" stroke-linecap="round"/>`);
-    head.push(`<path class="av-mouth" d="M${CX - 6},${HY + 15} Q${CX},${HY + 20} ${CX + 6},${HY + 15}" stroke="#7a3b30" stroke-width="2.2" fill="none" stroke-linecap="round"/>`);
-    head.push([-1, 1].map(s => `<ellipse cx="${CX + s * 15}" cy="${HY + 11}" rx="4.5" ry="2.6" fill="#ff8a80" opacity="${lum(skin) > .5 ? .3 : .22}"/>`).join(''));
+    head.push([-1, 1].map(s => `<path d="M${CX + s * 5.5},${HY - 8} q${s * 5},-${fem ? 3.6 : 2.6} ${s * 10},${fem ? 1 : 0.6}" stroke="${a.hair === 'bald' || a.hair === 'buzz' ? shade(skin, -.45) : shade(hair, -.1)}" stroke-width="${fem ? 2.4 : 3.2}" fill="none" stroke-linecap="round"/>`).join(''));
+    head.push(`<path d="M${CX + 1},${HY + 4} q2.5,5 -1.5,6.5" stroke="${shade(skin, -.24)}" stroke-width="1.7" fill="none" stroke-linecap="round"/><ellipse cx="${CX - .5}" cy="${HY + 8}" rx="2.2" ry="1.4" fill="#fff" opacity=".22"/>`);
+    head.push(`<path class="av-mouth" d="M${CX - 6.5},${HY + 15.5} Q${CX},${HY + 20.5} ${CX + 6.5},${HY + 15.5}" stroke="${shade(skin, -.5)}" stroke-width="2" fill="none" stroke-linecap="round"/>`);
+    head.push([-1, 1].map(s => `<ellipse cx="${CX + s * 15}" cy="${HY + 11}" rx="4.5" ry="2.6" fill="#ff8a80" opacity="${lum(skin) > .5 ? .26 : .18}"${flat ? '' : ` filter="url(#${uid}b)"`}/>`).join(''));
+    if (!flat && !['bald', 'buzz'].includes(a.hair)) head.push(soft(`<path d="M${CX - R + 4},${HY - 14} Q${CX},${HY - 6} ${CX + R - 4},${HY - 14}" stroke="${shade(skin, -.55)}" stroke-width="6" fill="none"/>`, .28));
     head.push(hairFront.join(''));
+    if (fem && ['ponytail', 'highbun'].includes(a.hair)) head.push([-1, 1].map(s => `<path d="M${CX + s * (R - 4)},${HY - 12} C${CX + s * (R + 1)},${HY + 2} ${CX + s * (R - 1)},${HY + 14} ${CX + s * (R - 5)},${HY + 22}" stroke="${H}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`).join(''));
+    if (!flat && !['bald', 'buzz', 'cornrows', 'braids'].includes(a.hair)) head.push(soft(`<path d="M${CX - R + 8},${HY - R + 6} Q${CX - 6},${HY - R - 8} ${CX + 10},${HY - R - 4}" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>`, .45));
     // head accessories
     const A = a.acc;
     if (A.includes('headband') && !A.includes('cap')) head.push(`<path d="M${CX - R - 1},${HY - 6} C${CX - 14},${HY - 18} ${CX + 14},${HY - 18} ${CX + R + 1},${HY - 6} L${CX + R + 1},${HY - 13} C${CX + 14},${HY - 25} ${CX - 14},${HY - 25} ${CX - R - 1},${HY - 13} Z" fill="${G(CLOTH[(a.topCol + 2) % CLOTH.length])}"/>`);
@@ -275,8 +300,8 @@
       @keyframes av-grin{20%,80%{transform:scale(1.35,1.5);transform-origin:${CX}px ${HY + 16}px}}
       @media (prefers-reduced-motion:reduce){.av-idle *,.av-hop *,.av-flex *,.av-wave *{animation:none!important}}
     </style>`;
-    const shadow = `<ellipse class="av-shadow" cx="${CX}" cy="386" rx="${54 + B.hp * .4}" ry="9" fill="#0b1220" opacity=".22"/>`;
-    const body = `<g class="av-body">${out.back.join('')}<g class="av-armL">${out.armL.join('')}</g><g class="av-armR">${out.armR.join('')}</g>${out.torso.join('')}${out.legs.join('')}${out.head.join('')}</g>`;
+    const shadow = `<ellipse class="av-shadow" cx="${CX}" cy="386" rx="${50 + B.hp * .4}" ry="8" fill="#2a3a6a" opacity=".28" filter="url(#${uid}bb)"/>`;
+    const body = `<g class="av-body">${out.back.join('')}${out.torso.join('')}${out.legs.join('')}<g class="av-armL">${out.armL.join('')}</g><g class="av-armR">${out.armR.join('')}</g>${out.head.join('')}</g>`;
     // arms sit behind the torso when hanging but in front once raised, so draw them twice: behind, then visible above the shoulder line
     const vb = opt.head ? `${CX - 54} ${HY - 58} 108 108` : '0 -22 240 422';
     return `<svg class="lmt-av${opt.still ? '' : ' av-idle'}" viewBox="${vb}" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Your avatar"><defs>${defs.join('')}</defs>${opt.head ? '' : style + shadow}${body}</svg>`;
