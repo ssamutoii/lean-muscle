@@ -1,0 +1,74 @@
+/* Shared look and motion: scrolling, press feedback, navigation and the sign-in screen. */
+html,body{overscroll-behavior-y:none;background:#090d14}
+*{scrollbar-width:none}
+*::-webkit-scrollbar{display:none;width:0;height:0}
+button,label,summary{touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+button{transition:transform .12s ease,background-color .2s ease,border-color .2s ease,color .2s ease,opacity .2s ease}
+button:active{transform:scale(.97)}
+button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offset:2px}
+
+.lmt-view{animation:lmt-in .24s ease-out}
+@keyframes lmt-in{from{opacity:0;transform:translateY(10px)}}
+.lmt-back{animation:lmt-fade .2s ease-out}
+.lmt-back>*{animation:lmt-up .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes lmt-fade{from{background-color:transparent}}
+@keyframes lmt-up{from{transform:translateY(48px);opacity:0}}
+
+/* Bottom navigation: five equal, labelled tabs */
+.lmt-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;z-index:40;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding:8px 6px calc(8px + env(safe-area-inset-bottom));background:#0e1523;border-top:1px solid #1f2b42}
+.lmt-nav button{background:none;border:none;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:600 12px Urbanist,system-ui,sans-serif;color:#8493ae;cursor:pointer;padding:0}
+.lmt-nav .ic{width:56px;height:30px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:22px;transition:background-color .2s ease,color .2s ease}
+.lmt-nav button.on{color:#f2f6fd}
+.lmt-nav button.on .ic{background:#c6f432;color:#0c110a;animation:lmt-pop .25s ease-out}
+@keyframes lmt-pop{from{transform:scaleX(.6)}}
+
+/* Two-way switch */
+.lmt-seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:16px;background:#121a29}
+.lmt-seg button{height:42px;border:none;border-radius:12px;background:none;color:#9ba9c0;font:700 14px Urbanist,system-ui,sans-serif;cursor:pointer}
+.lmt-seg button[aria-selected=true]{background:#26354e;color:#f2f6fd}
+
+/* Screen in front of the app */
+html.lmt-gated,html.lmt-gated body{overflow:hidden}
+#lmt-gate{position:fixed;inset:0;z-index:95;overflow-y:auto;overscroll-behavior:contain;background:radial-gradient(120% 55% at 50% 0%,#16305a 0%,#090d14 70%) #090d14;color:#f2f6fd;font-family:Urbanist,system-ui,sans-serif;transition:opacity .25s ease}
+#lmt-gate.g-out{opacity:0;pointer-events:none}
+#lmt-gate *{box-sizing:border-box}
+.g-col{max-width:440px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;padding:calc(16px + env(safe-area-inset-top)) 20px calc(24px + env(safe-area-inset-bottom))}
+.g-middle{justify-content:center;align-items:center;gap:18px;text-align:center}
+.g-mark{width:72px;height:72px;border-radius:22px;background:linear-gradient(140deg,#c6f432,#4db8ff);color:#0c110a;font-size:36px;display:flex;align-items:center;justify-content:center}
+.g-pulse{animation:g-pulse 1.4s ease-in-out infinite}
+@keyframes g-pulse{50%{transform:scale(.9);opacity:.7}}
+.g-stage{align-self:center;width:min(100%,320px,34vh);min-width:180px;aspect-ratio:320/262;flex:none}
+.g-stage svg{width:100%;height:100%}
+.g-body{display:flex;flex-direction:column;gap:14px;padding-top:18px;animation:lmt-in .28s ease-out}
+.g-title{margin:0;font-size:32px;font-weight:700;letter-spacing:-.01em;line-height:1.1}
+.g-sub{margin:-6px 0 0;font-size:15px;line-height:1.45;color:#b9c5db}
+.g-middle .g-sub{margin:0;min-height:22px}
+.g-seg{position:relative;display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:16px;background:#121a29;margin-top:4px}
+.g-seg::before{content:"";position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:12px;background:#26354e;animation:g-from-right .25s ease-out}
+.g-seg.g-right::before{left:50%;animation-name:g-from-left}
+@keyframes g-from-right{from{transform:translateX(100%)}}
+@keyframes g-from-left{from{transform:translateX(-100%)}}
+.g-seg button{position:relative;height:44px;border:none;background:none;color:#9ba9c0;font:700 15px Urbanist,system-ui,sans-serif;cursor:pointer}
+.g-seg button[aria-selected=true]{color:#f2f6fd}
+.g-form{display:flex;flex-direction:column;gap:14px}
+.g-field{display:flex;flex-direction:column;gap:6px}
+.g-field label{font-size:14px;font-weight:600;color:#cdd8eb;-webkit-user-select:none;user-select:none}
+.g-field small{font-size:12px;color:#8493ae}
+.g-input{width:100%;height:52px;border-radius:14px;border:1px solid #2c3d5c;background:#0b111d;color:#f2f6fd;padding:0 14px;font:500 16px Urbanist,system-ui,sans-serif}
+.g-input:focus{border-color:#7cc8ff}
+.g-pass{position:relative}
+.g-pass .g-input{padding-right:54px}
+.g-eye{position:absolute;right:4px;top:4px;width:44px;height:44px;border:none;background:none;color:#9ba9c0;font-size:20px;cursor:pointer}
+.g-main{min-height:54px;border-radius:16px;border:none;background:#c6f432;color:#0c110a;font:700 16px Urbanist,system-ui,sans-serif;cursor:pointer;padding:0 24px;flex:none}
+.g-middle .g-main{width:100%}
+.g-main:disabled{opacity:.6;cursor:default}
+.g-link{min-height:44px;border:none;background:none;color:#7cc8ff;font:700 14px Urbanist,system-ui,sans-serif;cursor:pointer;padding:0 8px;flex:none}
+.g-link[hidden]{display:none}
+.g-forgot{align-self:flex-end;margin:-4px -8px -6px 0}
+.g-msg{margin:0;font-size:14px;line-height:1.4;color:#ffb648}
+.g-msg:empty{display:none}
+.g-msg.g-ok{color:#c6f432}
+.g-keep{margin:0;font-size:13px;line-height:1.45;color:#cfe6ff;background:#142a40;border-radius:14px;padding:12px 14px}
+.g-small{margin:0;font-size:12px;line-height:1.5;color:#8493ae;text-align:center}
+
+@media (prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}}

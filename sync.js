@@ -81,6 +81,7 @@
   function open(cloud) {
     close();
     ui = el('div', 'position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.7);display:flex;align-items:flex-end;justify-content:center');
+    ui.className = 'lmt-back';
     const box = el('div', 'width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:#121a29;color:#f2f6fd;border-radius:32px 32px 0 0;padding:26px 20px calc(26px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px;font-family:Urbanist,system-ui,sans-serif');
     const msg = el('div', 'font-size:14px;color:#cdd8eb;line-height:1.45', status());
     box.append(el('div', 'font-size:22px;font-weight:600;flex:none', 'Cloud backup'), msg);

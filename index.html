@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
-<style>html,body{overscroll-behavior-y:none}</style>
+<link rel="stylesheet" href="vendor/urbanist.css">
+<link rel="stylesheet" href="vendor/regular/style.css">
+<link rel="stylesheet" href="vendor/fill/style.css">
+<link rel="stylesheet" href="lmt-ui.css">
 <script src="sync.js"></script>
 <script src="vendor/firebase.js"></script>
 <script src="account.js"></script>
@@ -44,26 +47,22 @@ a{color:#c6f432}a:hover{color:#dcff6a}
 button,input,select{font-family:inherit;color:inherit}
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 input[type=number]{-moz-appearance:textfield}
-button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offset:2px}
-::-webkit-scrollbar{display:none}
 </style>
 </helmet>
-<div style="max-width:440px;margin:0 auto;min-height:100vh;position:relative;background:radial-gradient(130% 45% at 50% 0%,#1f4468 0%,#0e1726 55%,#090d14 100%);overflow-x:hidden">
+<div style="max-width:440px;margin:0 auto;min-height:100vh;position:relative;background:radial-gradient(130% 45% at 50% 0%,#1f4468 0%,#0e1726 55%,#090d14 100%);overflow-x:clip">
 
 <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
-<div style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:24px">
-  <div style="display:flex;align-items:center;gap:14px">
-    <div style="width:54px;height:54px;flex:none;border-radius:50%;background:linear-gradient(140deg,#c6f432,#4db8ff);display:flex;align-items:center;justify-content:center;color:#0c110a;font-size:26px"><i class="ph-fill ph-barbell"></i></div>
-    <div style="flex:1;min-width:0"><div style="font-size:22px;font-weight:600">{{ greet }}</div><div style="font-size:14px;color:#9ba9c0;margin-top:2px">{{ blockLabel }}</div></div>
-    <div style="height:52px;padding:0 16px;border-radius:26px;background:#121a29;display:flex;align-items:center;gap:6px;font-size:16px;font-weight:600"><i class="ph-fill ph-fire" style="color:#c6f432;font-size:20px"></i>{{ weekGoal }}</div>
+<div class="lmt-view" style="padding:24px 20px 120px;display:flex;flex-direction:column;gap:22px">
+  <div style="display:flex;align-items:center;gap:12px">
+    <div style="flex:1;min-width:0"><div style="font-size:26px;font-weight:700;letter-spacing:-0.01em">{{ greet }}</div><div style="font-size:14px;color:#9ba9c0;margin-top:2px">{{ blockLabel }}</div></div>
+    <button onClick="{{ goSettings }}" aria-label="Your account and settings" style="width:48px;height:48px;flex:none;border-radius:50%;border:1px solid #2c3d5c;background:#121a29;color:#f2f6fd;font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center"><sc-if value="{{ initial }}">{{ initial }}</sc-if><sc-if value="{{ noInitial }}"><i class="ph ph-user" style="font-size:22px"></i></sc-if></button>
   </div>
-  <div style="border-radius:44px;padding:6px;background:linear-gradient(90deg,#c6f432 0%,#5fe0c0 55%,#4db8ff 100%);display:flex;align-items:center;gap:14px;box-shadow:0 12px 40px -12px rgba(150,230,70,0.5)">
-    <div style="width:68px;height:68px;border-radius:50%;background:#0f1827;display:flex;align-items:center;justify-content:center;font-size:30px;color:#c6f432;flex:none"><i class="ph ph-trophy"></i></div>
-    <div style="flex:1;min-width:0;color:#0c110a"><div style="font-size:20px;font-weight:700">{{ heroTitle }}</div><div style="font-size:14px;font-weight:600;opacity:0.75;margin-top:2px">{{ heroSub }}</div></div>
-    <button onClick="{{ heroTap }}" style="height:50px;padding:0 20px;margin-right:8px;flex:none;border-radius:25px;border:none;background:#f4f7ef;color:#0c110a;font-size:15px;font-weight:700;letter-spacing:0.05em;cursor:pointer" style-active="transform:scale(0.96)">{{ heroBtn }}</button>
-  </div>
+  <button onClick="{{ heroTap }}" style="width:100%;border:none;border-radius:24px;padding:20px;background:linear-gradient(100deg,#c6f432 0%,#5fe0c0 55%,#4db8ff 100%);color:#0c110a;display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;box-shadow:0 14px 36px -16px rgba(150,230,70,0.55)">
+    <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><span style="font-size:26px;font-weight:700;line-height:1.1">{{ heroTitle }}</span><span style="font-size:14px;font-weight:600;opacity:0.75">{{ heroSub }}</span></span>
+    <span style="flex:none;height:48px;padding:0 20px;border-radius:14px;background:#0c140f;color:#f4f7ef;font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="ph-fill ph-play"></i>{{ heroBtn }}</span>
+  </button>
   <sc-if value="{{ signedOut }}">
-    <button onClick="{{ accountOpen }}" style="min-height:52px;border-radius:26px;border:1.5px solid #35486c;background:#121a29;color:#f2f6fd;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px"><i class="ph ph-user-circle" style="font-size:20px;color:#7cc8ff"></i>Sign in to save your log to an account</button>
+    <button onClick="{{ accountOpen }}" style="min-height:52px;margin-top:-8px;border-radius:16px;border:1px solid #2c3d5c;background:#121a29;color:#f2f6fd;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px"><i class="ph ph-user-circle" style="font-size:20px;color:#7cc8ff"></i>Sign in to save your log to an account</button>
   </sc-if>
   <sc-if value="{{ heroStarted }}">
     <div style="display:flex;gap:8px;margin-top:-12px">
@@ -71,11 +70,13 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
       <button onClick="{{ discardSession }}" style="flex:1;height:44px;border-radius:22px;border:1.5px solid #4a2a22;background:none;color:#ff5a3c;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px"><i class="ph ph-x"></i>Discard</button>
     </div>
   </sc-if>
+  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:-8px"><div style="font-size:18px;font-weight:700">This week</div><div style="font-size:14px;color:#9ba9c0">{{ weekGoal }} sessions</div></div>
   <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;text-align:center">
     <sc-for list="{{ week }}" as="d" hint-placeholder-count="7">
       <div style="display:flex;flex-direction:column;align-items:center;gap:10px"><div style="{{ d.lbl }}">{{ d.dow }}</div><div style="{{ d.ring }}">{{ d.date }}</div></div>
     </sc-for>
   </div>
+  <div style="font-size:18px;font-weight:700;margin-bottom:-8px">Your sessions</div>
   <div style="display:flex;gap:10px;overflow-x:auto;margin:0 -20px;padding:0 20px">
     <sc-for list="{{ sessChips }}" as="c" hint-placeholder-count="4">
       <button onClick="{{ c.tap }}" style="{{ c.style }}"><i class="{{ c.icon }}" style="font-size:18px"></i>{{ c.label }}</button>
@@ -98,27 +99,29 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
   <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:20px;font-weight:600">Recent activity</div><button onClick="{{ goHistory }}" style="background:none;border:none;color:#c6f432;font-size:14px;font-weight:600;cursor:pointer;padding:8px 0">See all</button></div>
   <div style="display:flex;flex-direction:column;gap:10px;margin-top:-10px">
     <sc-for list="{{ recentHome }}" as="r" hint-placeholder-count="2">
-      <div style="display:flex;align-items:center;gap:14px;padding:12px 18px 12px 12px;border-radius:32px;background:#121a29">
+      <button onClick="{{ r.tap }}" style="width:100%;border:none;text-align:left;cursor:pointer;display:flex;align-items:center;gap:14px;padding:12px 16px 12px 12px;border-radius:20px;background:#121a29">
         <div style="width:54px;height:54px;flex:none;border-radius:50%;background:radial-gradient(circle,#142a40 55%,transparent 56%),conic-gradient(#c6f432,#4db8ff,#c6f432);display:flex;align-items:center;justify-content:center;color:#c6f432;font-size:22px"><i class="ph-fill ph-barbell"></i></div>
         <div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:600">{{ r.name }}</div><div style="font-size:13px;color:#9ba9c0;margin-top:2px">{{ r.when }}</div></div>
-        <div style="text-align:right"><div style="font-size:26px;font-weight:500;line-height:1">{{ r.big }}</div><div style="font-size:12px;color:#9ba9c0;margin-top:2px">{{ r.unit }}</div></div>
-      </div>
+        <div style="text-align:right"><div style="font-size:26px;font-weight:500;line-height:1">{{ r.big }}</div><div style="font-size:12px;color:#9ba9c0;margin-top:2px">{{ r.unit }}</div></div><i class="ph ph-caret-right" style="color:#8493ae;flex:none"></i>
+      </button>
     </sc-for>
   </div>
 </div>
 </sc-if>
 
 <sc-if value="{{ isWorkout }}">
-<div style="padding:20px 16px 120px;display:flex;flex-direction:column;gap:16px">
-  <div style="display:flex;align-items:center;gap:12px">
-    <button onClick="{{ goHome }}" style="width:52px;height:52px;flex:none;border-radius:50%;border:none;background:#121a29;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="ph ph-caret-left"></i></button>
+<div class="lmt-view" style="{{ workoutPad }}">
+  <div style="position:sticky;top:0;z-index:20;margin:0 -16px;padding:calc(12px + env(safe-area-inset-top)) 16px 10px;background:rgba(10,16,27,0.94);backdrop-filter:blur(10px);display:flex;align-items:center;gap:12px">
+    <button onClick="{{ goHome }}" aria-label="Back to home" style="width:48px;height:48px;flex:none;border-radius:50%;border:none;background:#121a29;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="ph ph-caret-left"></i></button>
     <div style="flex:1;min-width:0">
       <div style="font-size:19px;font-weight:600">{{ wTitle }}</div>
-      <div style="font-size:13px;color:#9ba9c0;display:flex;align-items:center;gap:6px;margin-top:2px;min-width:0;white-space:nowrap"><span style="width:8px;height:8px;border-radius:50%;background:#ff5a3c;flex:none"></span><span style="font-variant-numeric:tabular-nums;color:#f2f6fd;font-weight:600;flex:none">{{ elapsed }}</span><span style="flex:none">·</span><i class="ph ph-cloud-check" style="color:#c6f432;flex:none"></i><span style="min-width:0;overflow:hidden;text-overflow:ellipsis">{{ savedText }}</span></div>
+      <div style="font-size:13px;color:#9ba9c0;display:flex;align-items:center;gap:6px;margin-top:2px;min-width:0;white-space:nowrap"><span style="width:8px;height:8px;border-radius:50%;background:#ff5a3c;flex:none"></span><span style="font-variant-numeric:tabular-nums;color:#f2f6fd;font-weight:600;flex:none">{{ elapsed }}</span></div>
     </div>
     <button onClick="{{ askFinish }}" style="height:44px;padding:0 18px;border-radius:22px;border:1.5px solid #c6f432;background:transparent;color:#c6f432;font-size:15px;font-weight:700;cursor:pointer" style-hover="background:#18334d">Finish</button>
-    <button onClick="{{ openMenu }}" style="width:44px;height:44px;flex:none;border-radius:50%;border:none;background:#121a29;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="ph ph-dots-three-vertical"></i></button>
+    <button onClick="{{ openMenu }}" aria-label="Session options" style="width:44px;height:44px;flex:none;border-radius:50%;border:none;background:#121a29;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="ph ph-dots-three-vertical"></i></button>
   </div>
+  <sc-if value="{{ notStarted }}">
+  <div style="display:flex;flex-direction:column;gap:12px">
   <div style="display:flex;align-items:center;gap:8px">
     <div style="font-size:13px;color:#9ba9c0;flex:none;width:62px">Recovery</div>
     <sc-for list="{{ recoveryOpts }}" as="r" hint-placeholder-count="3">
@@ -126,27 +129,14 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
     </sc-for>
   </div>
   <div style="font-size:12px;color:#9ba9c0;margin-top:-10px;padding-left:70px">{{ recoveryNote }}</div>
+  </div>
+  </sc-if>
+  <div style="font-size:14px;color:#9ba9c0;margin-bottom:-8px">{{ posLabel }}</div>
   <div style="display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:0 16px">
     <sc-for list="{{ pager }}" as="p" hint-placeholder-count="6">
       <button onClick="{{ p.tap }}" style="{{ p.style }}">{{ p.n }}</button>
     </sc-for>
   </div>
-  <sc-if value="{{ timerOn }}">
-    <button onClick="{{ stopTimer }}" style="height:52px;border-radius:26px;border:none;background:#142a40;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;padding:0 20px;cursor:pointer">
-      <span style="{{ timerBar }}"></span>
-      <span style="position:relative;font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;color:#c6f432;display:flex;align-items:center;gap:8px"><i class="ph ph-timer"></i>{{ timerText }}</span>
-      <span style="position:relative;font-size:13px;color:#cdd8eb">Rest · tap to skip</span>
-    </button>
-  </sc-if>
-  <sc-if value="{{ timerOff }}">
-    <div style="display:flex;gap:8px;align-items:center">
-      <div style="font-size:13px;color:#9ba9c0;flex:none;width:62px">Rest</div>
-      <sc-for list="{{ timerOpts }}" as="t" hint-placeholder-count="4">
-        <button onClick="{{ t.tap }}" style="flex:1;height:44px;border-radius:22px;border:none;background:#121a29;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#18334d">{{ t.label }}</button>
-      </sc-for>
-    </div>
-  </sc-if>
-
   <div style="border-radius:32px;overflow:hidden;background:radial-gradient(90% 80% at 50% 35%,#1d3a63 0%,#111f35 60%,#0b111b 100%)">
     <div style="padding:16px 12px 6px">{{ cur.hero }}</div>
     <div style="display:flex;align-items:center;gap:12px;padding:0 16px 16px">
@@ -167,19 +157,6 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
     <span style="padding:6px 12px;border-radius:14px;background:#142a40;color:#c6f432;font-size:13px;font-weight:600">{{ cur.scheme }}</span>
     <span style="padding:6px 12px;border-radius:14px;background:linear-gradient(90deg,#1e4d86,#17305a);color:#cfe6ff;font-size:13px;font-weight:600">{{ cur.muscles }}</span>
     <button onClick="{{ cur.swapTap }}" style="padding:6px 12px;border-radius:14px;border:1.5px solid #c6f432;background:none;color:#c6f432;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ph ph-swap"></i>Swap exercise</button>
-  </div>
-
-  <div style="display:flex;flex-direction:column;gap:12px">
-    <button onClick="{{ toggleHow }}" style="display:flex;justify-content:space-between;align-items:center;background:none;border:none;padding:0;cursor:pointer;font-size:18px;font-weight:600">How to do it<i class="{{ howIcon }}"></i></button>
-    <sc-if value="{{ howOpen }}">
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <div style="font-size:15px;line-height:1.5;color:#b9c5db;text-wrap:pretty"><span style="color:#f2f6fd;font-weight:600">Setup. </span>{{ cur.setup }}</div>
-        <sc-for list="{{ cur.steps }}" as="s" hint-placeholder-count="3">
-          <div style="display:flex;gap:10px;font-size:15px;line-height:1.45;color:#e2e9f6"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#18334d;color:#c6f432;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ s.n }}</span><span style="text-wrap:pretty">{{ s.text }}</span></div>
-        </sc-for>
-        <div style="display:flex;gap:10px;font-size:14px;line-height:1.45;color:#ffb648"><i class="ph ph-warning-circle" style="font-size:20px;flex:none"></i><span style="text-wrap:pretty">Avoid: {{ cur.avoid }}</span></div>
-      </div>
-    </sc-if>
   </div>
 
   <div style="border-radius:30px;background:#121a29;padding:16px;display:flex;flex-direction:column;gap:14px">
@@ -209,6 +186,39 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
     <sc-if value="{{ cur.flag }}"><div style="font-size:13px;color:#ffb648">{{ cur.flagText }}</div></sc-if>
   </div>
 
+  <sc-if value="{{ timerOff }}">
+    <div style="display:flex;gap:8px;align-items:center">
+      <div style="font-size:13px;color:#9ba9c0;flex:none;width:62px">Rest</div>
+      <sc-for list="{{ timerOpts }}" as="t" hint-placeholder-count="4">
+        <button onClick="{{ t.tap }}" style="flex:1;height:44px;border-radius:22px;border:none;background:#121a29;font-size:14px;font-weight:600;cursor:pointer" style-hover="background:#18334d">{{ t.label }}</button>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <button onClick="{{ toggleHow }}" style="display:flex;justify-content:space-between;align-items:center;background:none;border:none;padding:0;cursor:pointer;font-size:18px;font-weight:600">How to do it<i class="{{ howIcon }}"></i></button>
+    <sc-if value="{{ howOpen }}">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:15px;line-height:1.5;color:#b9c5db;text-wrap:pretty"><span style="color:#f2f6fd;font-weight:600">Setup. </span>{{ cur.setup }}</div>
+        <sc-for list="{{ cur.steps }}" as="s" hint-placeholder-count="3">
+          <div style="display:flex;gap:10px;font-size:15px;line-height:1.45;color:#e2e9f6"><span style="flex:none;width:24px;height:24px;border-radius:50%;background:#18334d;color:#c6f432;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ s.n }}</span><span style="text-wrap:pretty">{{ s.text }}</span></div>
+        </sc-for>
+        <div style="display:flex;gap:10px;font-size:14px;line-height:1.45;color:#ffb648"><i class="ph ph-warning-circle" style="font-size:20px;flex:none"></i><span style="text-wrap:pretty">Avoid: {{ cur.avoid }}</span></div>
+      </div>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{ started }}">
+  <div style="display:flex;flex-direction:column;gap:12px">
+  <div style="display:flex;align-items:center;gap:8px">
+    <div style="font-size:13px;color:#9ba9c0;flex:none;width:62px">Recovery</div>
+    <sc-for list="{{ recoveryOpts }}" as="r" hint-placeholder-count="3">
+      <button onClick="{{ r.tap }}" style="{{ r.style }}"><span style="{{ r.dot }}"></span>{{ r.label }}</button>
+    </sc-for>
+  </div>
+  <div style="font-size:12px;color:#9ba9c0;margin-top:-10px;padding-left:70px">{{ recoveryNote }}</div>
+  </div>
+  </sc-if>
   <div style="display:flex;flex-direction:column;gap:4px">
     <div style="font-size:18px;font-weight:600">My progress</div>
     <div style="font-size:42px;font-weight:500;color:#c6f432;letter-spacing:-0.02em;line-height:1.1">{{ cur.big }}<span style="font-size:20px"> kg</span></div>
@@ -216,15 +226,24 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
     <div style="margin-top:8px">{{ cur.chart }}</div>
   </div>
 </div>
-<div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;z-index:30;padding:16px 16px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(to top,#090d14 65%,rgba(9,13,20,0));display:flex;gap:10px">
+<div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;z-index:30;padding:16px 16px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(to top,#090d14 72%,rgba(9,13,20,0));display:flex;flex-direction:column;gap:10px">
+  <sc-if value="{{ timerOn }}">
+    <button onClick="{{ stopTimer }}" style="height:52px;border-radius:26px;border:none;background:#142a40;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;padding:0 20px;cursor:pointer">
+      <span style="{{ timerBar }}"></span>
+      <span style="position:relative;font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;color:#c6f432;display:flex;align-items:center;gap:8px"><i class="ph ph-timer"></i>{{ timerText }}</span>
+      <span style="position:relative;font-size:13px;color:#cdd8eb">Rest · tap to skip</span>
+    </button>
+  </sc-if>
+  <div style="display:flex;gap:10px">
   <sc-if value="{{ notStarted }}"><button onClick="{{ startSession }}" style="flex:1;height:58px;border-radius:29px;border:none;background:linear-gradient(90deg,#c6f432,#5fe0c0);color:#0c110a;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph-fill ph-play"></i>Start session</button></sc-if>
   <sc-if value="{{ started }}"><button onClick="{{ prevEx }}" style="{{ prevStyle }}"><i class="ph ph-caret-left"></i></button>
   <button onClick="{{ nextEx }}" style="flex:1;height:58px;border-radius:29px;border:none;background:linear-gradient(90deg,#c6f432,#5fe0c0);color:#0c110a;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-active="transform:scale(0.98)">{{ nextLabel }}<i class="ph ph-arrow-right"></i></button></sc-if>
+  </div>
 </div>
 </sc-if>
 
 <sc-if value="{{ isSummary }}">
-<div style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:20px">
+<div class="lmt-view" style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:20px">
   <div><div style="font-size:13px;color:#c6f432;font-weight:700;letter-spacing:0.08em;text-transform:uppercase">Saved · workout complete</div><div style="font-size:30px;font-weight:600;margin-top:6px">{{ sumTitle }}</div><div style="font-size:14px;color:#9ba9c0;margin-top:4px">{{ sumWhen }}</div></div>
   <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">
     <sc-for list="{{ sumStats }}" as="s" hint-placeholder-count="3">
@@ -251,7 +270,7 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
 </sc-if>
 
 <sc-if value="{{ isProgress }}">
-<div style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:20px">
+<div class="lmt-view" style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:20px">
   <div style="font-size:26px;font-weight:600">Progress</div>
   <div style="border-radius:26px;background:#121a29;padding:16px 18px;display:flex;flex-direction:column;gap:12px">
     <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><div style="font-size:17px;font-weight:600">Muscle map</div><div style="font-size:13px;color:#9ba9c0">Sets in the last 7 days</div></div>
@@ -289,7 +308,7 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
 </sc-if>
 
 <sc-if value="{{ isHistory }}">
-<div style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:14px">
+<div class="lmt-view" style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:14px">
   <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-size:26px;font-weight:600">History</div><button onClick="{{ exportCsv }}" style="height:44px;padding:0 16px;border-radius:22px;border:1.5px solid #c6f432;background:transparent;color:#c6f432;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ph ph-download-simple"></i>Export CSV</button></div>
   <div style="font-size:13px;color:#9ba9c0">{{ toast }}</div>
   <sc-if value="{{ noHistory }}"><div style="color:#9ba9c0;font-size:15px">No sessions yet.</div></sc-if>
@@ -314,8 +333,12 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
 </sc-if>
 
 <sc-if value="{{ isProgram }}">
-<div style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:18px">
-  <div><div style="font-size:26px;font-weight:600">Program</div><div style="font-size:14px;color:#9ba9c0;margin-top:4px;line-height:1.45;text-wrap:pretty">Upper / Lower rotation. Every 16 sessions (about 4–5 weeks) the block changes: exercises rotate and rep ranges shift, so you're not repeating the same workout for months. Starting weights for the new lifts are worked out from your current strength.</div></div>
+<div class="lmt-view" style="padding:28px 20px 130px;display:flex;flex-direction:column;gap:18px">
+  <div style="font-size:26px;font-weight:600">Program</div>
+  <div class="lmt-seg" role="tablist"><button role="tab" aria-selected="{{ planOn }}" onClick="{{ showPlan }}">Plan</button><button role="tab" aria-selected="{{ settingsOn }}" onClick="{{ showSettings }}">Settings</button></div>
+  <sc-if value="{{ planOn }}">
+  <div class="lmt-view" style="display:flex;flex-direction:column;gap:18px">
+  <div style="font-size:14px;color:#9ba9c0;line-height:1.5">An upper and lower body rotation. Every 16 sessions (about 4–5 weeks) the exercises and rep ranges change, with new starting weights worked out from your strength.</div>
   <div style="display:flex;flex-direction:column;gap:10px">
     <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="4">
       <div style="{{ b.style }}">
@@ -341,14 +364,18 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
   <sc-for list="{{ locks }}" as="l" hint-placeholder-count="0">
     <div style="display:flex;gap:10px;align-items:center;font-size:14px;color:#ffb648"><i class="ph ph-lock" style="font-size:18px"></i><span style="flex:1">{{ l.text }}</span><button onClick="{{ l.tap }}" style="height:36px;padding:0 14px;border-radius:18px;border:1px solid #35486c;background:none;font-size:13px;cursor:pointer;color:#f2f6fd">Unlock</button></div>
   </sc-for>
+  </div>
+  </sc-if>
+  <sc-if value="{{ settingsOn }}">
+  <div class="lmt-view" style="display:flex;flex-direction:column;gap:18px">
+  <div style="font-size:18px;font-weight:600;margin-top:6px">Account</div>
+  <button onClick="{{ accountOpen }}" style="min-height:52px;border-radius:26px;border:none;background:#c6f432;color:#0c110a;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph ph-user-circle" style="font-size:18px"></i>{{ accountLabel }}</button>
+  <div data-lmt-account style="font-size:13px;color:#9ba9c0;line-height:1.45">{{ accountStatus }}</div>
   <div style="font-size:18px;font-weight:600;margin-top:6px">Your avatar</div>
   <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px"><sc-for list="{{ avatars }}" as="a" hint-placeholder-count="2"><button onClick="{{ a.tap }}" style="{{ a.style }}">{{ a.diagram }}<span style="{{ a.lbl }}">{{ a.label }}</span></button></sc-for></div>
   <div style="font-size:13px;color:#9ba9c0;line-height:1.45">{{ avatarNote }} <a href="{{ sexUrl }}" target="_blank" rel="noopener">{{ sexLink }}</a></div>
   <div style="font-size:18px;font-weight:600;margin-top:6px">Weekly goal</div>
   <div style="display:flex;gap:8px"><sc-for list="{{ goalOpts }}" as="g" hint-placeholder-count="2"><button onClick="{{ g.tap }}" style="{{ g.style }}">{{ g.label }}</button></sc-for></div>
-  <div style="font-size:18px;font-weight:600;margin-top:6px">Account</div>
-  <button onClick="{{ accountOpen }}" style="min-height:52px;border-radius:26px;border:none;background:#c6f432;color:#0c110a;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph ph-user-circle" style="font-size:18px"></i>{{ accountLabel }}</button>
-  <div data-lmt-account style="font-size:13px;color:#9ba9c0;line-height:1.45">{{ accountStatus }}</div>
   <div style="font-size:18px;font-weight:600;margin-top:6px">Data</div>
   <sc-if value="{{ hasGit }}">
   <button onClick="{{ cloudOpen }}" style="min-height:52px;border-radius:26px;border:none;background:#c6f432;color:#0c110a;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph ph-cloud-arrow-up" style="font-size:18px"></i>Cloud backup</button>
@@ -362,11 +389,13 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
     </div>
     <div style="font-size:12px;color:#7888a3">{{ toast }}</div>
   </div>
+  </div>
+  </sc-if>
 </div>
 </sc-if>
 
 <sc-if value="{{ confirmOpen }}">
-<div onClick="{{ closeConfirm }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:60;display:flex;align-items:flex-end;justify-content:center">
+<div class="lmt-back" onClick="{{ closeConfirm }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:60;display:flex;align-items:flex-end;justify-content:center">
   <div onClick="{{ stopProp }}" style="width:100%;max-width:440px;background:#121a29;border-radius:32px 32px 0 0;padding:26px 20px 30px;display:flex;flex-direction:column;gap:14px">
     <div style="font-size:22px;font-weight:600">Finish {{ wTitle }}?</div>
     <div style="font-size:15px;color:#b9c5db;line-height:1.45">{{ confirmText }}</div>
@@ -377,7 +406,7 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
 </sc-if>
 
 <sc-if value="{{ sheetSession }}">
-<div onClick="{{ closeSheet }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:60;display:flex;align-items:flex-end;justify-content:center">
+<div class="lmt-back" onClick="{{ closeSheet }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:60;display:flex;align-items:flex-end;justify-content:center">
   <div onClick="{{ stopProp }}" style="width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:#121a29;border-radius:32px 32px 0 0;padding:26px 20px calc(26px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px">
     <div style="font-size:22px;font-weight:600">Session</div>
     <div style="font-size:14px;color:#9ba9c0">{{ sessStatus }}</div>
@@ -390,7 +419,7 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
 </div>
 </sc-if>
 <sc-if value="{{ sheetSwap }}">
-<div onClick="{{ closeSheet }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:60;display:flex;align-items:flex-end;justify-content:center">
+<div class="lmt-back" onClick="{{ closeSheet }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:60;display:flex;align-items:flex-end;justify-content:center">
   <div onClick="{{ stopProp }}" style="width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:#121a29;border-radius:32px 32px 0 0;padding:26px 20px calc(26px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px">
     <div style="font-size:22px;font-weight:600">Swap exercise</div>
     <div style="font-size:14px;color:#9ba9c0;line-height:1.45">{{ swapSub }}</div>
@@ -409,7 +438,7 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
 </div>
 </sc-if>
 <sc-if value="{{ sheetDel }}">
-<div onClick="{{ closeSheet }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:60;display:flex;align-items:flex-end;justify-content:center">
+<div class="lmt-back" onClick="{{ closeSheet }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:60;display:flex;align-items:flex-end;justify-content:center">
   <div onClick="{{ stopProp }}" style="width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:#121a29;border-radius:32px 32px 0 0;padding:26px 20px calc(26px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px">
     <div style="font-size:22px;font-weight:600">Delete this session?</div>
     <div style="font-size:15px;color:#b9c5db;line-height:1.45">{{ delText }}</div>
@@ -420,7 +449,7 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
 </sc-if>
 
 <sc-if value="{{ sheetInfo }}">
-<div onClick="{{ closeSheet }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:65;display:flex;align-items:flex-end;justify-content:center">
+<div class="lmt-back" onClick="{{ closeSheet }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:65;display:flex;align-items:flex-end;justify-content:center">
   <div onClick="{{ stopProp }}" style="width:100%;max-width:440px;max-height:88vh;overflow-y:auto;overscroll-behavior:contain;background:#121a29;border-radius:32px 32px 0 0;padding:24px 20px calc(24px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px">
     <div style="display:flex;gap:12px;align-items:flex-start;flex-shrink:0"><div style="flex:1;min-width:0"><div style="font-size:21px;font-weight:700;line-height:1.2">{{ info.name }}</div><div style="font-size:13px;color:#c6f432;margin-top:4px;font-weight:600">{{ info.muscles }}</div></div><button onClick="{{ closeSheet }}" aria-label="Close" style="width:40px;height:40px;flex:none;border-radius:50%;border:none;background:#0b111d;font-size:18px;cursor:pointer"><i class="ph ph-x"></i></button></div>
     <div style="flex-shrink:0"><div style="font-size:12px;color:#7cc8ff;font-weight:700;letter-spacing:0.08em;text-transform:uppercase">What it’s for</div><div style="font-size:17px;line-height:1.45;margin-top:6px">{{ info.use }}</div></div>
@@ -442,33 +471,27 @@ button:focus-visible,input:focus-visible{outline:2px solid #c6f432;outline-offse
 </div>
 </sc-if>
 <sc-if value="{{ chooseAvatar }}">
-<div style="position:fixed;inset:0;background:rgba(5,8,13,0.94);z-index:70;display:flex;align-items:center;justify-content:center;padding:20px">
+<div class="lmt-view" style="position:fixed;inset:0;background:rgba(5,8,13,0.94);z-index:70;display:flex;align-items:center;justify-content:center;padding:20px">
   <div style="width:100%;max-width:400px;display:flex;flex-direction:column;gap:16px;text-align:center">
     <div style="font-size:26px;font-weight:700">Choose your avatar</div>
-    <div style="font-size:14px;color:#9ba9c0;line-height:1.5">It sets the figure in your animations and your starting weights. You can change it later in Program.</div>
+    <div style="font-size:14px;color:#9ba9c0;line-height:1.5">It sets the figure in your animations and your starting weights. You can change it later in Program, under Settings.</div>
     <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px"><sc-for list="{{ avatars }}" as="a" hint-placeholder-count="2"><button onClick="{{ a.tap }}" style="{{ a.style }}">{{ a.diagram }}<span style="{{ a.lbl }}">{{ a.label }}</span></button></sc-for></div>
-    <button onClick="{{ accountOpen }}" style="height:48px;border-radius:24px;border:1.5px solid #c6f432;background:none;color:#c6f432;font-size:14px;font-weight:700;cursor:pointer">Sign in or create an account</button>
+    <sc-if value="{{ signedOut }}"><button onClick="{{ accountOpen }}" style="height:48px;border-radius:24px;border:1.5px solid #c6f432;background:none;color:#c6f432;font-size:14px;font-weight:700;cursor:pointer">Sign in or create an account</button></sc-if>
     <button onClick="{{ restoreInstead }}" style="height:48px;border:none;background:none;color:#7cc8ff;font-size:14px;font-weight:700;cursor:pointer">I already have a backup</button>
   </div>
 </div>
 </sc-if>
 
 <sc-if value="{{ showNav }}" hint-placeholder-val="{{ true }}">
-<div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;z-index:40;padding:0 12px calc(12px + env(safe-area-inset-bottom))">
-  <div style="height:78px;border-radius:32px;background:#101827;display:grid;grid-template-columns:1fr 1fr 84px 1fr 1fr;align-items:center;box-shadow:0 -10px 30px rgba(0,0,0,0.5)">
-    <button onClick="{{ goHome }}" style="{{ navHome }}"><i class="ph ph-house" style="font-size:24px"></i>Home</button>
-    <button onClick="{{ startWorkout }}" style="{{ navWorkout }}"><i class="ph ph-barbell" style="font-size:24px"></i>Workout</button>
-    <div style="display:flex;justify-content:center"><button onClick="{{ goProgress }}" style="{{ navCenter }}"><i class="ph ph-chart-bar" style="font-size:30px"></i></button></div>
-    <button onClick="{{ goHistory }}" style="{{ navHistory }}"><i class="ph ph-clock-counter-clockwise" style="font-size:24px"></i>History</button>
-    <button onClick="{{ goProgram }}" style="{{ navProgram }}"><i class="ph ph-stack" style="font-size:24px"></i>Program</button>
-  </div>
-</div>
+<nav class="lmt-nav" aria-label="Main">
+  <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5"><button onClick="{{ t.tap }}" class="{{ t.cls }}" aria-current="{{ t.current }}"><span class="ic"><i class="{{ t.icon }}"></i></span>{{ t.label }}</button></sc-for>
+</nav>
 </sc-if>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { view: 'home', data: null, draft: null, now: Date.now(), timer: null, summary: null, ai: null, liftId: null, toast: '', paused: false, howOpen: true, confirm: false, previewIdx: null, openHist: null, savedAt: 0, sheet: null, delId: null, swapSlot: null, infoId: null, skipAvatar: false, bodyInput: '' };
+  state = { view: 'home', data: null, draft: null, now: Date.now(), timer: null, summary: null, ai: null, liftId: null, toast: '', paused: false, howOpen: true, confirm: false, previewIdx: null, openHist: null, savedAt: 0, sheet: null, delId: null, swapSlot: null, infoId: null, skipAvatar: false, bodyInput: '', progTab: 'plan' };
   KEY = 'lean-muscle-tracker:v2';
   BLOCK_LEN = 16;
   LIME = '#c6f432';
@@ -703,7 +726,6 @@ class Component extends DCLogic {
     if (!this.defs() || !D || !dr) return { isHome: false, isWorkout: false, isSummary: false, isProgress: false, isHistory: false, isProgram: false, showNav: false, confirmOpen: false, sheetSession: false, sheetSwap: false, sheetDel: false };
     const view = S.view, sess = this.SESS[dr.idx], now = S.now, B = this.BLOCKS[D.block], started = !!dr.startedAt;
     const pill = (on, c) => ({ flex: 'none', height: 46, padding: '0 18px', borderRadius: 23, border: `1.5px solid ${on ? (c || this.LIME) : 'transparent'}`, background: on ? 'rgba(198,244,50,0.08)' : '#121a29', color: on ? (c || this.LIME) : '#e2e9f6', fontSize: 15, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 });
-    const nav = on => ({ background: 'none', border: 'none', height: '100%', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4, fontSize: 12, fontWeight: 600, color: on ? this.LIME : '#6e7d98' });
     const H = D.history;
     const dateLbl = h => h.noTime ? this.melFmt(new Date(h.ts), { weekday: 'short', day: 'numeric', month: 'short' }) : this.melFmt(new Date(h.ts), { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false });
     const short = d => this.melFmt(new Date(d), { day: 'numeric', month: 'short' });
@@ -717,7 +739,7 @@ class Component extends DCLogic {
     const pIdx = S.previewIdx == null ? dr.idx : S.previewIdx;
     const sessChips = this.SESS.map((s, i) => ({ label: i === dr.idx ? `${s.name} · next` : s.name, icon: s.name.startsWith('Upper') ? 'ph ph-hand-fist' : 'ph ph-person-simple-walk', style: pill(i === pIdx), tap: () => this.setState({ previewIdx: i }) }));
     const previewCards = this.SESS[pIdx].slots.map((slot, k) => { const e = pIdx === dr.idx ? this.EX[dr.ex[slot.id].exId] : this.exFor(D, slot), [lo, hi] = this.rangeFor(D, slot, e); return { name: e.name, meta: `${slot.sets} × ${lo}–${hi}`, diagram: this.dia(e.dg), tap: () => pIdx === dr.idx ? this.openWorkout(k) : this.setState({ previewIdx: pIdx }) }; });
-    const recentHome = [...H].reverse().slice(0, 3).map(h => ({ name: h.session, when: `${dateLbl(h)} · ${this.vol(h).toLocaleString()} kg`, big: h.durationMin || '—', unit: h.durationMin ? 'min' : 'time n/a' }));
+    const recentHome = [...H].reverse().slice(0, 3).map(h => ({ tap: () => this.setState({ openHist: h.id }, () => this.go('history')), name: h.session, when: `${dateLbl(h)} · ${this.vol(h).toLocaleString()} kg`, big: h.durationMin || '', unit: h.durationMin ? 'min' : '' }));
     let tot = 0, done = 0; sess.slots.forEach(s => dr.ex[s.id].sets.forEach(z => { tot++; if (z.done) done++; }));
 
     const recLab = { green: 'Normal', amber: 'Poor sleep / low BioCharge', red: 'High fatigue' };
@@ -772,13 +794,18 @@ class Component extends DCLogic {
 
     return {
       isHome: view === 'home', isWorkout: view === 'workout', isSummary: view === 'summary', isProgress: view === 'progress', isHistory: view === 'history', isProgram: view === 'program', showNav: view !== 'workout',
-      greet: hr < 12 ? 'Good morning' : hr < 18 ? 'Good afternoon' : 'Good evening', blockLabel: `Block ${D.block + 1} · ${B.name} · ${D.blockCount}/${this.BLOCK_LEN} sessions`, weekGoal: `${weekCount}/${D.goal || 4}`,
-      heroTitle: sess.name, heroSub: started ? `In progress · ${Math.floor((now - dr.startedAt) / 60000)} min · ${done}/${tot} sets` : `${sess.slots.length} exercises · ${tot} sets`, heroBtn: started ? 'RESUME' : 'START',
+      greet: hr < 12 ? 'Good morning' : hr < 18 ? 'Good afternoon' : 'Good evening', blockLabel: `Block ${D.block + 1}: ${B.name}`, weekGoal: `${weekCount}/${D.goal || 4}`,
+      heroTitle: sess.name, heroSub: started ? `In progress · ${Math.floor((now - dr.startedAt) / 60000)} min · ${done}/${tot} sets` : `${sess.slots.length} exercises · ${tot} sets`, heroBtn: started ? 'Resume' : 'Start',
       heroTap: () => started ? this.go('workout') : this.startSession(), heroStarted: started,
       restartSession: () => this.restartSession(), discardSession: () => this.discardSession(),
       showSwitch: pIdx !== dr.idx, switchLabel: started ? `Switch to ${this.SESS[pIdx].name} (discards the session in progress)` : `Do ${this.SESS[pIdx].name} today instead`, doSwitch: () => this.switchSession(pIdx),
       startWorkout: () => this.openWorkout(), week, sessChips, previewCards, recentHome,
-      goHome: () => this.go('home'), goHistory: () => this.go('history'), goProgress: () => this.go('progress'), goProgram: () => this.go('program'),
+      goHome: () => this.go('home'), goHistory: () => this.go('history'), goProgress: () => this.go('progress'), goProgram: () => this.go('program'), goSettings: () => this.setState({ progTab: 'settings' }, () => this.go('program')),
+      planOn: S.progTab === 'plan', settingsOn: S.progTab === 'settings', showPlan: () => this.setState({ progTab: 'plan' }), showSettings: () => this.setState({ progTab: 'settings' }),
+      initial: window.LMTAccount.email().slice(0, 1).toUpperCase(), noInitial: !window.LMTAccount.email(),
+      posLabel: `Exercise ${ci + 1} of ${sess.slots.length}`,
+      workoutPad: { padding: `0 16px ${tm ? 200 : 130}px`, display: 'flex', flexDirection: 'column', gap: 16 },
+      tabs: [['home', 'Home', 'house', () => this.go('home')], ['workout', 'Workout', 'barbell', () => this.openWorkout()], ['progress', 'Progress', 'chart-bar', () => this.go('progress')], ['history', 'History', 'clock-counter-clockwise', () => this.go('history')], ['program', 'Program', 'stack', () => this.setState({ progTab: 'plan' }, () => this.go('program'))]].map(([k, label, icon, tap]) => { const on = view === k || (k === 'home' && view === 'summary'); return { label, tap, cls: on ? 'on' : '', current: on ? 'page' : 'false', icon: `${on ? 'ph-fill' : 'ph'} ph-${icon}` }; }),
       wTitle: sess.name, elapsed: started ? this.dur(now - dr.startedAt) : 'Not started', savedText: savedT ? `Saved ${savedT}` : 'Auto-save on',
       openMenu: () => this.setState({ sheet: 'session' }),
       recoveryOpts, recoveryNote: dr.recovery ? recLab[dr.recovery] : 'Optional check-in',
@@ -828,15 +855,13 @@ class Component extends DCLogic {
       backup: () => this.backup(), restore: ev => this.restore(ev),
       sheetInfo: S.sheet === 'info' && !!this.EX[S.infoId], info: this.infoVals(S.infoId),
       chooseAvatar: !S.skipAvatar && !D.sex && !D.history.length && !(D.body || []).length,
-      restoreInstead: () => this.setState({ skipAvatar: true }, () => this.go('program')),
+      restoreInstead: () => this.setState({ skipAvatar: true, progTab: 'settings' }, () => this.go('program')),
       avatars: ['male', 'female'].map(k => { const on = D.sex === k || (!D.sex && D.history.length > 0 && k === 'male'); return { label: k === 'male' ? 'Male' : 'Female', diagram: this.dia('hammer', false, k), tap: () => this.setSex(k), style: { padding: 8, borderRadius: 22, cursor: 'pointer', background: '#121a29', border: `2px solid ${on ? this.LIME : 'transparent'}`, display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'stretch' }, lbl: { fontSize: 15, fontWeight: 700, color: on ? this.LIME : '#cdd8eb' } }; }),
       avatarNote: D.history.length ? 'Changes the figure only. Your weights come from your logged history.' : 'Also sets your starting weights. Female ones are estimates: about 55% (upper body) and 65% (lower body and abs) of the male starting points.',
       sexUrl: window.LMTInfo.sources.sexstr[1], sexLink: D.history.length ? '' : 'Why',
       muscleMap: React.createElement('div', { dangerouslySetInnerHTML: { __html: window.LMTFig.bodyMap(this.weekSets(D)) } }),
       mapKey: [['0', 0], ['1–4', 1], ['5–9', 5], ['10+', 10]].map(([label, n]) => ({ label, dot: { width: 10, height: 10, borderRadius: '50%', background: window.LMTFig.tone(n) } })),
       muscleRows: (() => { const w = this.weekSets(D); return ['Chest', 'Lats', 'Upper back', 'Front delts', 'Side delts', 'Rear delts', 'Biceps', 'Triceps', 'Forearms', 'Abs', 'Quads', 'Hamstrings', 'Glutes', 'Calves'].map(name => ({ name, n: w[name] || 0, num: { fontWeight: 700, color: w[name] ? '#f2f6fd' : '#7888a3' } })); })(),
-      navHome: nav(view === 'home' || view === 'summary'), navWorkout: nav(false), navHistory: nav(view === 'history'), navProgram: nav(view === 'program'),
-      navCenter: { width: 72, height: 72, borderRadius: '50%', border: 'none', background: view === 'progress' ? '#dcff6a' : this.LIME, color: '#0c110a', marginTop: -36, boxShadow: '0 8px 30px -4px rgba(198,244,50,0.55)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }
     };
   }
 }
