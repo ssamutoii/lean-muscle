@@ -74,40 +74,40 @@ html.lmt-gated,html.lmt-gated body{overflow:hidden}
 @media (prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}}
 
 /* ---------- Light pages: profile, avatar studio, setup ---------- */
-.lt{min-height:100vh;background:radial-gradient(120% 40% at 50% 0%,#ffffff 0%,#eef2f8 55%,#e3e9f2 100%);color:#0f1a2c;padding:22px 18px 120px;display:flex;flex-direction:column;gap:18px}
+.lt{min-height:100vh;background:linear-gradient(180deg,#e2e7eb 0%,#cfd7dd 50%,#bfc9d0 100%);color:#121d2b;padding:22px 18px 120px;display:flex;flex-direction:column;gap:18px}
 .lt h1{margin:0;font-size:28px;font-weight:700;letter-spacing:-.01em}
 .lt h2{margin:0;font-size:18px;font-weight:700}
 .lt p{margin:0}
 .lt .mut{color:#5b6b85;font-size:14px;line-height:1.45}
 .lt .sml{font-size:12px;color:#6b7a93;line-height:1.5}
 .lt a{color:#2f68b5;font-weight:600}
-.lt-card{background:#fff;border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 1px 2px rgba(15,26,44,.06),0 8px 24px -14px rgba(15,26,44,.18)}
+.lt-card{background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.7);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 10px 30px -20px rgba(18,29,43,.35);backdrop-filter:blur(8px)}
 .lt-row{display:flex;align-items:center;gap:12px}
-.lt-stage{position:relative;border-radius:28px;overflow:hidden;background:radial-gradient(70% 60% at 50% 38%,#f7f8ff 0%,#e1e6fb 55%,#c8d1f4 100%);box-shadow:inset 0 -30px 40px -30px rgba(47,104,181,.25)}
+.lt-stage{position:relative;border-radius:28px;overflow:hidden;background:radial-gradient(70% 60% at 50% 40%,var(--c3) 0%,var(--c1) 60%,var(--c2) 100%);box-shadow:inset 0 -30px 40px -30px rgba(47,104,181,.25)}
 .lt-stage .fig{height:min(40vh,340px);aspect-ratio:240/422;margin:0 auto;padding-top:8px}
 .lt-stage .floor{position:absolute;left:0;right:0;bottom:0;height:22%;background:linear-gradient(transparent,rgba(47,104,181,.08))}
 .lt-btn{min-height:50px;border:none;border-radius:16px;background:#0f1a2c;color:#c6f432;font:700 15px Urbanist,system-ui,sans-serif;cursor:pointer;padding:0 18px;display:flex;align-items:center;justify-content:center;gap:8px}
 .lt-btn.ghost{background:#fff;color:#0f1a2c;box-shadow:inset 0 0 0 1.5px #d3dbe8}
 .lt-btn.full{width:100%}
 .lt-chips{display:flex;flex-wrap:wrap;gap:8px}
-.lt-chip{min-height:42px;padding:0 14px;border-radius:14px;border:none;background:#eef2f8;color:#26344d;font:600 14px Urbanist,system-ui,sans-serif;cursor:pointer;display:flex;align-items:center;gap:6px}
+.lt-chip{min-height:42px;padding:0 14px;border-radius:14px;border:none;background:rgba(18,29,43,.07);color:#26344d;font:600 14px Urbanist,system-ui,sans-serif;cursor:pointer;display:flex;align-items:center;gap:6px}
 .lt-chip.on{background:#0f1a2c;color:#fff}
 .lt-chip.on::before{content:"";width:7px;height:7px;border-radius:50%;background:#c6f432}
 .lt-sw{display:flex;flex-wrap:wrap;gap:10px}
 .lt-sw button{width:40px;height:40px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1.5px #d3dbe8;cursor:pointer;padding:0}
 .lt-sw button.on{box-shadow:0 0 0 2.5px #0f1a2c}
-.lt-tabs{display:flex;gap:4px;padding:4px;border-radius:16px;background:#e3e9f2;overflow-x:auto}
+.lt-tabs{display:flex;gap:4px;padding:4px;border-radius:16px;background:rgba(18,29,43,.08);overflow-x:auto}
 .lt-tabs button{flex:1;min-width:64px;height:40px;border:none;border-radius:12px;background:none;color:#5b6b85;font:700 13px Urbanist,system-ui,sans-serif;cursor:pointer}
 .lt-tabs button[aria-selected=true]{background:#fff;color:#0f1a2c;box-shadow:0 2px 8px -4px rgba(15,26,44,.3)}
 .lt-field{display:flex;flex-direction:column;gap:6px;flex:1;min-width:0}
 .lt-field label{font-size:13px;font-weight:600;color:#5b6b85}
-.lt-input{height:50px;border-radius:14px;border:1.5px solid #d3dbe8;background:#f7f9fc;color:#0f1a2c;padding:0 14px;font:600 16px Urbanist,system-ui,sans-serif;width:100%;min-width:0}
+.lt-input{height:50px;border-radius:14px;border:1.5px solid rgba(18,29,43,.12);background:rgba(255,255,255,.8);color:#0f1a2c;padding:0 14px;font:600 16px Urbanist,system-ui,sans-serif;width:100%;min-width:0}
 .lt-input:focus{border-color:#2f68b5;outline:none}
-.lt-opt{width:100%;text-align:left;border:none;border-radius:18px;background:#fff;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;color:#0f1a2c;box-shadow:inset 0 0 0 1.5px #dde4ef}
-.lt-opt .ic{width:44px;height:44px;flex:none;border-radius:14px;background:#eef2f8;display:flex;align-items:center;justify-content:center;font-size:22px;color:#2f68b5}
+.lt-opt{width:100%;text-align:left;border:none;border-radius:18px;background:rgba(255,255,255,.6);padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;color:#121d2b;box-shadow:inset 0 0 0 1.5px rgba(18,29,43,.08)}
+.lt-opt .ic{width:44px;height:44px;flex:none;border-radius:14px;background:rgba(18,29,43,.07);display:flex;align-items:center;justify-content:center;font-size:22px;color:#2f68b5}
 .lt-opt b{display:block;font-size:16px}
 .lt-opt span.d{display:block;font-size:13px;color:#5b6b85;margin-top:2px;line-height:1.35}
-.lt-opt.on{box-shadow:inset 0 0 0 2px #0f1a2c;background:#f7faff}
+.lt-opt.on{box-shadow:inset 0 0 0 2px #121d2b;background:rgba(255,255,255,.9)}
 .lt-opt.on .ic{background:#0f1a2c;color:#c6f432}
 .lt-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .lt-tile{border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:2px}
@@ -124,9 +124,33 @@ html.lmt-gated,html.lmt-gated body{overflow:hidden}
 .lt-steps span.on{background:#0f1a2c}
 .lt-top{display:flex;align-items:center;gap:10px}
 .lt-icon{width:44px;height:44px;border-radius:50%;border:none;background:#fff;color:#0f1a2c;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px -4px rgba(15,26,44,.3)}
-.lt-sticky{position:sticky;bottom:0;margin:0 -18px -120px;padding:14px 18px calc(18px + env(safe-area-inset-bottom));background:linear-gradient(transparent,#e3e9f2 30%)}
+.lt-sticky{position:sticky;bottom:0;margin:0 -18px -120px;padding:14px 18px calc(18px + env(safe-area-inset-bottom));background:linear-gradient(rgba(191,201,208,0),#bfc9d0 35%)}
 .av-head{width:100%;height:100%;display:block}
 
 /* home avatar button */
 .me{width:52px;height:52px;flex:none;border-radius:50%;overflow:hidden;border:none;padding:0;cursor:pointer;background:radial-gradient(circle at 50% 35%,#ffffff,#c9d8ee);box-shadow:0 0 0 2px #c6f432}
 .me img,.me svg{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ---------- characters, theme and the home video ---------- */
+:root{--c1:#5b9bf0;--c2:#2f5fd0;--c3:#d6e6ff;--deep:#0c1836;--mid:#163063}
+.ch-full{display:block;height:100%;width:auto;margin:0 auto;filter:drop-shadow(0 18px 18px rgba(10,14,30,.35));animation:ch-pop .7s cubic-bezier(.3,.7,.4,1)}
+@keyframes ch-pop{0%{transform:translateY(14px) scale(.96);opacity:0}60%{transform:translateY(-6px) scale(1.01);opacity:1}}
+.lt-stage .fig{display:flex;justify-content:center}
+.ch-pick{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ch-card{position:relative;border:none;border-radius:24px;padding:10px 0 0;height:min(52vh,380px);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;box-shadow:inset 0 0 0 2px rgba(255,255,255,.5)}
+.ch-card img{height:88%;width:auto;display:block;filter:drop-shadow(0 10px 10px rgba(10,14,30,.3))}
+.ch-card .ch-name{position:absolute;left:12px;top:10px;font:800 18px Urbanist,system-ui,sans-serif;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.25)}
+.ch-card.on{box-shadow:inset 0 0 0 3px #121d2b,0 10px 24px -12px rgba(18,29,43,.6)}
+.ch-card.on::after{content:"Selected";position:absolute;right:10px;top:10px;padding:4px 10px;border-radius:10px;background:#121d2b;color:#c6f432;font:700 12px Urbanist,system-ui,sans-serif}
+.hv-card{position:relative;border-radius:28px;overflow:hidden;aspect-ratio:3/3.6;background:radial-gradient(80% 60% at 50% 30%,var(--mid) 0%,var(--deep) 75%);box-shadow:0 24px 50px -28px var(--c2)}
+.hv-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;-webkit-mask-image:radial-gradient(120% 85% at 50% 40%,#000 62%,transparent 100%);mask-image:radial-gradient(120% 85% at 50% 40%,#000 62%,transparent 100%)}
+.hv-tint{position:absolute;inset:0;background:linear-gradient(160deg,var(--c1) 0%,transparent 45%,transparent 60%,var(--c2) 120%);mix-blend-mode:soft-light;opacity:.55;pointer-events:none}
+.hv-fade{position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(transparent,var(--deep) 88%);pointer-events:none}
+.hv-panel{position:absolute;left:12px;right:12px;bottom:12px;display:flex;align-items:center;gap:12px;padding:14px 14px 14px 18px;border-radius:22px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.hv-title{font-size:24px;font-weight:700;color:#fff;line-height:1.1}
+.hv-sub{font-size:13px;color:rgba(255,255,255,.75);margin-top:3px}
+.hv-go{flex:none;height:50px;padding:0 20px;border:none;border-radius:16px;background:#c6f432;color:#0c110a;font:700 15px Urbanist,system-ui,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer}
+.hv-chip{position:absolute;left:14px;top:14px;padding:6px 12px;border-radius:12px;background:rgba(255,255,255,.14);color:#fff;font:700 12px Urbanist,system-ui,sans-serif;backdrop-filter:blur(10px)}
+.me{background:radial-gradient(circle at 50% 30%,var(--c3),var(--c1))!important}
+.lt-photo{background:radial-gradient(circle at 50% 30%,var(--c3),var(--c1))!important}
+@media (prefers-reduced-motion:reduce){.ch-full{animation:none}}

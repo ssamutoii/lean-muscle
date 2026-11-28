@@ -40,7 +40,7 @@
     if (!look) { C = C0; K = null; return; }
     C = Object.assign({}, C0, { skin: look.skin, hairM: look.hair, hairF: look.hair, teeM: look.top, topF: look.top, shortM: look.bottom, legF: look.bottom, shoe: look.shoe,
       far: mix(look.skin, '#16263f', .5), farCloth: mix(look.bottom, '#16263f', .55), farShoe: mix(look.shoe, '#16263f', .6) });
-    K = { arm: clampK(look.arm), leg: clampK(look.leg), torso: clampK(look.torso), legs: look.legsCovered, armsFull: look.armsCovered, sleeves: look.sleeves, midriff: look.midriff, hair: look.hairStyle };
+    K = { bg: look.bg, arm: clampK(look.arm), leg: clampK(look.leg), torso: clampK(look.torso), legs: look.legsCovered, armsFull: look.armsCovered, sleeves: look.sleeves, midriff: look.midriff, hair: look.hairStyle };
   }
 
   function Scene(sex) {
@@ -88,7 +88,7 @@
       const u = unit(p.hip, p.sh), face = p.face || 1, fr = [-u[1] * face, u[0] * face], g = o.g || 0, M = o.m || [];
       const head = p.head || mv(p.sh, u, 28);
       const hu = unit(p.sh, head), hf = [-hu[1] * face, hu[0] * face];
-      const OL = { stroke: C.line, 'stroke-width': 1.8 };
+      const OL = K ? { stroke: 'rgba(6,10,20,.42)', 'stroke-width': 1.2 } : { stroke: C.line, 'stroke-width': 1.8 };
       const leg = (l, far) => {
         if (!l) return;
         const hip = far ? add(p.hip, 7, -4) : p.hip, k = far ? add(l.knee, 9, -4) : l.knee, a = far ? add(l.ank, 10, -2) : l.ank;
@@ -175,7 +175,7 @@
       o = o || {};
       const g = o.g || 0, M = o.m || [], x = p.x || 160, sy = p.sy, hy = p.hy;
       const sw = fem ? 20 : 27, ww = fem ? 10 : 15, hw = fem ? 17 : 14;
-      const OL = { stroke: C.line, 'stroke-width': 1.8 };
+      const OL = K ? { stroke: 'rgba(6,10,20,.42)', 'stroke-width': 1.2 } : { stroke: C.line, 'stroke-width': 1.8 };
       const SL = [x - sw, sy], SR = [x + sw, sy], head = [x, sy - 30];
       [[p.ll, -1], [p.rl, 1]].forEach(([l, s]) => {
         if (!l) return; const h = [x + s * (hw - 5), hy];
@@ -604,6 +604,13 @@
     const ck = key + '|' + sex + '|' + (hero ? 1 : 0) + '|' + (look ? JSON.stringify(look) : '');
     if (cache[ck]) return cache[ck];
     wear(look);
+    const tone = {}, gdefs = [], uid = 'f' + (Math.abs([...ck].reduce((h, c) => (h * 31 + c.charCodeAt(0)) | 0, 7)) % 1e6).toString(36);
+    if (look) {
+      // soft round shading on the figure's skin and clothes
+      const lt = (h, k) => '#' + hx(h).map(v => Math.round(k > 0 ? v + (255 - v) * k : v * (1 + k)).toString(16).padStart(2, '0')).join('');
+      [C.skin, C.hairF, C.topF, C.legF, C.shoe, C.far, C.farCloth].forEach((c, i) => { if (tone[c]) return; const id = uid + 'g' + i; tone[c] = `url(#${id})`;
+        gdefs.push(`<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${lt(c, .22)}"/><stop offset=".45" stop-color="${c}"/><stop offset="1" stop-color="${lt(c, -.3)}"/></linearGradient>`); });
+    }
     let frames;
     try { frames = VALS.map((v, i) => frame(key, sex, v, i <= NL ? v : v * .6)); } finally { wear(null); }
     const base = frames[0];
@@ -614,12 +621,17 @@
         const vals = frames.map(fr => k === 'opacity' && fr[i].opacity != null ? Math.round(fr[i].opacity * 100) / 100 : fr[i][k]);
         if (vals.some(v => v !== vals[0])) anim += `<animate attributeName="${k}" values="${vals.join(';')}" ${D}/>`;
       });
-      return `<path d="${it.d}" ${attrs(it)}>${anim}</path>`;
+      return `<path d="${it.d}" ${attrs(tone[it.fill] ? Object.assign({}, it, { fill: tone[it.fill] }) : it)}>${anim}</path>`;
     }).join('');
-    const id = 'lmtbg';
+    const id = uid + 'bg', bg = look && look.bg || ['#1c365d', '#111e33', '#0b111a'];
     const DD = 'dur="4s" calcMode="discrete" repeatCount="indefinite"';
-    const label = hero ? `<g font-family="Urbanist,sans-serif" font-size="12" font-weight="800" letter-spacing="1.5"><text x="12" y="22" fill="#c6f432">LIFT · 1s<animate attributeName="opacity" values="1;0" keyTimes="0;0.22" ${DD}/></text><text x="12" y="22" fill="#ffffff" opacity="0">SQUEEZE<animate attributeName="opacity" values="0;1;0" keyTimes="0;0.22;0.34" ${DD}/></text><text x="12" y="22" fill="#7cc8ff" opacity="0">LOWER · 2–3s<animate attributeName="opacity" values="0;1" keyTimes="0;0.34" ${DD}/></text></g><rect x="0" y="258" width="0" height="4" rx="2" fill="#c6f432"><animate attributeName="width" values="0;320" dur="4s" repeatCount="indefinite"/></rect>` : '';
-    const svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;border-radius:${hero ? 22 : 12}px" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c365d"/><stop offset=".55" stop-color="#111e33"/><stop offset="1" stop-color="#0b111a"/></linearGradient></defs><rect width="${W}" height="${H}" fill="url(#${id})"/><ellipse cx="160" cy="240" rx="130" ry="7" fill="#000" opacity=".35"/><line x1="12" y1="${FLOOR}" x2="308" y2="${FLOOR}" stroke="#34527c" stroke-width="2"/>${body}${label}</svg>`;
+    const pill = (txt, fill, col, show) => `<g opacity="${show ? 1 : 0}"${''}><rect x="12" y="12" width="${txt.length * 7.4 + 26}" height="24" rx="12" fill="${fill}"/><text x="25" y="28.5" fill="${col}">${txt}</text>`;
+    const label = hero ? `<g font-family="Urbanist,sans-serif" font-size="12" font-weight="800" letter-spacing="1">`
+      + pill('LIFT · 1 s', '#c6f432', '#0c110a', 1) + `<animate attributeName="opacity" values="1;0" keyTimes="0;0.22" ${DD}/></g>`
+      + pill('SQUEEZE', '#ffffff', '#0c110a', 0) + `<animate attributeName="opacity" values="0;1;0" keyTimes="0;0.22;0.34" ${DD}/></g>`
+      + pill('LOWER · 2–3 s', '#7cc8ff', '#06182e', 0) + `<animate attributeName="opacity" values="0;1" keyTimes="0;0.34" ${DD}/></g>`
+      + `</g><rect x="0" y="256" width="320" height="6" fill="#000" opacity=".25"/><rect x="0" y="256" width="0" height="6" fill="#c6f432"><animate attributeName="width" values="0;70.4;108.8;320" keyTimes="0;0.22;0.34;1" dur="4s" repeatCount="indefinite"/><animate attributeName="fill" values="#c6f432;#ffffff;#7cc8ff" keyTimes="0;0.22;0.34" ${DD}/></rect>` : '';
+    const svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;border-radius:${hero ? 22 : 12}px" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${bg[0]}"/><stop offset=".55" stop-color="${bg[1]}"/><stop offset="1" stop-color="${bg[2]}"/></linearGradient><radialGradient id="${uid}sp" cx=".5" cy=".35" r=".6"><stop offset="0" stop-color="#fff" stop-opacity=".1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>${gdefs.join('')}</defs><rect width="${W}" height="${H}" fill="url(#${id})"/><rect width="${W}" height="${H}" fill="url(#${uid}sp)"/><ellipse cx="160" cy="240" rx="130" ry="7" fill="#000" opacity=".3"/><line x1="12" y1="${FLOOR}" x2="308" y2="${FLOOR}" stroke="#fff" stroke-opacity=".14" stroke-width="2"/>${body}${label}</svg>`;
     cache[ck] = svg;
     return svg;
   }
